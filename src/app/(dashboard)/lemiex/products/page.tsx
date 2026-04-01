@@ -1,5 +1,5 @@
-import { LemiexProducts } from '@/features/lemiex/products'
+import { redirect } from 'next/navigation'
 
 export default function LemiexProductsPage() {
-  return <LemiexProducts />
+  redirect('/lemiex/product-variants')
 }

@@ -32,6 +32,7 @@ type LemiexDataTableProps<TData> = {
   pageSize: number
   total: number
   loading?: boolean
+  loadingText?: string
   className?: string
   emptyText?: string
   getRowId?: (originalRow: TData, index: number) => string
@@ -46,6 +47,7 @@ export function LemiexDataTable<TData>({
   pageSize,
   total,
   loading = false,
+  loadingText = 'Loading...',
   className,
   emptyText = 'No results.',
   getRowId,
@@ -82,7 +84,7 @@ export function LemiexDataTable<TData>({
 
   return (
     <div className={cn('flex flex-1 flex-col gap-4', className)}>
-      <div className='overflow-hidden rounded-[6px] border bg-card'>
+      <div className='overflow-x-auto overflow-y-visible rounded-[6px] border bg-card'>
         <Table className='min-w-[1120px]'>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -122,7 +124,7 @@ export function LemiexDataTable<TData>({
                     colSpan={columns.length}
                     className='h-14 animate-pulse text-sm text-muted-foreground'
                   >
-                    Loading orders...
+                    {loadingText}
                   </TableCell>
                 </TableRow>
               ))
@@ -163,7 +165,7 @@ export function LemiexDataTable<TData>({
         </Table>
       </div>
 
-      <DataTablePagination table={table} className='mt-auto' />
+      <DataTablePagination table={table} className='mt-auto pb-2' />
     </div>
   )
 }

@@ -556,6 +556,219 @@ const uiMessages = {
         desc: 'Giảm dần',
       },
     },
+    productVariants: {
+      title: 'Biến thể sản phẩm',
+      count: 'sản phẩm',
+      loading: 'Đang tải sản phẩm...',
+      loadError: 'Không thể tải danh sách sản phẩm',
+      empty: 'Không có sản phẩm nào khớp với bộ lọc hiện tại.',
+      tabs: {
+        embroidery: 'Thêu',
+        print: 'In',
+      },
+      columns: {
+        product: 'Sản phẩm',
+        colors: 'Màu',
+        sizes: 'Kích thước',
+        variants: 'Variants',
+        totalStock: 'Tồn kho',
+        priceRange: 'Khoảng giá',
+        status: 'Trạng thái',
+        actions: 'Thao tác',
+      },
+      filters: {
+        search: 'Tìm kiếm',
+        searchPlaceholder: 'Tìm theo tên, brand, style...',
+        style: 'Style',
+        stylePlaceholder: 'Lọc theo style...',
+        brand: 'Brand',
+        brandPlaceholder: 'Lọc theo brand...',
+        status: 'Trạng thái',
+        allStatus: 'Tất cả trạng thái',
+        sortBy: 'Sắp xếp',
+        newestFirst: 'Mới nhất trước',
+        oldestFirst: 'Cũ nhất trước',
+        nameAz: 'Tên (A-Z)',
+        nameZa: 'Tên (Z-A)',
+        brandAz: 'Brand (A-Z)',
+        brandZa: 'Brand (Z-A)',
+        clearFilters: 'Xóa bộ lọc',
+      },
+      status: {
+        noBrand: 'Chưa có brand',
+        noStyle: 'Chưa có style',
+        noColors: 'Không có màu',
+        noSizes: 'Không có size',
+        active: 'đang hoạt động',
+        activeLabel: 'Hoạt động',
+        inactiveLabel: 'Tạm tắt',
+        na: 'N/A',
+        to: 'đến',
+      },
+      actions: {
+        importCsv: 'Import CSV',
+        createProduct: 'Tạo sản phẩm',
+        importPending: 'Flow import CSV sẽ được nối tiếp sau.',
+        stock: 'Stock',
+        view: 'Xem',
+        delete: 'Xóa',
+        confirmDelete: 'Bạn có chắc muốn xóa sản phẩm "{name}"?',
+        deleteSuccess: 'Đã xóa sản phẩm thành công',
+        deleteFailed: 'Xóa sản phẩm thất bại',
+        deletePending: 'Flow xóa sản phẩm "{name}" sẽ được nối tiếp sau.',
+      },
+      importDialog: {
+        title: 'Import sản phẩm từ CSV',
+        description: 'Upload file CSV, xem trước dữ liệu rồi import vào hệ thống.',
+        downloadTemplate: 'Tải template',
+        downloadCurrentData: 'Tải dữ liệu hiện tại',
+        clickToSelect: 'Bấm để chọn file CSV',
+        orDragDrop: 'hoặc kéo thả vào đây',
+        selectCsvFile: 'Vui lòng chọn file CSV',
+        preview: 'Xem trước',
+        previewFailed: 'Không thể xem trước file CSV',
+        import: 'Import',
+        importSuccess: 'Import sản phẩm thành công',
+        importFailed: 'Import sản phẩm thất bại',
+        products: 'Sản phẩm',
+        newProducts: 'Sản phẩm mới',
+        existingProducts: 'Sản phẩm cập nhật',
+        newTag: 'MỚI',
+        updateTag: 'CẬP NHẬT',
+        imported: 'Đã import',
+        failed: 'Lỗi',
+        errors: 'Danh sách lỗi',
+        done: 'Hoàn tất',
+      },
+      stockDialog: {
+        title: 'Cập nhật tồn kho',
+        description: 'Điều chỉnh tồn kho cho biến thể sản phẩm.',
+        addStock: 'Thêm kho',
+        subtractStock: 'Trừ kho',
+        color: 'Màu',
+        size: 'Kích thước',
+        quantity: 'Số lượng',
+        quantityPlaceholder: 'Nhập số lượng',
+        selectColor: 'Chọn màu',
+        selectSize: 'Chọn size',
+        validation: 'Vui lòng nhập đầy đủ thông tin tồn kho hợp lệ.',
+        updating: 'Đang cập nhật...',
+        updateFailed: 'Cập nhật tồn kho thất bại',
+        addSuccess: 'Đã thêm tồn kho thành công',
+        subtractSuccess: 'Đã trừ tồn kho thành công',
+      },
+      detail: {
+        loading: 'Đang tải chi tiết sản phẩm...',
+        loadError: 'Không thể tải chi tiết sản phẩm',
+        notFound: 'Không tìm thấy sản phẩm',
+        back: 'Quay lại biến thể sản phẩm',
+        active: 'Hoạt động',
+        inactive: 'Tạm tắt',
+        brand: 'Brand',
+        style: 'Style',
+        warehouse: 'Kho',
+        category: 'Danh mục',
+        print: 'In',
+        embroidery: 'Thêu',
+        created: 'Ngày tạo',
+        updated: 'Cập nhật',
+        editProduct: 'Chỉnh sửa sản phẩm',
+        totalVariants: 'Tổng biến thể',
+        totalStock: 'Tổng tồn kho',
+        priceRange: 'Khoảng giá',
+        colors: 'Màu',
+        sizes: 'Kích thước',
+        variantsTitle: 'Danh sách biến thể',
+        variantsCount: 'biến thể',
+        noData: 'N/A',
+        save: 'Lưu',
+        cancel: 'Hủy',
+        edit: 'Sửa',
+        delete: 'Xóa',
+        confirmDeleteVariant: 'Bạn có chắc muốn xóa biến thể {id}?',
+        deleteVariantSuccess: 'Đã xóa biến thể thành công',
+        deleteVariantFailed: 'Xóa biến thể thất bại',
+        deletePending: 'Luồng xóa biến thể {id} sẽ được nối tiếp sau.',
+        variantUpdated: 'Cập nhật biến thể thành công',
+        updateFailed: 'Cập nhật biến thể thất bại',
+        pricingSaved: 'Cập nhật bảng giá thành công',
+        viewPricing: 'Xem giá',
+        setPricing: 'Thiết lập giá',
+        pricing: {
+          title: 'Bảng giá theo tier',
+          noVariant: 'Chưa chọn biến thể',
+          readOnly: 'Chỉ xem',
+          production: 'Chi phí sản xuất',
+          shipping: 'Chi phí vận chuyển',
+          type: 'Loại giá',
+          close: 'Đóng',
+          cancel: 'Hủy',
+          saving: 'Đang lưu...',
+          save: 'Lưu thay đổi',
+          failed: 'Cập nhật bảng giá thất bại',
+        },
+        columns: {
+          variantId: 'Variant ID',
+          color: 'Màu',
+          size: 'Kích thước',
+          stock: 'Tồn kho',
+          supplierPrice: 'Giá NCC',
+          tierPricing: 'Bảng giá',
+          weight: 'Khối lượng',
+          dimensions: 'Kích thước',
+          status: 'Trạng thái',
+          actions: 'Thao tác',
+        },
+      },
+      createForm: {
+        title: 'Tạo sản phẩm',
+        description: 'Tạo sản phẩm mới và khai báo biến thể cùng bảng giá.',
+        productInfo: 'Thông tin sản phẩm',
+        variants: 'Biến thể',
+        pricing: 'Bảng giá',
+        productName: 'Tên sản phẩm',
+        style: 'Style',
+        brand: 'Brand',
+        warehouse: 'Kho',
+        productNamePlaceholder: 'vd. Unisex Heavy Cotton Tee',
+        stylePlaceholder: 'vd. G5000',
+        brandPlaceholder: 'vd. Gildan',
+        warehousePlaceholder: 'vd. Main Warehouse',
+        mockupUrl: 'Mockup URL',
+        category: 'Danh mục',
+        status: 'Trạng thái',
+        active: 'Hoạt động',
+        inactive: 'Tạm tắt',
+        addVariant: 'Thêm biến thể',
+        noVariantsYet: 'Chưa có biến thể nào. Hãy bấm thêm biến thể để bắt đầu.',
+        variant: 'Biến thể',
+        removeVariant: 'Xóa biến thể',
+        variantId: 'Variant ID',
+        variantIdPlaceholder: 'vd. G5000-BLK-S',
+        sku: 'SKU',
+        skuPlaceholder: 'vd. SKU-G5000-BLK-S',
+        color: 'Màu',
+        colorPlaceholder: 'vd. Black',
+        size: 'Kích thước',
+        sizePlaceholder: 'vd. S',
+        stock: 'Tồn kho',
+        supplierPrice: 'Giá NCC',
+        weight: 'Khối lượng (g)',
+        dimensions: 'Kích thước (D x R x C)',
+        addPrice: 'Thêm giá',
+        noPricesAdded: 'Chưa có giá nào',
+        tier: 'Tier',
+        priceType: 'Loại giá',
+        price: 'Giá',
+        cancel: 'Hủy',
+        create: 'Tạo sản phẩm',
+        creating: 'Đang tạo...',
+        productNameRequired: 'Tên sản phẩm là bắt buộc',
+        variantIdRequired: 'Variant ID là bắt buộc',
+        createSuccess: 'Tạo sản phẩm thành công',
+        createFailed: 'Tạo sản phẩm thất bại',
+      },
+    },
   },
   en: {
     language: {
@@ -1107,6 +1320,219 @@ const uiMessages = {
         desc: 'Descending',
       },
     },
+    productVariants: {
+      title: 'Product Variants',
+      count: 'products',
+      loading: 'Loading products...',
+      loadError: 'Unable to load products',
+      empty: 'No products match the current filters.',
+      tabs: {
+        embroidery: 'Embroidery',
+        print: 'Print',
+      },
+      columns: {
+        product: 'Product',
+        colors: 'Colors',
+        sizes: 'Sizes',
+        variants: 'Variants',
+        totalStock: 'Total Stock',
+        priceRange: 'Price Range',
+        status: 'Status',
+        actions: 'Actions',
+      },
+      filters: {
+        search: 'Search',
+        searchPlaceholder: 'Search by name, brand, style...',
+        style: 'Style',
+        stylePlaceholder: 'Filter by style...',
+        brand: 'Brand',
+        brandPlaceholder: 'Filter by brand...',
+        status: 'Status',
+        allStatus: 'All Status',
+        sortBy: 'Sort By',
+        newestFirst: 'Newest First',
+        oldestFirst: 'Oldest First',
+        nameAz: 'Name (A-Z)',
+        nameZa: 'Name (Z-A)',
+        brandAz: 'Brand (A-Z)',
+        brandZa: 'Brand (Z-A)',
+        clearFilters: 'Clear Filters',
+      },
+      status: {
+        noBrand: 'No brand',
+        noStyle: 'No style',
+        noColors: 'No colors',
+        noSizes: 'No sizes',
+        active: 'active',
+        activeLabel: 'Active',
+        inactiveLabel: 'Inactive',
+        na: 'N/A',
+        to: 'to',
+      },
+      actions: {
+        importCsv: 'Import CSV',
+        createProduct: 'Create Product',
+        importPending: 'CSV import flow will be connected next.',
+        stock: 'Stock',
+        view: 'View',
+        delete: 'Delete',
+        confirmDelete: 'Are you sure you want to delete product "{name}"?',
+        deleteSuccess: 'Product deleted successfully',
+        deleteFailed: 'Failed to delete product',
+        deletePending: 'Delete flow for "{name}" will be connected next.',
+      },
+      importDialog: {
+        title: 'Import products from CSV',
+        description: 'Upload a CSV file, preview the data, then import it.',
+        downloadTemplate: 'Download template',
+        downloadCurrentData: 'Download current data',
+        clickToSelect: 'Click to select a CSV file',
+        orDragDrop: 'or drag and drop it here',
+        selectCsvFile: 'Please select a CSV file',
+        preview: 'Preview',
+        previewFailed: 'Failed to preview CSV',
+        import: 'Import',
+        importSuccess: 'Products imported successfully',
+        importFailed: 'Failed to import products',
+        products: 'Products',
+        newProducts: 'New products',
+        existingProducts: 'Existing products',
+        newTag: 'NEW',
+        updateTag: 'UPDATE',
+        imported: 'Imported',
+        failed: 'Failed',
+        errors: 'Errors',
+        done: 'Done',
+      },
+      stockDialog: {
+        title: 'Update Stock',
+        description: 'Adjust inventory for a product variant.',
+        addStock: 'Add Stock',
+        subtractStock: 'Subtract Stock',
+        color: 'Color',
+        size: 'Size',
+        quantity: 'Quantity',
+        quantityPlaceholder: 'Enter quantity',
+        selectColor: 'Select color',
+        selectSize: 'Select size',
+        validation: 'Please provide valid stock information.',
+        updating: 'Updating...',
+        updateFailed: 'Failed to update stock',
+        addSuccess: 'Stock added successfully',
+        subtractSuccess: 'Stock subtracted successfully',
+      },
+      detail: {
+        loading: 'Loading product details...',
+        loadError: 'Failed to load product details',
+        notFound: 'Product not found',
+        back: 'Back to Product Variants',
+        active: 'Active',
+        inactive: 'Inactive',
+        brand: 'Brand',
+        style: 'Style',
+        warehouse: 'Warehouse',
+        category: 'Category',
+        print: 'Print',
+        embroidery: 'Embroidery',
+        created: 'Created',
+        updated: 'Updated',
+        editProduct: 'Edit Product',
+        totalVariants: 'Total Variants',
+        totalStock: 'Total Stock',
+        priceRange: 'Price Range',
+        colors: 'Colors',
+        sizes: 'Sizes',
+        variantsTitle: 'Variants',
+        variantsCount: 'variants',
+        noData: 'N/A',
+        save: 'Save',
+        cancel: 'Cancel',
+        edit: 'Edit',
+        delete: 'Delete',
+        confirmDeleteVariant: 'Are you sure you want to delete variant {id}?',
+        deleteVariantSuccess: 'Variant deleted successfully',
+        deleteVariantFailed: 'Failed to delete variant',
+        deletePending: 'Delete flow for variant {id} will be connected next.',
+        variantUpdated: 'Variant updated successfully',
+        updateFailed: 'Failed to update variant',
+        pricingSaved: 'Tier pricing updated successfully',
+        viewPricing: 'View Pricing',
+        setPricing: 'Set Pricing',
+        pricing: {
+          title: 'Tier Pricing',
+          noVariant: 'No variant selected',
+          readOnly: 'Read only',
+          production: 'Production Costs',
+          shipping: 'Shipping Costs',
+          type: 'Type',
+          close: 'Close',
+          cancel: 'Cancel',
+          saving: 'Saving...',
+          save: 'Save Changes',
+          failed: 'Failed to update tier pricing',
+        },
+        columns: {
+          variantId: 'Variant ID',
+          color: 'Color',
+          size: 'Size',
+          stock: 'Stock',
+          supplierPrice: 'Supplier Price',
+          tierPricing: 'Tier Pricing',
+          weight: 'Weight',
+          dimensions: 'Dimensions',
+          status: 'Status',
+          actions: 'Actions',
+        },
+      },
+      createForm: {
+        title: 'Create Product',
+        description: 'Create a new product with variants and pricing.',
+        productInfo: 'Product Information',
+        variants: 'Variants',
+        pricing: 'Pricing',
+        productName: 'Product Name',
+        style: 'Style',
+        brand: 'Brand',
+        warehouse: 'Warehouse',
+        productNamePlaceholder: 'e.g., Unisex Heavy Cotton Tee',
+        stylePlaceholder: 'e.g., G5000',
+        brandPlaceholder: 'e.g., Gildan',
+        warehousePlaceholder: 'e.g., Main Warehouse',
+        mockupUrl: 'Mockup URL',
+        category: 'Category',
+        status: 'Status',
+        active: 'Active',
+        inactive: 'Inactive',
+        addVariant: 'Add Variant',
+        noVariantsYet: 'No variants added yet. Click add variant to begin.',
+        variant: 'Variant',
+        removeVariant: 'Remove variant',
+        variantId: 'Variant ID',
+        variantIdPlaceholder: 'e.g., G5000-BLK-S',
+        sku: 'SKU',
+        skuPlaceholder: 'e.g., SKU-G5000-BLK-S',
+        color: 'Color',
+        colorPlaceholder: 'e.g., Black',
+        size: 'Size',
+        sizePlaceholder: 'e.g., S',
+        stock: 'Stock',
+        supplierPrice: 'Supplier Price',
+        weight: 'Weight (g)',
+        dimensions: 'Dimensions (L x W x H)',
+        addPrice: 'Add Price',
+        noPricesAdded: 'No prices added',
+        tier: 'Tier',
+        priceType: 'Price Type',
+        price: 'Price',
+        cancel: 'Cancel',
+        create: 'Create Product',
+        creating: 'Creating...',
+        productNameRequired: 'Product name is required',
+        variantIdRequired: 'Variant ID is required',
+        createSuccess: 'Product created successfully',
+        createFailed: 'Failed to create product',
+      },
+    },
   },
 } satisfies Record<AppLocale, {
   language: {
@@ -1612,6 +2038,219 @@ const uiMessages = {
     sortOrder: {
       asc: string
       desc: string
+    }
+  }
+  productVariants: {
+    title: string
+    count: string
+    loading: string
+    loadError: string
+    empty: string
+    tabs: {
+      embroidery: string
+      print: string
+    }
+    columns: {
+      product: string
+      colors: string
+      sizes: string
+      variants: string
+      totalStock: string
+      priceRange: string
+      status: string
+      actions: string
+    }
+    filters: {
+      search: string
+      searchPlaceholder: string
+      style: string
+      stylePlaceholder: string
+      brand: string
+      brandPlaceholder: string
+      status: string
+      allStatus: string
+      sortBy: string
+      newestFirst: string
+      oldestFirst: string
+      nameAz: string
+      nameZa: string
+      brandAz: string
+      brandZa: string
+      clearFilters: string
+    }
+    status: {
+      noBrand: string
+      noStyle: string
+      noColors: string
+      noSizes: string
+      active: string
+      activeLabel: string
+      inactiveLabel: string
+      na: string
+      to: string
+    }
+    actions: {
+      importCsv: string
+      createProduct: string
+      importPending: string
+      stock: string
+      view: string
+      delete: string
+      confirmDelete: string
+      deleteSuccess: string
+      deleteFailed: string
+      deletePending: string
+    }
+    importDialog: {
+      title: string
+      description: string
+      downloadTemplate: string
+      downloadCurrentData: string
+      clickToSelect: string
+      orDragDrop: string
+      selectCsvFile: string
+      preview: string
+      previewFailed: string
+      import: string
+      importSuccess: string
+      importFailed: string
+      products: string
+      newProducts: string
+      existingProducts: string
+      newTag: string
+      updateTag: string
+      imported: string
+      failed: string
+      errors: string
+      done: string
+    }
+    stockDialog: {
+      title: string
+      description: string
+      addStock: string
+      subtractStock: string
+      color: string
+      size: string
+      quantity: string
+      quantityPlaceholder: string
+      selectColor: string
+      selectSize: string
+      validation: string
+      updating: string
+      updateFailed: string
+      addSuccess: string
+      subtractSuccess: string
+    }
+    detail: {
+      loading: string
+      loadError: string
+      notFound: string
+      back: string
+      active: string
+      inactive: string
+      brand: string
+      style: string
+      warehouse: string
+      category: string
+      print: string
+      embroidery: string
+      created: string
+      updated: string
+      editProduct: string
+      totalVariants: string
+      totalStock: string
+      priceRange: string
+      colors: string
+      sizes: string
+      variantsTitle: string
+      variantsCount: string
+      noData: string
+      save: string
+      cancel: string
+      edit: string
+      delete: string
+      confirmDeleteVariant: string
+      deleteVariantSuccess: string
+      deleteVariantFailed: string
+      deletePending: string
+      variantUpdated: string
+      updateFailed: string
+      pricingSaved: string
+      viewPricing: string
+      setPricing: string
+      pricing: {
+        title: string
+        noVariant: string
+        readOnly: string
+        production: string
+        shipping: string
+        type: string
+        close: string
+        cancel: string
+        saving: string
+        save: string
+        failed: string
+      }
+      columns: {
+        variantId: string
+        color: string
+        size: string
+        stock: string
+        supplierPrice: string
+        tierPricing: string
+        weight: string
+        dimensions: string
+        status: string
+        actions: string
+      }
+    }
+    createForm: {
+      title: string
+      description: string
+      productInfo: string
+      variants: string
+      pricing: string
+      productName: string
+      style: string
+      brand: string
+      warehouse: string
+      productNamePlaceholder: string
+      stylePlaceholder: string
+      brandPlaceholder: string
+      warehousePlaceholder: string
+      mockupUrl: string
+      category: string
+      status: string
+      active: string
+      inactive: string
+      addVariant: string
+      noVariantsYet: string
+      variant: string
+      removeVariant: string
+      variantId: string
+      variantIdPlaceholder: string
+      sku: string
+      skuPlaceholder: string
+      color: string
+      colorPlaceholder: string
+      size: string
+      sizePlaceholder: string
+      stock: string
+      supplierPrice: string
+      weight: string
+      dimensions: string
+      addPrice: string
+      noPricesAdded: string
+      tier: string
+      priceType: string
+      price: string
+      cancel: string
+      create: string
+      creating: string
+      productNameRequired: string
+      variantIdRequired: string
+      createSuccess: string
+      createFailed: string
     }
   }
 }>
