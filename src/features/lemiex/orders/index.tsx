@@ -276,7 +276,8 @@ export function LemiexOrders() {
     useState<CreateOrderCategory>('embroidery')
 
   const selectedOrders = useMemo(
-    () => result.orders.filter((order) => selectedOrderIds.includes(order.id)),
+    () =>
+      result.orders.filter((order) => selectedOrderIds.includes(String(order.id))),
     [result.orders, selectedOrderIds]
   )
   const role = getUserRoleName(currentUser)
@@ -298,7 +299,7 @@ export function LemiexOrders() {
     [currentUser, ordersMessages, fulfillStatusOptions]
   )
   const currentOrderIds = useMemo(
-    () => result.orders.map((order) => order.id),
+    () => result.orders.map((order) => String(order.id)),
     [result.orders]
   )
 
@@ -348,7 +349,7 @@ export function LemiexOrders() {
     fetchOrderFulfillStatusOptions(state.tab)
       .then((options) => {
         if (!cancelled) {
-          setFulfillStatusOptions(options)
+          setFulfillStatusOptions(options.filter(Boolean) as SelectOption[])
         }
       })
       .catch(() => {
@@ -363,8 +364,8 @@ export function LemiexOrders() {
   }, [state.tab])
 
   useEffect(() => {
-    const currentIds = new Set(result.orders.map((order) => order.id))
-    setSelectedOrderIds((prev) => prev.filter((id) => currentIds.has(id)))
+    const currentIds = new Set(result.orders.map((order) => String(order.id)))
+    setSelectedOrderIds((prev) => prev.filter((id) => currentIds.has(String(id))))
   }, [result.orders])
 
   const handleTabChange = (tab: string) => {
@@ -416,10 +417,11 @@ export function LemiexOrders() {
   }
 
   const handleToggleOrder = (orderId: number | string) => {
+    const normalizedOrderId = String(orderId)
     setSelectedOrderIds((prev) =>
-      prev.includes(orderId)
-        ? prev.filter((id) => id !== orderId)
-        : [...prev, orderId]
+      prev.includes(normalizedOrderId)
+        ? prev.filter((id) => id !== normalizedOrderId)
+        : [...prev, normalizedOrderId]
     )
   }
 
@@ -429,7 +431,7 @@ export function LemiexOrders() {
         return Array.from(new Set([...prev, ...currentOrderIds]))
       }
 
-      return prev.filter((id) => !currentOrderIds.includes(id))
+      return prev.filter((id) => !currentOrderIds.includes(String(id)))
     })
   }
 

@@ -657,13 +657,22 @@ export function ShirtOrderForm({ mode }: ShirtOrderFormProps) {
 
         if (!active) return
 
-        setStores(storesData)
-        setFulfillmentPriorities(prioritiesData)
-        setEmbroideryTypes(embroideryData)
-        setShippingMethods(shippingMethodsData)
+        const nextStores = storesData.filter(Boolean) as StoreOption[]
+        const nextFulfillmentPriorities = prioritiesData.filter(
+          Boolean
+        ) as FulfillmentPriorityOption[]
+        const nextEmbroideryTypes = embroideryData.filter(Boolean) as SelectOption[]
+        const nextShippingMethods = shippingMethodsData.filter(
+          Boolean
+        ) as ShippingMethodOption[]
 
-        if (storesData.length === 1 && storesData[0]?.api_key && !form.getValues('api_key')) {
-          setValue('api_key', storesData[0].api_key, { shouldDirty: true })
+        setStores(nextStores)
+        setFulfillmentPriorities(nextFulfillmentPriorities)
+        setEmbroideryTypes(nextEmbroideryTypes)
+        setShippingMethods(nextShippingMethods)
+
+        if (nextStores.length === 1 && nextStores[0]?.api_key && !form.getValues('api_key')) {
+          setValue('api_key', nextStores[0].api_key, { shouldDirty: true })
         }
       } catch (error) {
         if (!active) return

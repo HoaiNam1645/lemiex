@@ -16,7 +16,6 @@ export type ProductVariantSummary = {
   length?: number | null
   width?: number | null
   height?: number | null
-  active?: boolean | null
   tier_pricing?: Record<string, Record<string, number | string | null>> | null
 }
 
@@ -124,6 +123,7 @@ export type ProductMetadata = {
 }
 
 export type ProductPricePayload = {
+  id?: number
   tier_id: number
   type: string
   price: number

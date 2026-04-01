@@ -137,7 +137,7 @@ export function OrderFulfillStatusCell({
       toast.success(
         typeof response.message === 'string'
           ? response.message
-          : messages.common.cancel
+          : ordersMessages.editForm.cancel
       )
       onUpdated()
     } catch (error) {
@@ -172,7 +172,7 @@ export function OrderFulfillStatusCell({
             onClick={() => void handleSellerCancel()}
             disabled={pending}
           >
-            {messages.common.cancel}
+            {ordersMessages.editForm.cancel}
           </Button>
         ) : null}
       </div>
@@ -224,7 +224,7 @@ export function OrderFulfillStatusCell({
           onClick={() => void handleSellerCancel()}
           disabled={pending}
         >
-          {messages.common.cancel}
+          {ordersMessages.editForm.cancel}
         </Button>
       ) : null}
     </div>

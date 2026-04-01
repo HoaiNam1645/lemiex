@@ -166,7 +166,8 @@ export function OrdersFilters({
       if (stylesResult.status === 'fulfilled') setStyles(stylesResult.value)
       if (sellersResult.status === 'fulfilled') setSellers(sellersResult.value)
       if (statusesResult.status === 'fulfilled' && statusesResult.value.length > 0) {
-        setFulfillStatuses(statusesResult.value)
+        const nextFulfillStatuses = statusesResult.value.filter(Boolean) as SelectOption[]
+        setFulfillStatuses(nextFulfillStatuses)
       }
       if (embTypesResult.status === 'fulfilled') {
         setEmbroideryTypes(embTypesResult.value)

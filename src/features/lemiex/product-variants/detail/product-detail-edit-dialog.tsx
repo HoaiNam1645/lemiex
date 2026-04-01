@@ -144,7 +144,10 @@ export function ProductDetailEditDialog({
 
   const [form, setForm] = useState<FormState>(defaultForm)
   const [loading, setLoading] = useState(false)
-  const [filterOptions, setFilterOptions] = useState({ brands: [], styles: [] })
+  const [filterOptions, setFilterOptions] = useState<{
+    brands: string[]
+    styles: string[]
+  }>({ brands: [], styles: [] })
 
   useEffect(() => {
     if (!product) return

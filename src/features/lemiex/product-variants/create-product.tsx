@@ -33,8 +33,11 @@ import {
   type ProductPricePayload,
 } from '@/services/products/api'
 
-type LocalPrice = ProductPricePayload & { id: number }
-type LocalVariant = CreateProductVariantPayload & { id: number; prices: LocalPrice[] }
+type LocalPrice = Omit<ProductPricePayload, 'id'> & { id: number }
+type LocalVariant = Omit<CreateProductVariantPayload, 'prices'> & {
+  id: number
+  prices: LocalPrice[]
+}
 
 function cardClassName() {
   return 'rounded-[6px] border-border/80 shadow-none'

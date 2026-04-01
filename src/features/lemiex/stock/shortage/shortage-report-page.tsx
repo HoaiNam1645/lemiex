@@ -137,6 +137,8 @@ const fallbackMessages = {
   },
 }
 
+type ShortagePageMessages = typeof fallbackMessages
+
 function parseState(searchParams: URLSearchParams) {
   return {
     page: Number(searchParams.get('page') || 1),
@@ -312,7 +314,7 @@ function renderExpandedContent(
 
 export function LemiexShortageReportPage() {
   const { messages } = useI18n()
-  const m = messages.stock?.shortage || fallbackMessages
+  const m = (messages.stock?.shortage || fallbackMessages) as ShortagePageMessages
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()

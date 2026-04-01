@@ -170,10 +170,11 @@ export function LemiexUserFormPage({
 
   useEffect(() => {
     if (!isEdit || !id) return
+    const userId = id
     let active = true
     async function loadUser() {
       try {
-        const user = await fetchLemiexUserById(id)
+        const user = await fetchLemiexUserById(userId)
         if (!active) return
         setFormData({
           email: user.email || '',

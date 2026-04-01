@@ -176,7 +176,7 @@ export function OrderDetailPage({ orderId }: OrderDetailPageProps) {
     const run = async () => {
       try {
         const options = await fetchOrderFulfillStatusOptions('embroidery')
-        if (active) setStatusOptions(options)
+        if (active) setStatusOptions(options.filter(Boolean) as SelectOption[])
       } catch {
         if (active) setStatusOptions(FALLBACK_FULFILL_STATUS_OPTIONS)
       }
@@ -283,18 +283,16 @@ export function OrderDetailPage({ orderId }: OrderDetailPageProps) {
   }
 
   const handleDownloadAllQr = async () => {
-    if (qrCodes.length === 0) return
+    if (qrCodes.length === 0 || !order) return
 
     try {
       setDownloadingAllQr(true)
       let successCount = 0
+      const orderIdentifier = order.order_stt || order.id
 
       for (const qr of qrCodes) {
         try {
-          await downloadQrFile(
-            qr.url,
-            `order_${order.order_stt || order.id}_qr_${successCount + 1}.png`
-          )
+          await downloadQrFile(qr.url, `order_${orderIdentifier}_qr_${successCount + 1}.png`)
           successCount += 1
           await new Promise((resolve) => window.setTimeout(resolve, 350))
         } catch {

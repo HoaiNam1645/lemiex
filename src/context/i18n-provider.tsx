@@ -470,6 +470,7 @@ const uiMessages = {
         pdfUrl: 'URL PDF',
         embUrl: 'URL EMB',
         pesUrl: 'URL PES',
+        cancel: 'Hủy',
         saveChanges: 'Lưu thay đổi',
         saving: 'Đang lưu...',
         saveSuccess: 'Cập nhật đơn hàng thành công',
@@ -2221,6 +2222,7 @@ const uiMessages = {
         pdfUrl: 'PDF URL',
         embUrl: 'EMB URL',
         pesUrl: 'PES URL',
+        cancel: 'Cancel',
         saveChanges: 'Save Changes',
         saving: 'Saving...',
         saveSuccess: 'Order updated successfully',
@@ -3618,6 +3620,7 @@ const uiMessages = {
     buyLabelFailed: string
     labelCreated: string
     labelJobsDispatched: string
+    createOrder: string
     confirmBuyLabel: string
     confirmBuyLabelDesc: string
     confirmPurchase: string
@@ -3734,6 +3737,29 @@ const uiMessages = {
       sellerCancelFailed: string
       videos: string
       noData: string
+    }
+    createOrderDialog: {
+      storeRequiredTitle: string
+      storeRequiredDesc: string
+      categoryTitle: string
+      categoryDesc: string
+      embroideryTitle: string
+      embroideryDesc: string
+      tumblerTitle: string
+      tumblerDesc: string
+      typeTitle: string
+      typeDescEmbroidery: string
+      typeDescTumbler: string
+      noDesignTitle: string
+      noDesignDesc: string
+      labelShipTitle: string
+      labelShipDesc: string
+      sellerShipTitle: string
+      sellerShipDesc: string
+      tumblerLabelShipTitle: string
+      tumblerLabelShipDesc: string
+      tumblerSellerShipTitle: string
+      tumblerSellerShipDesc: string
     }
     createForm: {
       labelShipTitle: string
@@ -3929,6 +3955,7 @@ const uiMessages = {
       pdfUrl: string
       embUrl: string
       pesUrl: string
+      cancel: string
       saveChanges: string
       saving: string
       saveSuccess: string

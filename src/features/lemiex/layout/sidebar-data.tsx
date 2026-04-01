@@ -397,9 +397,24 @@ function filterNavItem(role: LemiexRole, item: LemiexNavItem): LemiexNavItem | n
   }
 }
 
-export function getLemiexRole(role: LemiexRole | LemiexRole[] | null | undefined): LemiexRole {
+type LemiexRoleInput =
+  | LemiexRole
+  | string
+  | { name?: string | null; display_name?: string | null }
+  | null
+  | undefined
+
+export function getLemiexRole(
+  role: LemiexRoleInput | LemiexRoleInput[]
+): LemiexRole {
   const resolvedRole = Array.isArray(role) ? role[0] : role
-  const normalizedRole = normalizeLemiexRole(resolvedRole)
+  const roleName =
+    typeof resolvedRole === 'string'
+      ? resolvedRole
+      : resolvedRole && typeof resolvedRole === 'object'
+        ? resolvedRole.name
+        : null
+  const normalizedRole = normalizeLemiexRole(roleName)
 
   if (!normalizedRole) return 'Admin'
   return normalizedRole

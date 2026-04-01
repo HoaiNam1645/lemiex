@@ -5,6 +5,7 @@ export type ShortageFilters = {
   pending_reason: string
   order_id: string
   variant_id: string
+  style?: string
   date_from: string
   date_to: string
   sort_by: string

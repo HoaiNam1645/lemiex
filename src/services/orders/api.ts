@@ -397,7 +397,7 @@ function mapListOptions(
 
       return null
     })
-    .filter((item): item is SelectOption => Boolean(item))
+    .filter(Boolean) as SelectOption[]
 }
 
 export async function fetchOrderFulfillStatusOptions(category: string) {
@@ -424,7 +424,7 @@ export async function fetchOrderFulfillStatusOptions(category: string) {
             : Number(record.count || 0),
       }
     })
-    .filter((item): item is SelectOption => Boolean(item))
+    .filter(Boolean) as SelectOption[]
 }
 
 export async function fetchOrderEmbroideryTypeOptions() {
@@ -499,7 +499,7 @@ export async function fetchStores() {
           typeof record.api_key === 'string' ? record.api_key : null,
       } satisfies StoreOption
     })
-    .filter((item): item is StoreOption => Boolean(item))
+    .filter(Boolean) as StoreOption[]
 }
 
 export async function fetchFulfillmentPriorities() {
@@ -532,7 +532,7 @@ export async function fetchFulfillmentPriorities() {
           typeof record.description === 'string' ? record.description : '',
       } satisfies FulfillmentPriorityOption
     })
-    .filter((item): item is FulfillmentPriorityOption => Boolean(item))
+    .filter(Boolean) as FulfillmentPriorityOption[]
 }
 
 export async function fetchEmbroideryTypesMetadata() {
@@ -558,7 +558,7 @@ export async function fetchEmbroideryTypesMetadata() {
       if (!value || value === 'standard') return null
       return { value, label } satisfies SelectOption
     })
-    .filter((item): item is SelectOption => Boolean(item))
+    .filter(Boolean) as SelectOption[]
 
   return [standardOption, ...apiTypes]
 }
@@ -585,7 +585,7 @@ export async function fetchShippingMethods() {
           typeof record.description === 'string' ? record.description : '',
       } satisfies ShippingMethodOption
     })
-    .filter((item): item is ShippingMethodOption => Boolean(item))
+    .filter(Boolean) as ShippingMethodOption[]
 }
 
 export async function fetchProducts() {

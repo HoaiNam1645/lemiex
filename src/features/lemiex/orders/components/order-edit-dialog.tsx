@@ -724,7 +724,7 @@ export function OrderEditDialog({
             className='rounded-[6px]'
             onClick={() => onOpenChange(false)}
           >
-            {messages.cancel}
+            {editMessages.cancel}
           </Button>
           <Button
             type='button'
