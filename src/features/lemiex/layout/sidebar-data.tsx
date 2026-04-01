@@ -1,9 +1,6 @@
 import * as React from 'react'
 import {
-  Boxes,
-  BrushCleaning,
   CalendarClock,
-  ChartColumnBig,
   FileClock,
   LayoutDashboard,
   Package,
@@ -13,7 +10,6 @@ import {
   Store,
   Ticket,
   Users,
-  Video,
   Wallet,
   Warehouse,
 } from 'lucide-react'
@@ -264,8 +260,12 @@ function createLemiexNavGroups(locale: AppLocale): NavGroup[] {
             },
           ],
         },
+      ],
+    },
+    {
+      title: labels.supportTools,
+      items: [
         {
-          title: labels.supportTools,
           title: labels.wallets,
           icon: Wallet,
           items: [
