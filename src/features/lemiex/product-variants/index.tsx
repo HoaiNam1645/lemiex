@@ -211,7 +211,6 @@ export function LemiexProductVariants() {
 
       <Main
         fluid
-        fixed
         className='flex flex-1 flex-col gap-4 px-4 py-6 sm:px-5 lg:px-6 xl:px-7'
       >
         <div className='space-y-6'>
