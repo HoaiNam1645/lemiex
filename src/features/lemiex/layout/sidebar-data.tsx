@@ -196,11 +196,6 @@ function createLemiexNavGroups(locale: AppLocale): NavGroup[] {
           icon: ReceiptText,
         },
         {
-          title: labels.designs,
-          url: '/lemiex/designs',
-          icon: BrushCleaning,
-        },
-        {
           title: labels.products,
           icon: Package,
           items: [
@@ -234,16 +229,8 @@ function createLemiexNavGroups(locale: AppLocale): NavGroup[] {
           icon: Warehouse,
           items: [
             {
-              title: labels.stockDashboard,
-              url: '/lemiex/stock/dashboard',
-            },
-            {
               title: labels.manageStock,
               url: '/lemiex/stock/manage',
-            },
-            {
-              title: labels.productions,
-              url: '/lemiex/stock/productions',
             },
             {
               title: labels.shortageReport,
@@ -278,26 +265,7 @@ function createLemiexNavGroups(locale: AppLocale): NavGroup[] {
           ],
         },
         {
-          title: labels.embroideryProgress,
-          url: '/lemiex/embroidery-progress',
-          icon: ChartColumnBig,
-        },
-      ],
-    },
-    {
-      title: labels.supportTools,
-      items: [
-        {
-          title: labels.trackings,
-          url: '/lemiex/trackings',
-          icon: Radar,
-        },
-        {
-          title: labels.videos,
-          url: '/lemiex/videos',
-          icon: Video,
-        },
-        {
+          title: labels.supportTools,
           title: labels.wallets,
           icon: Wallet,
           items: [
@@ -308,18 +276,6 @@ function createLemiexNavGroups(locale: AppLocale): NavGroup[] {
             {
               title: labels.pendingFund,
               url: '/lemiex/wallets/pending-fund',
-            },
-            {
-              title: labels.refunds,
-              url: '/lemiex/wallets/refunds',
-            },
-            {
-              title: labels.surcharge,
-              url: '/lemiex/wallets/surcharge',
-            },
-            {
-              title: labels.debits,
-              url: '/lemiex/wallets/debits',
             },
           ],
         },
@@ -341,16 +297,7 @@ function createLemiexNavGroups(locale: AppLocale): NavGroup[] {
               title: labels.users,
               url: '/lemiex/systems/users',
             },
-            {
-              title: labels.permissions,
-              url: '/lemiex/systems/permissions',
-            },
           ],
-        },
-        {
-          title: labels.tiers,
-          url: '/lemiex/tiers',
-          icon: Boxes,
         },
       ],
     },

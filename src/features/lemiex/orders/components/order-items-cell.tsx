@@ -261,8 +261,8 @@ function OrderItemsCellComponent({ order, user }: OrderItemsCellProps) {
                     <span className='inline-flex size-6 shrink-0 items-center justify-center rounded-[6px] bg-primary/10 text-xs font-semibold text-primary'>
                       {index + 1}
                     </span>
-                    <div className='min-w-0'>
-                      <div className='line-clamp-1 text-sm font-semibold'>
+                    <div className='min-w-0 max-w-[260px] sm:max-w-[320px]'>
+                      <div className='truncate text-sm font-semibold'>
                         {item.product_name || ordersMessages.status.unnamedItem}
                       </div>
                       <div className='text-xs text-muted-foreground'>
@@ -299,8 +299,8 @@ function OrderItemsCellComponent({ order, user }: OrderItemsCellProps) {
                   <span className='inline-flex size-6 shrink-0 items-center justify-center rounded-[6px] bg-primary/10 text-xs font-semibold text-primary'>
                     {index + 1}
                   </span>
-                  <div className='min-w-0'>
-                      <div className='line-clamp-2 text-sm font-semibold'>
+                  <div className='min-w-0 max-w-[260px] sm:max-w-[320px]'>
+                      <div className='truncate text-sm font-semibold'>
                         {item.product_name || ordersMessages.status.unnamedItem}
                       </div>
                       <div className='text-xs text-muted-foreground'>
