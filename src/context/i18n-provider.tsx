@@ -769,6 +769,993 @@ const uiMessages = {
         createFailed: 'Tạo sản phẩm thất bại',
       },
     },
+    storesPage: {
+      title: 'Quản lý cửa hàng',
+      subtitle: 'Quản lý toàn bộ cửa hàng',
+      totalStores: 'cửa hàng',
+      addStore: 'Thêm cửa hàng',
+      searchPlaceholder: 'Tìm theo tên cửa hàng, username hoặc email...',
+      allStatus: 'Tất cả trạng thái',
+      loading: 'Đang tải cửa hàng...',
+      noStores: 'Không tìm thấy cửa hàng',
+      noStoresAvailable: 'Chưa có cửa hàng nào',
+      failedToLoad: 'Không thể tải danh sách cửa hàng',
+      columns: {
+        id: 'ID',
+        user: 'Người dùng',
+        storeName: 'Tên cửa hàng',
+        status: 'Trạng thái',
+        createdAt: 'Ngày tạo',
+        actions: 'Thao tác',
+      },
+      status: {
+        active: 'Active',
+        unconfirmed: 'Unconfirmed',
+        banned: 'Banned',
+      },
+      dialog: {
+        createTitle: 'Thêm cửa hàng mới',
+        createSubtitle: 'Tạo cửa hàng mới cho seller',
+        editTitle: 'Chỉnh sửa cửa hàng',
+        editSubtitle: 'Cập nhật thông tin cửa hàng',
+        loadingUsers: 'Đang tải danh sách người dùng...',
+        loadingStore: 'Đang tải dữ liệu cửa hàng...',
+        user: 'Người dùng (Seller)',
+        selectUser: 'Chọn người dùng',
+        storeName: 'Tên cửa hàng',
+        enterStoreName: 'Nhập tên cửa hàng',
+        apiKey: 'API Key',
+        status: 'Trạng thái',
+        cancel: 'Hủy',
+        create: 'Tạo cửa hàng',
+        creating: 'Đang tạo...',
+        update: 'Cập nhật cửa hàng',
+        updating: 'Đang cập nhật...',
+        onlySelf: 'Bạn chỉ có thể tạo cửa hàng cho chính mình',
+        onlyAdmin: 'Chỉ Admin mới có thể thay đổi người sở hữu cửa hàng',
+        statusHint: 'Thao tác này sẽ cập nhật trạng thái người dùng',
+        apiKeyHint: 'API key được tạo tự động. Bấm làm mới để tạo key mới.',
+        apiKeyEditHint: 'Bấm làm mới để tạo API key mới',
+        refreshKey: 'Tạo API key mới',
+        successCreate: 'Tạo cửa hàng thành công!',
+        successUpdate: 'Cập nhật cửa hàng thành công!',
+        failedCreate: 'Tạo cửa hàng thất bại. Vui lòng thử lại.',
+        failedUpdate: 'Cập nhật cửa hàng thất bại. Vui lòng thử lại.',
+        failedLoadUsers: 'Không thể tải danh sách người dùng. Vui lòng thử lại.',
+        failedLoadStore: 'Không thể tải dữ liệu cửa hàng. Vui lòng thử lại.',
+        validation: {
+          requiredUser: 'Vui lòng chọn người dùng',
+          requiredName: 'Tên cửa hàng là bắt buộc',
+          requiredApiKey: 'API Key là bắt buộc',
+        },
+        active: 'Active',
+        unconfirmed: 'Unconfirmed',
+        banned: 'Banned',
+      },
+    },
+    usersPage: {
+      title: 'Quản lý người dùng',
+      addFund: 'Nạp tiền',
+      addNew: 'Thêm người dùng',
+      backToList: 'Quay lại danh sách',
+      backToDetail: 'Quay lại chi tiết',
+      createTitle: 'Thêm người dùng',
+      editTitle: 'Chỉnh sửa người dùng',
+      viewTitle: 'Chi tiết người dùng',
+      accountInfo: 'Thông tin tài khoản',
+      userDetails: 'Thông tin người dùng',
+      integrationSettings: 'Thiết lập tích hợp',
+      debitSettings: 'Thiết lập công nợ',
+      additionalOptions: 'Tùy chọn thêm',
+      username: 'Username',
+      email: 'Email',
+      role: 'Vai trò',
+      statusLabel: 'Trạng thái',
+      registrationDate: 'Ngày đăng ký',
+      firstName: 'Tên',
+      lastName: 'Họ',
+      phone: 'Số điện thoại',
+      dob: 'Ngày sinh',
+      address: 'Địa chỉ',
+      webhookUrl: 'Webhook URL',
+      telegramId: 'Telegram ID',
+      apiKey: 'API Key',
+      maxDebit: 'Công nợ tối đa',
+      maxDateDebit: 'Số ngày công nợ tối đa',
+      minDateDebit: 'Số ngày công nợ tối thiểu',
+      balanceLabel: 'Số dư',
+      supportUs: 'Support Us',
+      privateSeller: 'Private Seller',
+      days: 'ngày',
+      yes: 'Có',
+      no: 'Không',
+      filters: {
+        search: 'Tìm theo tên, email, username...',
+        allStatus: 'Tất cả trạng thái',
+        allRoles: 'Tất cả vai trò',
+        allTiers: 'Tất cả tier',
+      },
+      status: {
+        active: 'Hoạt động',
+        unconfirmed: 'Chưa xác nhận',
+        banned: 'Đã khóa',
+      },
+      columns: {
+        username: 'Username',
+        fullName: 'Họ tên',
+        role: 'Vai trò',
+        email: 'Email',
+        balance: 'Số dư',
+        tier: 'Tier',
+        registrationDate: 'Ngày đăng ký',
+        status: 'Trạng thái',
+        actions: 'Thao tác',
+      },
+      form: {
+        accountInfo: 'Thông tin tài khoản',
+        userDetails: 'Thông tin người dùng',
+        integrationSettings: 'Thiết lập tích hợp',
+        debitSettings: 'Thiết lập công nợ',
+        additionalOptions: 'Tùy chọn thêm',
+        email: 'Email',
+        username: 'Username',
+        password: 'Mật khẩu',
+        confirmPassword: 'Xác nhận mật khẩu',
+        newPassword: 'Mật khẩu mới',
+        confirmNewPassword: 'Xác nhận mật khẩu mới',
+        leaveBlank: 'Để trống nếu muốn giữ mật khẩu hiện tại',
+        role: 'Vai trò',
+        status: 'Trạng thái',
+        firstName: 'Tên',
+        lastName: 'Họ',
+        phone: 'Số điện thoại',
+        dob: 'Ngày sinh',
+        address: 'Địa chỉ',
+        webhookUrl: 'Webhook URL',
+        telegramId: 'Telegram ID',
+        apiKey: 'API Key',
+        maxDebit: 'Công nợ tối đa',
+        maxDateDebit: 'Số ngày công nợ tối đa',
+        minDateDebit: 'Số ngày công nợ tối thiểu',
+        supportUs: 'Support Us',
+        yes: 'Có',
+        no: 'Không',
+        optional: '(không bắt buộc)',
+        loadingRoles: 'Đang tải vai trò...',
+        noRoles: 'Không có vai trò',
+        submit: 'Tạo người dùng',
+        update: 'Cập nhật người dùng',
+        cancel: 'Hủy',
+      },
+      addFundModal: {
+        title: 'Nạp tiền cho seller',
+        selectSeller: 'Chọn seller',
+        loadingSellers: 'Đang tải seller...',
+        selectPlaceholder: '-- Chọn seller --',
+        currentBalance: 'Số dư hiện tại',
+        type: 'Loại',
+        deposit: 'Nạp tiền (+)',
+        withdraw: 'Trừ tiền (-)',
+        amount: 'Số tiền',
+        enterAmount: 'Nhập số tiền',
+        note: 'Ghi chú',
+        notePlaceholder: 'VD: Nạp tiền hàng tháng',
+        newBalance: 'Số dư mới',
+        cancel: 'Hủy',
+        submit: 'Xác nhận',
+        selectSellerRequired: 'Vui lòng chọn seller',
+        invalidAmount: 'Vui lòng nhập số tiền hợp lệ',
+        fundFailed: 'Nạp tiền thất bại',
+        fundSuccess:
+          'Đã {action} ${amount} {direction} {user}. Số dư mới: ${balance}',
+      },
+      tiers: {
+        silver: 'Silver',
+        gold: 'Gold',
+        platinum: 'Platinum',
+        diamond: 'Diamond',
+      },
+      roles: {
+        admin: 'Admin',
+        seller: 'Seller',
+        user: 'User',
+        supplier: 'Supplier',
+        staff: 'Staff',
+        support: 'Support',
+        designer: 'Designer',
+        finance: 'Finance',
+      },
+      notFound: 'Không tìm thấy người dùng',
+      loadFailed: 'Không thể tải thông tin người dùng',
+      deleteConfirm: 'Bạn có chắc muốn xóa người dùng này không?',
+      deleteSuccess: 'Xóa người dùng thành công',
+      deleteFailed: 'Xóa người dùng thất bại',
+      createSuccess: 'Tạo người dùng thành công!',
+      updateSuccess: 'Cập nhật người dùng thành công!',
+      loading: 'Đang tải...',
+      deleteTitle: 'Xóa',
+      error: 'Có lỗi xảy ra',
+      na: 'N/A',
+    },
+    staffReportPage: {
+      title: 'Báo cáo hiệu suất nhân sự',
+      subtitle: 'Theo dõi hiệu suất xử lý công việc của nhân sự',
+      filters: {
+        dateFrom: 'Từ ngày',
+        dateTo: 'Đến ngày',
+        staffMember: 'Nhân sự',
+        allStaff: 'Tất cả nhân sự',
+        apply: 'Áp dụng bộ lọc',
+        refresh: 'Làm mới dữ liệu',
+      },
+      summary: {
+        title: 'Tổng quan hiệu suất nhân sự',
+        staffName: 'Tên nhân sự',
+        username: 'Username',
+        itemsProcessed: 'Số mục đã xử lý',
+        contribution: 'Tỷ lệ đóng góp',
+        share: 'Tỷ trọng',
+        noData: 'Không có dữ liệu hiệu suất trong khoảng thời gian đã chọn.',
+        total: 'Tổng',
+        items: 'mục',
+      },
+      details: {
+        title: 'Chi tiết hoạt động xử lý',
+        staffName: 'Tên nhân sự',
+        username: 'Username',
+        orderItem: 'Đơn hàng / Item',
+        order: 'Đơn',
+        item: 'Item',
+        metaKey: 'Meta Key',
+        processedAt: 'Thời gian xử lý',
+        noData: 'Không có dữ liệu hoạt động.',
+      },
+      loading: 'Đang tải dữ liệu báo cáo...',
+      failedLoadList: 'Không thể tải danh sách nhân sự',
+      failedLoadReport: 'Không thể tải dữ liệu báo cáo',
+    },
+    attendancesPage: {
+      title: 'Quản lý chấm công',
+      subtitle: 'Theo dõi giờ làm việc và log chấm công của nhân viên',
+      importBtn: 'Import file .txt',
+      importing: 'Đang import...',
+      filters: {
+        employeeName: 'Tên nhân viên',
+        searchPlaceholder: 'Tìm theo tên...',
+        customRange: 'Khoảng tùy chỉnh',
+        from: 'Từ',
+        to: 'Đến',
+        date: 'Ngày cụ thể',
+        month: 'Tháng',
+        clear: 'Xóa bộ lọc',
+      },
+      columns: {
+        id: 'ID',
+        employeeName: 'Tên nhân viên',
+        totalDays: 'Tổng ngày',
+        week: 'Tuần',
+        month: 'Tháng',
+        year: 'Năm',
+      },
+      days: 'ngày',
+      logs: {
+        show: 'Hiển thị',
+        entries: 'dòng',
+        showing: 'Đang hiển thị',
+        of: 'trên',
+        records: 'bản ghi',
+        noRecords: 'Không có bản ghi',
+        date: 'Ngày',
+        checkIn: 'Check In',
+        checkOut: 'Check Out',
+        totalWork: 'Tổng giờ',
+        loading: 'Đang tải...',
+        noRecordsFound: 'Không tìm thấy bản ghi',
+        completeMissing: 'Cập nhật',
+        previous: 'Trước',
+        next: 'Sau',
+        pageOf: 'Trang {current} / {total}',
+      },
+      editModal: {
+        title: 'Hoàn thiện log chấm công thiếu',
+        employee: 'Nhân viên',
+        workDate: 'Ngày làm việc',
+        existingTime: 'Thời gian hiện có',
+        missingType: 'Loại thiếu',
+        checkIn: 'Check In',
+        checkOut: 'Check Out',
+        time: 'Thời gian',
+        cancel: 'Hủy',
+        save: 'Lưu',
+        saving: 'Đang lưu...',
+        validation: {
+          timeRequired: 'Vui lòng chọn thời gian',
+        },
+      },
+      messages: {
+        failedLoadData: 'Không thể tải dữ liệu chấm công',
+        failedLoadLogs: 'Không thể tải log người dùng',
+        importSuccess: 'Import thành công',
+        importFailed: 'Import thất bại',
+        noRecords: 'Không có dữ liệu chấm công.',
+        updateSuccess: 'Cập nhật chấm công thành công',
+        updateFailed: 'Cập nhật chấm công thất bại',
+      },
+    },
+    payrollPage: {
+      title: 'Báo cáo lương',
+      subtitle: 'Theo dõi bảng lương cho {period} với {count} nhân sự',
+      setRate: 'Thiết lập lương',
+      rewardsPenalties: 'Thưởng / Phạt',
+      month: 'Tháng',
+      customRange: 'Khoảng tùy chỉnh',
+      from: 'Từ',
+      to: 'Đến',
+      totalHours: 'Tổng giờ',
+      totalSalary: 'Tổng lương',
+      netTotal: 'Lương net',
+      companyTaxTotal: 'Thuế công ty',
+      missingRate: 'Thiếu mức lương',
+      staffs: 'nhân sự',
+      noEmployees: 'Không có nhân viên nào',
+      employee: 'Nhân viên',
+      rateHr: 'Rate/Hr',
+      hours: 'Giờ',
+      adjustments: 'Điều chỉnh',
+      grossSalary: 'Gross',
+      netSalary: 'Net',
+      companyTax: 'Thuế Cty',
+      totalSalaryCol: 'Tổng',
+      actions: 'Thao tác',
+      edit: 'Sửa',
+      log: 'Log',
+      view: 'Xem',
+      clickToEdit: 'Bấm để sửa',
+      save: 'Lưu',
+      cancel: 'Hủy',
+      close: 'Đóng',
+      loading: 'Đang tải bảng lương...',
+      selectEmployee: 'Vui lòng chọn ít nhất một nhân viên',
+      selectTierOrRate: 'Vui lòng chọn tier hoặc nhập mức lương tùy chỉnh',
+      fillTypeAmount: 'Vui lòng nhập loại và số tiền',
+      rateSetSuccess: 'Thiết lập thành công {success}/{total} mức lương',
+      failedSetRate: 'Thiết lập mức lương thất bại',
+      rateUpdated: 'Cập nhật mức lương thành công',
+      failedUpdateRate: 'Cập nhật mức lương thất bại',
+      adjustmentSuccess: 'Tạo thành công {success}/{total} điều chỉnh',
+      failedAdjustment: 'Tạo điều chỉnh thất bại',
+      failedLoadPayroll: 'Không thể tải dữ liệu bảng lương',
+      fieldUpdated: 'Cập nhật thành công',
+      failedUpdate: 'Cập nhật thất bại',
+      setRateModal: {
+        title: 'Thiết lập mức lương',
+        selectEmployees: 'Chọn nhân viên',
+        selectAll: 'Chọn tất cả',
+        selected: 'đã chọn',
+        selectTier: 'Chọn tier',
+        or: 'HOẶC',
+        customRate: 'Mức lương giờ tùy chỉnh',
+        effectiveFrom: 'Hiệu lực từ',
+        setting: 'Đang thiết lập...',
+        setRateBtn: 'Thiết lập',
+      },
+      editRateModal: {
+        title: 'Chỉnh sửa mức lương',
+        hourlyRate: 'Mức lương giờ',
+        detachNote: 'Nhập mức lương tùy chỉnh sẽ tách nhân viên khỏi tier hiện tại.',
+        note: 'Ghi chú',
+        reasonPlaceholder: 'Lý do cập nhật lương',
+        saving: 'Đang lưu...',
+      },
+      salaryLog: {
+        title: 'Lịch sử lương',
+        noHistory: 'Không có lịch sử lương',
+        custom: 'Tùy chỉnh',
+        from: 'Từ',
+        ended: 'Kết thúc',
+        current: 'Hiện tại',
+      },
+      adjustmentModal: {
+        title: 'Thêm thưởng / phạt',
+        type: 'Loại',
+        typePlaceholder: 'Ví dụ: Bonus, phạt đi trễ...',
+        amount: 'Số tiền',
+        action: 'Hành động',
+        addReward: 'Thêm thưởng',
+        deductPenalty: 'Trừ phạt',
+        date: 'Ngày',
+        processing: 'Đang xử lý...',
+        add: 'Thêm',
+        deduct: 'Trừ',
+      },
+      adjustmentDetail: {
+        title: 'Chi tiết điều chỉnh',
+        noAdjustments: 'Không có điều chỉnh nào',
+        typeReason: 'Loại / Lý do',
+      },
+      guide: {
+        title: 'Hướng dẫn bảng lương',
+        close: 'Đóng',
+        steps: [
+          {
+            icon: '📊',
+            title: 'Kiểm tra giờ làm',
+            desc: 'Xem bảng lương theo tháng hoặc theo khoảng thời gian trước khi chốt lương.',
+          },
+          {
+            icon: '💰',
+            title: 'Thiết lập mức lương',
+            desc: 'Gán mức lương giờ bằng tier hoặc mức lương tùy chỉnh cho nhân viên đã chọn.',
+          },
+          {
+            icon: '⚖️',
+            title: 'Áp dụng thưởng phạt',
+            desc: 'Dùng adjustment để cộng thưởng hoặc trừ phạt vào bảng lương.',
+          },
+          {
+            icon: '📈',
+            title: 'Hoàn thiện lương net',
+            desc: 'Sửa trực tiếp net salary và company tax để ra tổng lương cuối cùng.',
+          },
+        ],
+      },
+    },
+    payrollTiersPage: {
+      title: 'Bậc lương',
+      subtitle: 'Quản lý các bậc lương cho payroll',
+      createTier: 'Tạo bậc lương',
+      tierName: 'Tên bậc lương',
+      hourlyRate: 'Lương theo giờ',
+      currency: 'Tiền tệ',
+      description: 'Mô tả',
+      actions: 'Thao tác',
+      noTiers: 'Chưa có bậc lương nào',
+      createTitle: 'Tạo bậc lương',
+      editTitle: 'Chỉnh sửa bậc lương',
+      deleteTitle: 'Xóa bậc lương',
+      namePlaceholder: 'Nhập tên bậc lương',
+      ratePlaceholder: '15.00',
+      descriptionPlaceholder: 'Ghi chú tùy chọn cho bậc lương',
+      create: 'Tạo',
+      creating: 'Đang tạo...',
+      save: 'Lưu',
+      saving: 'Đang lưu...',
+      cancel: 'Hủy',
+      delete: 'Xóa',
+      deleting: 'Đang xóa...',
+      confirmDelete: 'Bạn có chắc muốn xóa bậc lương này?',
+      fillTypeAmount: 'Vui lòng nhập tên bậc lương và lương theo giờ',
+      tierCreated: 'Tạo bậc lương thành công',
+      tierUpdated: 'Cập nhật bậc lương thành công',
+      tierDeleted: 'Xóa bậc lương thành công',
+      failedLoadTiers: 'Không thể tải bậc lương',
+      failedCreateTier: 'Tạo bậc lương thất bại',
+      failedUpdateTier: 'Cập nhật bậc lương thất bại',
+      failedDeleteTier: 'Xóa bậc lương thất bại',
+    },
+    ticketsPage: {
+      title: 'Khiếu nại hỗ trợ',
+      subtitle: 'Quản lý ticket hỗ trợ',
+      totalTickets: 'ticket',
+      tabs: {
+        all: 'Tất cả ticket',
+        new: 'Mới',
+        solved: 'Đã xử lý',
+      },
+      filters: {
+        ticketId: 'Ticket ID',
+        orderId: 'Order ID',
+        subject: 'Tiêu đề',
+        allSellers: 'Tất cả seller',
+        allSupport: 'Tất cả support',
+      },
+      columns: {
+        id: 'ID',
+        orderId: 'Order ID',
+        subject: 'Tiêu đề',
+        status: 'Trạng thái',
+        userReply: 'Người phản hồi',
+        lastReply: 'Phản hồi gần nhất',
+        owner: 'Phụ trách',
+        updated: 'Cập nhật',
+        actions: 'Thao tác',
+      },
+      status: {
+        new: 'Mới',
+        solved: 'Đã xử lý',
+      },
+      actions: {
+        view: 'Xem',
+        solve: 'Xử lý',
+      },
+      noTicketsTitle: 'Không tìm thấy ticket',
+      noTicketsDescriptionFiltered: 'Thử điều chỉnh bộ lọc của bạn',
+      noTicketsDescriptionEmpty: 'Hiện chưa có ticket nào',
+      loadFailed: 'Không thể tải danh sách ticket',
+      statusUpdated: 'Cập nhật trạng thái ticket thành công!',
+      statusUpdateFailed: 'Cập nhật trạng thái ticket thất bại',
+      createSuccess: 'Tạo ticket hỗ trợ thành công!',
+      createDialog: {
+        createTitle: 'Tạo ticket hỗ trợ',
+        subject: 'Tiêu đề',
+        subjectPlaceholder: 'Mô tả ngắn về vấn đề',
+        message: 'Nội dung',
+        messagePlaceholder: 'Mô tả chi tiết vấn đề...',
+        attachFile: 'Đính kèm file (Tùy chọn)',
+        clickToUpload: 'Bấm để tải file lên',
+        fileHint: 'JPG, PNG, GIF, PDF (tối đa 10MB)',
+        cancel: 'Hủy',
+        creating: 'Đang tạo...',
+        createNew: 'Tạo ticket',
+        subjectRequired: 'Tiêu đề là bắt buộc',
+        messageRequired: 'Nội dung là bắt buộc',
+        orderIdMissing: 'Thiếu Order ID. Vui lòng thử lại.',
+        fileSizeError: 'Kích thước file phải nhỏ hơn 10MB',
+        fileTypeError: 'Chỉ chấp nhận JPG, PNG, GIF và PDF',
+        createFailed: 'Tạo ticket thất bại. Vui lòng thử lại.',
+      },
+    },
+    ticketDetailPage: {
+      back: 'Quay lại',
+      backToTickets: 'Về danh sách ticket',
+      loading: 'Đang tải ticket...',
+      notFound: 'Không tìm thấy ticket',
+      loadDetailFailed: 'Không thể tải chi tiết ticket',
+      fileSizeError: 'Kích thước file phải nhỏ hơn 10MB',
+      fileTypeError: 'Chỉ chấp nhận JPG, PNG, GIF và PDF',
+      viewPdf: 'Xem PDF',
+      noMessages: 'Chưa có tin nhắn nào. Hãy bắt đầu cuộc trò chuyện!',
+      placeholder: 'Nhập tin nhắn... (Shift+Enter để xuống dòng)',
+      placeholderImage: 'Đã chọn ảnh - sẵn sàng gửi',
+      enterMessage: 'Vui lòng nhập tin nhắn hoặc đính kèm file',
+      sendFailed: 'Gửi tin nhắn thất bại',
+      statusUpdated: 'Cập nhật trạng thái thành công!',
+      statusUpdateFailed: 'Cập nhật trạng thái thất bại',
+      markSolved: 'Đánh dấu đã xử lý',
+      reopen: 'Mở lại',
+      remove: 'Xóa',
+      status: {
+        new: 'Mới',
+        solved: 'Đã xử lý',
+      },
+      unknown: 'Không rõ',
+    },
+    walletTransactionsPage: {
+      title: 'Giao dịch ví',
+      subtitle: 'Lịch sử giao dịch',
+      totalTransactions: 'giao dịch',
+      exportAll: 'Xuất tất cả',
+      exportPayments: 'Xuất thanh toán',
+      exportDeposits: 'Xuất nạp tiền',
+      exportRefunds: 'Xuất hoàn tiền',
+      tabs: {
+        all: 'Tất cả giao dịch',
+        payments: 'Thanh toán (Trừ tiền)',
+        deposits: 'Nạp tiền (Cộng tiền)',
+        refunds: 'Hoàn tiền',
+      },
+      filters: {
+        allSellers: 'Tất cả seller',
+        fromDate: 'Từ ngày',
+        toDate: 'Đến ngày',
+        search: 'Tìm kiếm...',
+      },
+      columns: {
+        id: 'ID',
+        transactionId: 'Mã giao dịch',
+        seller: 'Seller',
+        orderId: 'Order ID',
+        store: 'Store',
+        type: 'Loại',
+        amount: 'Số tiền',
+        balance: 'Số dư',
+        note: 'Ghi chú',
+        status: 'Trạng thái',
+        date: 'Ngày tạo',
+      },
+      status: {
+        completed: 'Hoàn tất',
+        pending: 'Đang chờ',
+        failed: 'Thất bại',
+      },
+      type: {
+        add_fund: 'Nạp tiền',
+        order_payment: 'Thanh toán đơn',
+        refund: 'Hoàn tiền',
+      },
+      summary: {
+        total: 'Tổng',
+        page: 'Trang này',
+      },
+      loading: 'Đang tải giao dịch...',
+      noTransactionsTitle: 'Không tìm thấy giao dịch',
+      noTransactionsDescriptionFiltered: 'Thử điều chỉnh bộ lọc của bạn',
+      noTransactionsDescriptionEmpty: 'Chưa có giao dịch nào',
+      loadFailed: 'Không thể tải giao dịch',
+      loadSellersFailed: 'Không thể tải seller',
+      exporting: 'Đang xuất giao dịch...',
+      exportSuccess: 'Xuất giao dịch thành công!',
+      exportFailed: 'Xuất giao dịch thất bại',
+      na: 'N/A',
+      none: 'Không có nội dung',
+    },
+    pendingFundPage: {
+      title: 'Tiền chờ duyệt',
+      subtitle: 'Duyệt yêu cầu nạp tiền từ seller',
+      showing: 'Hiển thị {count} yêu cầu chờ duyệt',
+      loading: 'Đang tải...',
+      noRequests: 'Không có yêu cầu chờ duyệt',
+      allCaught: 'Tất cả yêu cầu nạp tiền đã được xử lý.',
+      fetchError: 'Không thể tải yêu cầu chờ duyệt',
+      confirmApprove: 'Bạn có chắc muốn duyệt yêu cầu nạp tiền này không?',
+      approveSuccess: 'Duyệt yêu cầu nạp tiền thành công!',
+      approveFailed: 'Duyệt yêu cầu thất bại',
+      rejectSuccess: 'Đã từ chối yêu cầu nạp tiền',
+      rejectFailed: 'Từ chối yêu cầu thất bại',
+      approve: 'Duyệt',
+      reject: 'Từ chối',
+      columns: {
+        id: 'ID',
+        seller: 'Seller',
+        type: 'Loại',
+        amount: 'Số tiền',
+        transactionId: 'Mã giao dịch',
+        note: 'Ghi chú',
+        date: 'Ngày tạo',
+        actions: 'Thao tác',
+      },
+      rejectModal: {
+        title: 'Từ chối yêu cầu nạp tiền',
+        subtitle: 'Vui lòng nhập lý do từ chối (không bắt buộc)',
+        placeholder: 'Nhập lý do từ chối...',
+        cancel: 'Hủy',
+        confirm: 'Xác nhận từ chối',
+      },
+      type: {
+        deposit: 'Nạp tiền',
+        refund: 'Hoàn tiền',
+      },
+      na: 'N/A',
+    },
+    stock: {
+      manage: {
+        title: 'Quản lý tồn kho',
+        description: 'Giữ nguyên logic màn cũ trên giao diện hệ thống mới.',
+        importExport: 'Nhập/Xuất',
+        loading: 'Đang tải dữ liệu tồn kho...',
+        loadError: 'Không thể tải dữ liệu tồn kho',
+        summary: {
+          totalStock: 'Tổng tồn kho',
+          reserved: 'Đang giữ',
+          available: 'Có sẵn',
+          lowStockItems: 'Sản phẩm sắp hết',
+        },
+        filters: {
+          variantId: 'ID biến thể',
+          sku: 'SKU',
+          style: 'Style',
+          color: 'Màu sắc',
+          size: 'Kích thước',
+          stockLevel: 'Mức tồn kho',
+          status: 'Trạng thái',
+          searchPlaceholder: 'Tìm kiếm...',
+          allStyles: 'Tất cả style',
+          allColors: 'Tất cả màu',
+          allSizes: 'Tất cả kích thước',
+          all: 'Tất cả',
+          lowStock: 'Sắp hết (< 5)',
+          outOfStock: 'Hết hàng',
+          active: 'Hoạt động',
+          inactive: 'Không hoạt động',
+          reset: 'Đặt lại',
+        },
+        empty: {
+          title: 'Không tìm thấy sản phẩm',
+          description: 'Thử điều chỉnh bộ lọc của bạn',
+        },
+        tabs: {
+          variants: 'biến thể',
+        },
+        bulk: {
+          selected: 'Đã chọn {count} biến thể',
+          hint: 'Chọn thao tác để áp dụng cho tất cả biến thể đã chọn',
+          clearSelection: 'Xóa chọn',
+          operation: 'Thao tác',
+          selectOperation: 'Chọn thao tác...',
+          stockOperations: 'Thao tác tồn kho',
+          statusOperations: 'Thao tác trạng thái',
+          addStock: 'Thêm vào tồn kho hiện tại',
+          subtractStock: 'Trừ khỏi tồn kho hiện tại',
+          setStock: 'Đặt mức tồn kho',
+          activate: 'Kích hoạt',
+          deactivate: 'Hủy kích hoạt',
+          amountToAdd: 'Số lượng thêm',
+          amountToSubtract: 'Số lượng trừ',
+          newStockLevel: 'Mức tồn kho mới',
+          enterValue: 'Nhập giá trị...',
+          reason: 'Lý do (Tùy chọn)',
+          reasonPlaceholder: 'Ví dụ: Hàng mới về...',
+          applyTo: 'Áp dụng cho {count} biến thể',
+          selectVariantsAndAction: 'Vui lòng chọn biến thể và thao tác',
+          enterValidStock:
+            'Vui lòng nhập giá trị tồn kho hợp lệ (0 hoặc lớn hơn)',
+          success: 'Cập nhật thành công {count} biến thể',
+        },
+        table: {
+          variantId: 'ID biến thể',
+          sku: 'SKU',
+          style: 'Style',
+          color: 'Màu sắc',
+          size: 'Kích thước',
+          stock: 'Tồn kho',
+          reserved: 'Đang giữ',
+          available: 'Có sẵn',
+          active: 'Hoạt động',
+          actions: 'Thao tác',
+          save: 'Lưu',
+          cancel: 'Hủy',
+          edit: 'Sửa',
+          history: 'Lịch sử',
+          noVariants: 'Không tìm thấy biến thể cho sản phẩm này',
+          stockCannotBeNegative: 'Tồn kho không thể âm',
+          noChangesToSave: 'Không có thay đổi nào để lưu',
+          variantUpdated: 'Cập nhật biến thể thành công',
+          updateFailed: 'Cập nhật biến thể thất bại',
+          variantStatusUpdated: 'Trạng thái biến thể đã được cập nhật',
+        },
+        historyDialog: {
+          title: 'Lịch sử tồn kho',
+          currentStock: 'Tồn kho hiện tại',
+          loading: 'Đang tải lịch sử...',
+          noRecords: 'Không tìm thấy lịch sử',
+          increase: 'Tăng',
+          decrease: 'Giảm',
+          adjust: 'Điều chỉnh',
+          import: 'Nhập',
+          skuUpdated: 'Cập nhật SKU',
+          styleUpdated: 'Cập nhật style',
+          activated: 'Đã kích hoạt',
+          deactivated: 'Đã hủy kích hoạt',
+          bulkUpdate: 'Cập nhật hàng loạt',
+          bulkOperation: 'Thao tác hàng loạt',
+          operation: 'Thao tác',
+          showingLast: 'Hiển thị 20 thay đổi gần nhất',
+          sku: 'SKU',
+          style: 'STYLE',
+          active: 'ACTIVE',
+          empty: '(trống)',
+          variantId: 'ID biến thể',
+        },
+        importExportDialog: {
+          title: 'Nhập/Xuất tồn kho',
+          import: 'Nhập',
+          export: 'Xuất',
+          importInstructions: 'Hướng dẫn nhập:',
+          instructionFile: 'Tệp phải có định dạng CSV',
+          instructionId:
+            'Bắt buộc: Ít nhất một mã định danh (ID biến thể hoặc SKU)',
+          instructionFields:
+            'Các trường tùy chọn: Tồn kho, Style, Màu sắc, Kích thước, Sản phẩm',
+          instructionUpdate: 'Chỉ các trường có trong CSV mới được cập nhật',
+          stockOperationType: 'Loại thao tác tồn kho',
+          setStock: 'Đặt tồn kho (Thay thế)',
+          addStock: 'Thêm tồn kho (Tăng)',
+          subtractStock: 'Trừ tồn kho (Giảm)',
+          hintSet: 'Thay thế tồn kho hiện tại bằng giá trị từ tệp',
+          hintAdd: 'Thêm giá trị từ tệp vào tồn kho hiện tại',
+          hintSubtract: 'Trừ giá trị từ tệp khỏi tồn kho hiện tại',
+          selectCsvFile: 'Chọn tệp CSV',
+          chooseFile: 'Chọn tệp...',
+          downloadTemplate: 'Tải mẫu',
+          skuImport: 'Nhập theo SKU',
+          variantImport: 'Nhập theo biến thể',
+          fullImport: 'Nhập đầy đủ',
+          skuTemplateHint: 'Tải mẫu SKU (SKU, Tồn kho)',
+          variantTemplateHint: 'Tải mẫu biến thể (ID biến thể, Tồn kho)',
+          fullTemplateHint: 'Tải mẫu đầy đủ (Tất cả các trường)',
+          importing: 'Đang nhập...',
+          importBtn: 'Nhập',
+          importResults: 'Kết quả nhập',
+          success: 'Thành công:',
+          failed: 'Thất bại:',
+          errors: 'Lỗi:',
+          moreErrors: '... và {count} lỗi khác',
+          exportStockData: 'Xuất dữ liệu tồn kho:',
+          exportDesc: 'Xuất tất cả dữ liệu tồn kho ra tệp CSV bao gồm:',
+          exportFields1: 'ID biến thể, SKU, Tên sản phẩm',
+          exportFields2: 'Style, Màu sắc, Kích thước',
+          exportFields3: 'Tồn kho, Đang giữ, Có sẵn',
+          exportFields4: 'Trạng thái (Hoạt động/Không hoạt động)',
+          exportPreview1:
+            'Tệp xuất sẽ bao gồm tất cả các biến thể với thông tin tồn kho hiện tại.',
+          exportPreview2:
+            'Thời gian xuất phụ thuộc vào số lượng biến thể trong kho của bạn.',
+          exporting: 'Đang xuất...',
+          exportToCsv: 'Xuất ra CSV',
+          pleaseSelectCsv: 'Vui lòng chọn tệp CSV',
+          pleaseSelectFile: 'Vui lòng chọn tệp',
+          importSuccess: 'Nhập dữ liệu thành công',
+          importFailed: 'Nhập dữ liệu thất bại',
+          failedToImport: 'Nhập tồn kho thất bại',
+          exportSuccess: 'Xuất dữ liệu thành công',
+          exportFailed: 'Xuất dữ liệu thất bại',
+          failedToExport: 'Xuất tồn kho thất bại',
+        },
+      },
+      shortage: {
+        title: 'Báo cáo thiếu hàng',
+        subtitleWithCount: '{count} đơn hàng đang chờ xử lý',
+        subtitleAllGood: 'Không có đơn hàng chờ',
+        viewByVariant: 'Xem theo biến thể',
+        exportCsv: 'Xuất CSV',
+        exporting: 'Đang xuất báo cáo thiếu hàng...',
+        exportSuccess: 'Xuất báo cáo thành công',
+        exportFailed: 'Xuất báo cáo thất bại',
+        failedToLoadReport: 'Tải báo cáo thiếu hàng thất bại',
+        loading: 'Đang tải đơn hàng chờ...',
+        noPendingOrders: 'Không tìm thấy đơn hàng chờ',
+        totalPendingOrders: 'Tổng đơn chờ',
+        ordersWithShortage: 'Đơn thiếu hàng',
+        variantsAffected: 'Biến thể ảnh hưởng',
+        totalShortage: 'Tổng thiếu hụt',
+        searchOrder: 'Tìm đơn hàng',
+        orderIdRefIdPlaceholder: 'Mã đơn / Ref ID...',
+        searchVariant: 'Tìm biến thể',
+        variantIdPlaceholder: 'Mã biến thể...',
+        pendingReason: 'Lý do chờ',
+        fromDate: 'Từ ngày',
+        toDate: 'Đến ngày',
+        sortBy: 'Sắp xếp theo',
+        orderId: 'Mã đơn',
+        refId: 'Ref ID',
+        seller: 'Người bán',
+        items: 'Số item',
+        shortage: 'Thiếu hụt',
+        daysPending: 'Số ngày chờ',
+        action: 'Thao tác',
+        view: 'Xem',
+        day: 'ngày',
+        days: 'ngày',
+        awaitingProcessing: 'Đang chờ xử lý',
+        awaitingProcessingDesc:
+          'Tồn kho đang có sẵn cho đơn này. Hệ thống sẽ sớm phân bổ tồn kho.',
+        missingFiles: 'Thiếu file',
+        noItems: 'Không có sản phẩm',
+        noItemsDesc: 'Đơn hàng này không có sản phẩm nào. Vui lòng kiểm tra lại.',
+        unknownReason: 'Lý do không xác định',
+        unknownReasonDesc:
+          'Đơn hàng này đang chờ vì lý do chưa xác định hoặc đang bị giữ thủ công.',
+        status: {
+          shortage: 'Thiếu tồn kho',
+          missing_files: 'Thiếu file',
+          awaiting_allocation: 'Chờ phân bổ',
+          no_items: 'Không có sản phẩm',
+          unknown: 'Không xác định',
+        },
+        sortOptions: {
+          seller_username: 'Người bán',
+          days_pending: 'Số ngày chờ',
+          shortage: 'Mức thiếu hụt',
+          created_at: 'Ngày tạo',
+        },
+        variantTable: {
+          title: 'Biến thể thiếu hàng',
+          noVariants: 'Không có biến thể thiếu hàng',
+          variantId: 'Mã biến thể',
+          style: 'Style',
+          color: 'Màu',
+          size: 'Size',
+          stock: 'Tồn kho',
+          demand: 'Nhu cầu',
+          shortage: 'Thiếu hụt',
+        },
+      },
+      shortageByVariant: {
+        title: 'Thiếu hàng theo biến thể',
+        subtitleWithCount: '{count} biến thể đang thiếu hàng',
+        subtitleAllGood: 'Không có biến thể thiếu hàng',
+        viewByOrder: 'Xem theo đơn hàng',
+        failedToLoad: 'Tải báo cáo thiếu hàng thất bại',
+        totalVariants: 'Biến thể thiếu hàng',
+        totalShortage: 'Tổng thiếu hụt',
+        ordersAffected: 'Đơn bị ảnh hưởng',
+        searchVariant: 'Mã biến thể',
+        variantIdPlaceholder: 'Mã biến thể...',
+        style: 'Style',
+        stylePlaceholder: 'Style...',
+        fromDate: 'Từ ngày',
+        toDate: 'Đến ngày',
+        sortBy: 'Sắp xếp theo',
+        loading: 'Đang tải biến thể thiếu hàng...',
+        noShortage: 'Không tìm thấy biến thể thiếu hàng',
+        noShortageDesc: 'Tất cả biến thể hiện có đủ tồn kho.',
+        variantId: 'Mã biến thể',
+        color: 'Màu',
+        size: 'Size',
+        stock: 'Tồn kho',
+        demand: 'Nhu cầu',
+        shortage: 'Thiếu hụt',
+        orders: 'Đơn hàng',
+        day: 'ngày',
+        days: 'ngày',
+        sortOptions: {
+          shortage: 'Mức thiếu hụt',
+          orders_count: 'Số đơn hàng',
+          demand: 'Nhu cầu',
+          variant_id: 'Mã biến thể',
+        },
+        ordersTable: {
+          title: 'Đơn hàng bị ảnh hưởng',
+          noOrders: 'Không có đơn hàng bị ảnh hưởng',
+          orderId: 'Mã đơn',
+          refId: 'Ref ID',
+          seller: 'Người bán',
+          quantity: 'SL',
+          shortage: 'Thiếu hụt',
+          daysPending: 'Số ngày',
+          action: 'Thao tác',
+          view: 'Xem',
+        },
+      },
+      auditLogs: {
+        title: 'Lịch sử kiểm kê kho',
+        subtitle: 'Theo dõi toàn bộ thay đổi tồn kho và lịch sử thao tác',
+        loading: 'Đang tải lịch sử kiểm kê...',
+        noLogs: 'Không tìm thấy lịch sử kiểm kê',
+        failedToLoadLogs: 'Tải lịch sử kiểm kê thất bại',
+        failedToLoadOptions: 'Tải tùy chọn bộ lọc thất bại',
+        failedToCheckProductions: 'Kiểm tra sản xuất của biến thể thất bại',
+        searchVariant: 'Mã biến thể',
+        enterVariantId: 'Nhập mã biến thể...',
+        style: 'Style',
+        allStyles: 'Tất cả style',
+        color: 'Màu',
+        allColors: 'Tất cả màu',
+        size: 'Size',
+        allSizes: 'Tất cả size',
+        action: 'Hành động',
+        allActions: 'Tất cả hành động',
+        orderId: 'Mã đơn',
+        enterOrderId: 'Nhập mã đơn...',
+        dateFrom: 'Từ ngày',
+        dateTo: 'Đến ngày',
+        dateTime: 'Ngày / Giờ',
+        user: 'Người dùng',
+        product: 'Sản phẩm',
+        before: 'Trước',
+        after: 'Sau',
+        change: 'Thay đổi',
+        reason: 'Lý do',
+        stockIncrease: 'Tăng tồn kho',
+        stockDecrease: 'Giảm tồn kho',
+        stockAdjustment: 'Điều chỉnh tồn kho',
+        stockMapped: 'Đã map tồn kho',
+        stockRestored: 'Khôi phục tồn kho',
+        manualAdjustment: 'Điều chỉnh thủ công',
+        system: 'Hệ thống',
+        na: 'N/A',
+        clickToCheckProductions: 'Bấm để xem productions',
+        variantProductions: {
+          title: 'Production của biến thể',
+          variantId: 'Mã biến thể',
+          productionId: 'Production #',
+          orderId: 'Mã đơn',
+          orderRef: 'Order Ref',
+          quantity: 'Số lượng',
+          units: 'đơn vị',
+          noProductions: 'Không tìm thấy production cho biến thể này',
+          close: 'Đóng',
+          status: {
+            pending: 'Đang chờ',
+            pickup: 'Đã lấy',
+            mapped: 'Đã khớp',
+            completed: 'Hoàn thành',
+            cancelled: 'Đã hủy',
+            unknown: 'Không xác định',
+          },
+        },
+      },
+    },
   },
   en: {
     language: {
@@ -1533,6 +2520,994 @@ const uiMessages = {
         createFailed: 'Failed to create product',
       },
     },
+    storesPage: {
+      title: 'Stores Management',
+      subtitle: 'Manage all stores',
+      totalStores: 'total stores',
+      addStore: 'Add New Store',
+      searchPlaceholder: 'Search by store name, username, or email...',
+      allStatus: 'All Status',
+      loading: 'Loading stores...',
+      noStores: 'No stores found',
+      noStoresAvailable: 'No stores available',
+      failedToLoad: 'Failed to load stores',
+      columns: {
+        id: 'ID',
+        user: 'User',
+        storeName: 'Store Name',
+        status: 'Status',
+        createdAt: 'Created At',
+        actions: 'Actions',
+      },
+      status: {
+        active: 'Active',
+        unconfirmed: 'Unconfirmed',
+        banned: 'Banned',
+      },
+      dialog: {
+        createTitle: 'Add New Store',
+        createSubtitle: 'Create a new store for a seller',
+        editTitle: 'Edit Store',
+        editSubtitle: 'Update store information',
+        loadingUsers: 'Loading users...',
+        loadingStore: 'Loading store data...',
+        user: 'User (Seller)',
+        selectUser: 'Select a user',
+        storeName: 'Store Name',
+        enterStoreName: 'Enter store name',
+        apiKey: 'API Key',
+        status: 'Status',
+        cancel: 'Cancel',
+        create: 'Create Store',
+        creating: 'Creating...',
+        update: 'Update Store',
+        updating: 'Updating...',
+        onlySelf: 'You can only create stores for yourself',
+        onlyAdmin: 'Only Admin can change store owner',
+        statusHint: 'This will update the user status',
+        apiKeyHint: 'Auto-generated API key. Click refresh to generate a new one.',
+        apiKeyEditHint: 'Click refresh to generate a new API key',
+        refreshKey: 'Generate new API key',
+        successCreate: 'Store created successfully!',
+        successUpdate: 'Store updated successfully!',
+        failedCreate: 'Failed to create store. Please try again.',
+        failedUpdate: 'Failed to update store. Please try again.',
+        failedLoadUsers: 'Failed to load users. Please try again.',
+        failedLoadStore: 'Failed to load store data. Please try again.',
+        validation: {
+          requiredUser: 'Please select a user',
+          requiredName: 'Store name is required',
+          requiredApiKey: 'API Key is required',
+        },
+        active: 'Active',
+        unconfirmed: 'Unconfirmed',
+        banned: 'Banned',
+      },
+    },
+    usersPage: {
+      title: 'User Management',
+      addFund: 'Add Fund',
+      addNew: 'Add New User',
+      backToList: 'Back to Users',
+      backToDetail: 'Back to Details',
+      createTitle: 'Add New User',
+      editTitle: 'Edit User',
+      viewTitle: 'User Details',
+      accountInfo: 'Account Information',
+      userDetails: 'User Details',
+      integrationSettings: 'Integration Settings',
+      debitSettings: 'Debit Settings',
+      additionalOptions: 'Additional Options',
+      username: 'Username',
+      email: 'Email',
+      role: 'Role',
+      statusLabel: 'Status',
+      registrationDate: 'Registration Date',
+      firstName: 'First Name',
+      lastName: 'Last Name',
+      phone: 'Phone',
+      dob: 'Date of Birth',
+      address: 'Address',
+      webhookUrl: 'Webhook URL',
+      telegramId: 'Telegram ID',
+      apiKey: 'API Key',
+      maxDebit: 'Max Debit',
+      maxDateDebit: 'Max Date Debit',
+      minDateDebit: 'Min Date Debit',
+      balanceLabel: 'Balance',
+      supportUs: 'Support Us',
+      privateSeller: 'Private Seller',
+      days: 'days',
+      yes: 'Yes',
+      no: 'No',
+      filters: {
+        search: 'Search by name, email, username...',
+        allStatus: 'All Status',
+        allRoles: 'All Roles',
+        allTiers: 'All Tiers',
+      },
+      status: {
+        active: 'Active',
+        unconfirmed: 'Unconfirmed',
+        banned: 'Banned',
+      },
+      columns: {
+        username: 'Username',
+        fullName: 'Full Name',
+        role: 'Role',
+        email: 'Email',
+        balance: 'Balance',
+        tier: 'Tier',
+        registrationDate: 'Registration Date',
+        status: 'Status',
+        actions: 'Actions',
+      },
+      form: {
+        accountInfo: 'Account Information',
+        userDetails: 'User Details',
+        integrationSettings: 'Integration Settings',
+        debitSettings: 'Debit Settings',
+        additionalOptions: 'Additional Options',
+        email: 'Email',
+        username: 'Username',
+        password: 'Password',
+        confirmPassword: 'Confirm Password',
+        newPassword: 'New Password',
+        confirmNewPassword: 'Confirm New Password',
+        leaveBlank: 'Leave blank to keep current password',
+        role: 'Role',
+        status: 'Status',
+        firstName: 'First Name',
+        lastName: 'Last Name',
+        phone: 'Phone',
+        dob: 'Date of Birth',
+        address: 'Address',
+        webhookUrl: 'Webhook URL',
+        telegramId: 'Telegram ID',
+        apiKey: 'API Key',
+        maxDebit: 'Max Debit',
+        maxDateDebit: 'Max Date Debit',
+        minDateDebit: 'Min Date Debit',
+        supportUs: 'Support Us',
+        yes: 'Yes',
+        no: 'No',
+        optional: '(optional)',
+        loadingRoles: 'Loading roles...',
+        noRoles: 'No roles available',
+        submit: 'Create User',
+        update: 'Update User',
+        cancel: 'Cancel',
+      },
+      addFundModal: {
+        title: 'Add Fund to Seller',
+        selectSeller: 'Select Seller',
+        loadingSellers: 'Loading sellers...',
+        selectPlaceholder: '-- Select a seller --',
+        currentBalance: 'Current Balance',
+        type: 'Type',
+        deposit: 'Deposit (+)',
+        withdraw: 'Withdraw (-)',
+        amount: 'Amount',
+        enterAmount: 'Enter amount',
+        note: 'Note',
+        notePlaceholder: 'e.g. Monthly deposit',
+        newBalance: 'New Balance',
+        cancel: 'Cancel',
+        submit: 'Confirm',
+        selectSellerRequired: 'Please select a seller',
+        invalidAmount: 'Please enter a valid amount',
+        fundFailed: 'Failed to add fund',
+        fundSuccess:
+          'Successfully {action} ${amount} {direction} {user}. New balance: ${balance}',
+      },
+      tiers: {
+        silver: 'Silver',
+        gold: 'Gold',
+        platinum: 'Platinum',
+        diamond: 'Diamond',
+      },
+      roles: {
+        admin: 'Admin',
+        seller: 'Seller',
+        user: 'User',
+        supplier: 'Supplier',
+        staff: 'Staff',
+        support: 'Support',
+        designer: 'Designer',
+        finance: 'Finance',
+      },
+      notFound: 'No users found',
+      loadFailed: 'Failed to load user information',
+      deleteConfirm: 'Are you sure you want to delete this user?',
+      deleteSuccess: 'User deleted successfully',
+      deleteFailed: 'Failed to delete user',
+      createSuccess: 'User created successfully!',
+      updateSuccess: 'User updated successfully!',
+      loading: 'Loading...',
+      deleteTitle: 'Delete',
+      error: 'An error occurred',
+      na: 'N/A',
+    },
+    staffReportPage: {
+      title: 'Staff Performance Report',
+      subtitle: 'Track staff workflow performance and efficiency',
+      filters: {
+        dateFrom: 'Date From',
+        dateTo: 'Date To',
+        staffMember: 'Staff Member',
+        allStaff: 'All Staff',
+        apply: 'Apply Filters',
+        refresh: 'Refresh Data',
+      },
+      summary: {
+        title: 'Staff Performance Summary',
+        staffName: 'Staff Name',
+        username: 'Username',
+        itemsProcessed: 'Items Processed',
+        contribution: 'Percentage Contribution',
+        share: 'Share',
+        noData: 'No performance data found for selected period.',
+        total: 'Total',
+        items: 'items',
+      },
+      details: {
+        title: 'Processing Activity Details',
+        staffName: 'Staff Name',
+        username: 'Username',
+        orderItem: 'Order / Item',
+        order: 'Order',
+        item: 'Item',
+        metaKey: 'Meta Key',
+        processedAt: 'Processed At',
+        noData: 'No activity details found.',
+      },
+      loading: 'Loading report data...',
+      failedLoadList: 'Failed to load staff list',
+      failedLoadReport: 'Failed to load report data',
+    },
+    attendancesPage: {
+      title: 'Attendance Management',
+      subtitle: 'Track employee work hours and logs',
+      importBtn: 'Import .txt File',
+      importing: 'Importing...',
+      filters: {
+        employeeName: 'Employee Name',
+        searchPlaceholder: 'Search by name...',
+        customRange: 'Custom Range',
+        from: 'From',
+        to: 'To',
+        date: 'Single Date',
+        month: 'Month',
+        clear: 'Clear Filters',
+      },
+      columns: {
+        id: 'ID',
+        employeeName: 'Employee Name',
+        totalDays: 'Total Days',
+        week: 'Week',
+        month: 'Month',
+        year: 'Year',
+      },
+      days: 'days',
+      logs: {
+        show: 'Show',
+        entries: 'entries',
+        showing: 'Showing',
+        of: 'of',
+        records: 'records',
+        noRecords: 'No records',
+        date: 'Date',
+        checkIn: 'Check In',
+        checkOut: 'Check Out',
+        totalWork: 'Total Work',
+        loading: 'Loading...',
+        noRecordsFound: 'No records found',
+        completeMissing: 'Update',
+        previous: 'Previous',
+        next: 'Next',
+        pageOf: 'Page {current} of {total}',
+      },
+      editModal: {
+        title: 'Complete Missing Attendance',
+        employee: 'Employee',
+        workDate: 'Work Date',
+        existingTime: 'Existing Time',
+        missingType: 'Missing Type',
+        checkIn: 'Check In',
+        checkOut: 'Check Out',
+        time: 'Time',
+        cancel: 'Cancel',
+        save: 'Save',
+        saving: 'Saving...',
+        validation: {
+          timeRequired: 'Please select a time',
+        },
+      },
+      messages: {
+        failedLoadData: 'Failed to load attendance data',
+        failedLoadLogs: 'Failed to load user logs',
+        importSuccess: 'Imported successfully',
+        importFailed: 'Import failed',
+        noRecords: 'No attendance records found.',
+        updateSuccess: 'Attendance updated successfully',
+        updateFailed: 'Failed to update attendance',
+      },
+    },
+    payrollPage: {
+      title: 'Payroll Report',
+      subtitle: 'Track payroll for {period} with {count} employees',
+      setRate: 'Set Rate',
+      rewardsPenalties: 'Rewards / Penalties',
+      month: 'Month',
+      customRange: 'Custom Range',
+      from: 'From',
+      to: 'To',
+      totalHours: 'Total Hours',
+      totalSalary: 'Total Salary',
+      netTotal: 'Net Salary',
+      companyTaxTotal: 'Co. Tax',
+      missingRate: 'Missing Rate',
+      staffs: 'staffs',
+      noEmployees: 'No employees found',
+      employee: 'Employee',
+      rateHr: 'Rate/Hr',
+      hours: 'Hours',
+      adjustments: 'Adjustments',
+      grossSalary: 'Gross',
+      netSalary: 'Net',
+      companyTax: 'Co. Tax',
+      totalSalaryCol: 'Total',
+      actions: 'Actions',
+      edit: 'Edit',
+      log: 'Log',
+      view: 'View',
+      clickToEdit: 'Click to edit',
+      save: 'Save',
+      cancel: 'Cancel',
+      close: 'Close',
+      loading: 'Loading payroll...',
+      selectEmployee: 'Please select at least one employee',
+      selectTierOrRate: 'Please select a tier or enter a custom rate',
+      fillTypeAmount: 'Please fill in type and amount',
+      rateSetSuccess: '{success}/{total} salary rates set successfully',
+      failedSetRate: 'Failed to set salary rate',
+      rateUpdated: 'Salary rate updated successfully',
+      failedUpdateRate: 'Failed to update salary rate',
+      adjustmentSuccess: '{success}/{total} adjustments created successfully',
+      failedAdjustment: 'Failed to create adjustments',
+      failedLoadPayroll: 'Failed to load payroll data',
+      fieldUpdated: 'Updated successfully',
+      failedUpdate: 'Failed to update',
+      setRateModal: {
+        title: 'Set Salary Rate',
+        selectEmployees: 'Select Employees',
+        selectAll: 'Select All',
+        selected: 'selected',
+        selectTier: 'Select Tier',
+        or: 'OR',
+        customRate: 'Custom Hourly Rate',
+        effectiveFrom: 'Effective From',
+        setting: 'Setting...',
+        setRateBtn: 'Set Rate',
+      },
+      editRateModal: {
+        title: 'Edit Salary Rate',
+        hourlyRate: 'Hourly Rate',
+        detachNote: 'Entering a custom rate will detach this employee from the current tier.',
+        note: 'Note',
+        reasonPlaceholder: 'Reason for salary update',
+        saving: 'Saving...',
+      },
+      salaryLog: {
+        title: 'Salary Log',
+        noHistory: 'No salary history available',
+        custom: 'Custom',
+        from: 'From',
+        ended: 'Ended',
+        current: 'Current',
+      },
+      adjustmentModal: {
+        title: 'Add Reward / Penalty',
+        type: 'Type',
+        typePlaceholder: 'Ex: Bonus, Late fine...',
+        amount: 'Amount',
+        action: 'Action',
+        addReward: 'Add Reward',
+        deductPenalty: 'Deduct Penalty',
+        date: 'Date',
+        processing: 'Processing...',
+        add: 'Add',
+        deduct: 'Deduct',
+      },
+      adjustmentDetail: {
+        title: 'Adjustment Details',
+        noAdjustments: 'No adjustments available',
+        typeReason: 'Type / Reason',
+      },
+      guide: {
+        title: 'Payroll Guide',
+        close: 'Close',
+        steps: [
+          {
+            icon: '📊',
+            title: 'Review working hours',
+            desc: 'Check payroll by month or custom range before making salary decisions.',
+          },
+          {
+            icon: '💰',
+            title: 'Assign salary rates',
+            desc: 'Set hourly rates by tier or by custom amount for selected employees.',
+          },
+          {
+            icon: '⚖️',
+            title: 'Apply rewards and penalties',
+            desc: 'Use adjustments to add bonuses or deduct penalties from payroll.',
+          },
+          {
+            icon: '📈',
+            title: 'Finalize net salary',
+            desc: 'Inline edit net salary and company tax to reflect the final payroll total.',
+          },
+        ],
+      },
+    },
+    payrollTiersPage: {
+      title: 'Salary Tiers',
+      subtitle: 'Manage payroll salary tiers',
+      createTier: 'Create Tier',
+      tierName: 'Tier Name',
+      hourlyRate: 'Hourly Rate',
+      currency: 'Currency',
+      description: 'Description',
+      actions: 'Actions',
+      noTiers: 'No salary tiers available',
+      createTitle: 'Create Salary Tier',
+      editTitle: 'Edit Salary Tier',
+      deleteTitle: 'Delete Salary Tier',
+      namePlaceholder: 'Enter tier name',
+      ratePlaceholder: '15.00',
+      descriptionPlaceholder: 'Optional notes for this tier',
+      create: 'Create',
+      creating: 'Creating...',
+      save: 'Save',
+      saving: 'Saving...',
+      cancel: 'Cancel',
+      delete: 'Delete',
+      deleting: 'Deleting...',
+      confirmDelete: 'Are you sure you want to delete this tier?',
+      fillTypeAmount: 'Please fill in tier name and hourly rate',
+      tierCreated: 'Salary tier created successfully',
+      tierUpdated: 'Salary tier updated successfully',
+      tierDeleted: 'Salary tier deleted successfully',
+      failedLoadTiers: 'Failed to load salary tiers',
+      failedCreateTier: 'Failed to create salary tier',
+      failedUpdateTier: 'Failed to update salary tier',
+      failedDeleteTier: 'Failed to delete salary tier',
+    },
+    ticketsPage: {
+      title: 'Support Tickets',
+      subtitle: 'Manage support tickets',
+      totalTickets: 'total tickets',
+      tabs: {
+        all: 'All Tickets',
+        new: 'New',
+        solved: 'Solved',
+      },
+      filters: {
+        ticketId: 'Ticket ID',
+        orderId: 'Order ID',
+        subject: 'Subject',
+        allSellers: 'All Sellers',
+        allSupport: 'All Support',
+      },
+      columns: {
+        id: 'ID',
+        orderId: 'Order ID',
+        subject: 'Subject',
+        status: 'Status',
+        userReply: 'User Reply',
+        lastReply: 'Last Reply',
+        owner: 'Owner',
+        updated: 'Updated',
+        actions: 'Actions',
+      },
+      status: {
+        new: 'New',
+        solved: 'Solved',
+      },
+      actions: {
+        view: 'View',
+        solve: 'Solve',
+      },
+      noTicketsTitle: 'No tickets found',
+      noTicketsDescriptionFiltered: 'Try adjusting your filters',
+      noTicketsDescriptionEmpty: 'No tickets available',
+      loadFailed: 'Failed to load tickets',
+      statusUpdated: 'Ticket status updated successfully!',
+      statusUpdateFailed: 'Failed to update ticket status',
+      createSuccess: 'Support ticket created successfully!',
+      createDialog: {
+        createTitle: 'Create Support Ticket',
+        subject: 'Subject',
+        subjectPlaceholder: 'Brief description of the issue',
+        message: 'Message',
+        messagePlaceholder: 'Describe the issue in detail...',
+        attachFile: 'Attach File (Optional)',
+        clickToUpload: 'Click to upload',
+        fileHint: 'JPG, PNG, GIF, PDF (max 10MB)',
+        cancel: 'Cancel',
+        creating: 'Creating...',
+        createNew: 'Create Ticket',
+        subjectRequired: 'Subject is required',
+        messageRequired: 'Message is required',
+        orderIdMissing: 'Order ID is missing. Please try again.',
+        fileSizeError: 'File size must be less than 10MB',
+        fileTypeError: 'Only JPG, PNG, GIF, and PDF files are allowed',
+        createFailed: 'Failed to create ticket. Please try again.',
+      },
+    },
+    ticketDetailPage: {
+      back: 'Back',
+      backToTickets: 'Back to Tickets',
+      loading: 'Loading ticket...',
+      notFound: 'Ticket not found',
+      loadDetailFailed: 'Failed to load ticket details',
+      fileSizeError: 'File size must be less than 10MB',
+      fileTypeError: 'Only JPG, PNG, GIF, and PDF files are allowed',
+      viewPdf: 'View PDF',
+      noMessages: 'No messages yet. Start the conversation!',
+      placeholder: 'Type your message... (Shift+Enter for new line)',
+      placeholderImage: 'Image selected - ready to send',
+      enterMessage: 'Please enter a message or attach a file',
+      sendFailed: 'Failed to send message',
+      statusUpdated: 'Status updated successfully!',
+      statusUpdateFailed: 'Failed to update status',
+      markSolved: 'Mark as Solved',
+      reopen: 'Reopen',
+      remove: 'Remove',
+      status: {
+        new: 'New',
+        solved: 'Solved',
+      },
+      unknown: 'Unknown',
+    },
+    walletTransactionsPage: {
+      title: 'Wallet Transactions',
+      subtitle: 'Transaction history',
+      totalTransactions: 'total transactions',
+      exportAll: 'Export All',
+      exportPayments: 'Export Payments',
+      exportDeposits: 'Export Deposits',
+      exportRefunds: 'Export Refunds',
+      tabs: {
+        all: 'All Transactions',
+        payments: 'Payments (Debit)',
+        deposits: 'Deposits (Credit)',
+        refunds: 'Refunds',
+      },
+      filters: {
+        allSellers: 'All Sellers',
+        fromDate: 'From Date',
+        toDate: 'To Date',
+        search: 'Search...',
+      },
+      columns: {
+        id: 'ID',
+        transactionId: 'Transaction ID',
+        seller: 'Seller',
+        orderId: 'Order ID',
+        store: 'Store',
+        type: 'Type',
+        amount: 'Amount',
+        balance: 'Balance',
+        note: 'Note',
+        status: 'Status',
+        date: 'Date',
+      },
+      status: {
+        completed: 'Completed',
+        pending: 'Pending',
+        failed: 'Failed',
+      },
+      type: {
+        add_fund: 'Add Fund',
+        order_payment: 'Order Payment',
+        refund: 'Refund',
+      },
+      summary: {
+        total: 'Total',
+        page: 'This page',
+      },
+      loading: 'Loading transactions...',
+      noTransactionsTitle: 'No transactions found',
+      noTransactionsDescriptionFiltered: 'Try adjusting your filters',
+      noTransactionsDescriptionEmpty: 'No transactions available',
+      loadFailed: 'Failed to load transactions',
+      loadSellersFailed: 'Failed to load sellers',
+      exporting: 'Exporting transactions...',
+      exportSuccess: 'Transactions exported successfully!',
+      exportFailed: 'Failed to export transactions',
+      na: 'N/A',
+      none: 'No messages',
+    },
+    pendingFundPage: {
+      title: 'Pending Fund Requests',
+      subtitle: 'Review and approve fund deposit requests from sellers',
+      showing: 'Showing {count} pending request(s)',
+      loading: 'Loading...',
+      noRequests: 'No pending requests',
+      allCaught: 'All fund requests have been processed.',
+      fetchError: 'Failed to load pending requests',
+      confirmApprove: 'Are you sure you want to approve this fund request?',
+      approveSuccess: 'Fund request approved successfully!',
+      approveFailed: 'Failed to approve request',
+      rejectSuccess: 'Fund request rejected',
+      rejectFailed: 'Failed to reject request',
+      approve: 'Approve',
+      reject: 'Reject',
+      columns: {
+        id: 'ID',
+        seller: 'Seller',
+        type: 'Type',
+        amount: 'Amount',
+        transactionId: 'Transaction ID',
+        note: 'Note',
+        date: 'Date',
+        actions: 'Actions',
+      },
+      rejectModal: {
+        title: 'Reject Fund Request',
+        subtitle: 'Please provide a reason for rejection (optional)',
+        placeholder: 'Enter rejection reason...',
+        cancel: 'Cancel',
+        confirm: 'Confirm Reject',
+      },
+      type: {
+        deposit: 'Deposit',
+        refund: 'Refund',
+      },
+      na: 'N/A',
+    },
+    stock: {
+      manage: {
+        title: 'Stock Management',
+        description: 'Keep the legacy stock flow on the new system layout.',
+        importExport: 'Import/Export',
+        loading: 'Loading stock data...',
+        loadError: 'Failed to load stock data',
+        summary: {
+          totalStock: 'Total Stock',
+          reserved: 'Reserved',
+          available: 'Available',
+          lowStockItems: 'Low Stock Items',
+        },
+        filters: {
+          variantId: 'Variant ID',
+          sku: 'SKU',
+          style: 'Style',
+          color: 'Color',
+          size: 'Size',
+          stockLevel: 'Stock Level',
+          status: 'Status',
+          searchPlaceholder: 'Search...',
+          allStyles: 'All Styles',
+          allColors: 'All Colors',
+          allSizes: 'All Sizes',
+          all: 'All',
+          lowStock: 'Low Stock (< 5)',
+          outOfStock: 'Out of Stock',
+          active: 'Active',
+          inactive: 'Inactive',
+          reset: 'Reset',
+        },
+        empty: {
+          title: 'No products found',
+          description: 'Try adjusting your filters',
+        },
+        tabs: {
+          variants: 'variants',
+        },
+        bulk: {
+          selected: '{count} variants selected',
+          hint: 'Choose an operation to apply to all selected variants',
+          clearSelection: 'Clear selection',
+          operation: 'Operation',
+          selectOperation: 'Select operation...',
+          stockOperations: 'Stock Operations',
+          statusOperations: 'Status Operations',
+          addStock: 'Add to Current Stock',
+          subtractStock: 'Subtract from Current Stock',
+          setStock: 'Set Stock Level',
+          activate: 'Activate',
+          deactivate: 'Deactivate',
+          amountToAdd: 'Amount to Add',
+          amountToSubtract: 'Amount to Subtract',
+          newStockLevel: 'New Stock Level',
+          enterValue: 'Enter value...',
+          reason: 'Reason (Optional)',
+          reasonPlaceholder: 'e.g., New shipment arrived...',
+          applyTo: 'Apply to {count} variant(s)',
+          selectVariantsAndAction:
+            'Please select variants and an operation',
+          enterValidStock:
+            'Please enter a valid stock value (0 or greater)',
+          success: '{count} variants updated successfully',
+        },
+        table: {
+          variantId: 'Variant ID',
+          sku: 'SKU',
+          style: 'Style',
+          color: 'Color',
+          size: 'Size',
+          stock: 'Stock',
+          reserved: 'Reserved',
+          available: 'Available',
+          active: 'Active',
+          actions: 'Actions',
+          save: 'Save',
+          cancel: 'Cancel',
+          edit: 'Edit',
+          history: 'History',
+          noVariants: 'No variants found for this product',
+          stockCannotBeNegative: 'Stock cannot be negative',
+          noChangesToSave: 'No changes to save',
+          variantUpdated: 'Variant updated successfully',
+          updateFailed: 'Failed to update variant',
+          variantStatusUpdated: 'Variant status updated',
+        },
+        historyDialog: {
+          title: 'Stock History',
+          currentStock: 'Current Stock',
+          loading: 'Loading history...',
+          noRecords: 'No history records found',
+          increase: 'Increase',
+          decrease: 'Decrease',
+          adjust: 'Adjust',
+          import: 'Import',
+          skuUpdated: 'SKU Updated',
+          styleUpdated: 'Style Updated',
+          activated: 'Activated',
+          deactivated: 'Deactivated',
+          bulkUpdate: 'Bulk Update',
+          bulkOperation: 'Bulk Operation',
+          operation: 'Operation',
+          showingLast: 'Showing last 20 changes',
+          sku: 'SKU',
+          style: 'STYLE',
+          active: 'ACTIVE',
+          empty: '(empty)',
+          variantId: 'Variant ID',
+        },
+        importExportDialog: {
+          title: 'Stock Import/Export',
+          import: 'Import',
+          export: 'Export',
+          importInstructions: 'Import Instructions:',
+          instructionFile: 'File must be CSV format',
+          instructionId:
+            'Required: At least one identifier (Variant ID or SKU)',
+          instructionFields:
+            'Optional fields: Stock, Style, Color, Size, Product',
+          instructionUpdate: 'Only fields present in CSV will be updated',
+          stockOperationType: 'Stock Operation Type',
+          setStock: 'Set Stock (Replace)',
+          addStock: 'Add Stock (Increase)',
+          subtractStock: 'Subtract Stock (Decrease)',
+          hintSet: 'Replace current stock with values from file',
+          hintAdd: 'Add values from file to current stock',
+          hintSubtract: 'Subtract values from file from current stock',
+          selectCsvFile: 'Select CSV File',
+          chooseFile: 'Choose file...',
+          downloadTemplate: 'Download Template',
+          skuImport: 'SKU Import',
+          variantImport: 'Variant Import',
+          fullImport: 'Full Import',
+          skuTemplateHint: 'Download SKU template (SKU, Stock)',
+          variantTemplateHint: 'Download Variant template (Variant ID, Stock)',
+          fullTemplateHint: 'Download Full template (All fields)',
+          importing: 'Importing...',
+          importBtn: 'Import',
+          importResults: 'Import Results',
+          success: 'Success:',
+          failed: 'Failed:',
+          errors: 'Errors:',
+          moreErrors: '... and {count} more errors',
+          exportStockData: 'Export Stock Data:',
+          exportDesc: 'Export all stock data to CSV file including:',
+          exportFields1: 'Variant ID, SKU, Product Name',
+          exportFields2: 'Style, Color, Size',
+          exportFields3: 'Stock, Reserved, Available',
+          exportFields4: 'Status (Active/Inactive)',
+          exportPreview1:
+            'The export will include all variants with current stock information.',
+          exportPreview2:
+            'Export time depends on the number of variants in your inventory.',
+          exporting: 'Exporting...',
+          exportToCsv: 'Export to CSV',
+          pleaseSelectCsv: 'Please select a CSV file',
+          pleaseSelectFile: 'Please select a file',
+          importSuccess: 'Import completed successfully',
+          importFailed: 'Import failed',
+          failedToImport: 'Failed to import stock',
+          exportSuccess: 'Export completed successfully',
+          exportFailed: 'Export failed',
+          failedToExport: 'Failed to export stock',
+        },
+      },
+      shortage: {
+        title: 'Shortage Report',
+        subtitleWithCount: '{count} pending orders',
+        subtitleAllGood: 'No pending orders',
+        viewByVariant: 'View by Variant',
+        exportCsv: 'Export CSV',
+        exporting: 'Exporting shortage report...',
+        exportSuccess: 'Report exported successfully',
+        exportFailed: 'Failed to export report',
+        failedToLoadReport: 'Failed to load shortage report',
+        loading: 'Loading pending orders...',
+        noPendingOrders: 'No pending orders found',
+        totalPendingOrders: 'Total Pending Orders',
+        ordersWithShortage: 'Orders With Shortage',
+        variantsAffected: 'Variants Affected',
+        totalShortage: 'Total Shortage',
+        searchOrder: 'Search Order',
+        orderIdRefIdPlaceholder: 'Order ID / Ref ID...',
+        searchVariant: 'Search Variant',
+        variantIdPlaceholder: 'Variant ID...',
+        pendingReason: 'Pending Reason',
+        fromDate: 'From Date',
+        toDate: 'To Date',
+        sortBy: 'Sort By',
+        orderId: 'Order ID',
+        refId: 'Ref ID',
+        seller: 'Seller',
+        items: 'Items',
+        shortage: 'Shortage',
+        daysPending: 'Days Pending',
+        action: 'Action',
+        view: 'View',
+        day: 'day',
+        days: 'days',
+        awaitingProcessing: 'Awaiting Processing',
+        awaitingProcessingDesc:
+          'Stock is available for this order. The system is processing it and will allocate stock shortly.',
+        missingFiles: 'Missing Files',
+        noItems: 'No Items',
+        noItemsDesc: 'This order has no items. Please check the order details.',
+        unknownReason: 'Unknown Reason',
+        unknownReasonDesc:
+          'This order is pending for an unknown reason. It may be on manual hold or waiting for other business logic.',
+        status: {
+          shortage: 'Stock Shortage',
+          missing_files: 'Missing Files',
+          awaiting_allocation: 'Awaiting Allocation',
+          no_items: 'No Items',
+          unknown: 'Unknown',
+        },
+        sortOptions: {
+          seller_username: 'Seller',
+          days_pending: 'Days Pending',
+          shortage: 'Shortage Amount',
+          created_at: 'Created Date',
+        },
+        variantTable: {
+          title: 'Shortage Variants',
+          noVariants: 'No shortage variants',
+          variantId: 'Variant ID',
+          style: 'Style',
+          color: 'Color',
+          size: 'Size',
+          stock: 'Stock',
+          demand: 'Demand',
+          shortage: 'Shortage',
+        },
+      },
+      shortageByVariant: {
+        title: 'Shortage by Variant',
+        subtitleWithCount: '{count} variants with shortage',
+        subtitleAllGood: 'No shortage variants',
+        viewByOrder: 'View by Order',
+        failedToLoad: 'Failed to load shortage report',
+        totalVariants: 'Variants with Shortage',
+        totalShortage: 'Total Shortage',
+        ordersAffected: 'Orders Affected',
+        searchVariant: 'Variant ID',
+        variantIdPlaceholder: 'Variant ID...',
+        style: 'Style',
+        stylePlaceholder: 'Style...',
+        fromDate: 'From Date',
+        toDate: 'To Date',
+        sortBy: 'Sort By',
+        loading: 'Loading shortage variants...',
+        noShortage: 'No shortage variants found',
+        noShortageDesc: 'All variants have sufficient stock.',
+        variantId: 'Variant ID',
+        color: 'Color',
+        size: 'Size',
+        stock: 'Stock',
+        demand: 'Demand',
+        shortage: 'Shortage',
+        orders: 'Orders',
+        day: 'day',
+        days: 'days',
+        sortOptions: {
+          shortage: 'Shortage Amount',
+          orders_count: 'Orders Count',
+          demand: 'Demand',
+          variant_id: 'Variant ID',
+        },
+        ordersTable: {
+          title: 'Affected Orders',
+          noOrders: 'No affected orders',
+          orderId: 'Order ID',
+          refId: 'Ref ID',
+          seller: 'Seller',
+          quantity: 'Qty',
+          shortage: 'Shortage',
+          daysPending: 'Days',
+          action: 'Action',
+          view: 'View',
+        },
+      },
+      auditLogs: {
+        title: 'Stock Audit Logs',
+        subtitle: 'Track all stock changes and history',
+        loading: 'Loading audit logs...',
+        noLogs: 'No audit logs found',
+        failedToLoadLogs: 'Failed to load audit logs',
+        failedToLoadOptions: 'Failed to load filter options',
+        failedToCheckProductions: 'Failed to check variant productions',
+        searchVariant: 'Variant ID',
+        enterVariantId: 'Enter variant ID...',
+        style: 'Style',
+        allStyles: 'All Styles',
+        color: 'Color',
+        allColors: 'All Colors',
+        size: 'Size',
+        allSizes: 'All Sizes',
+        action: 'Action',
+        allActions: 'All Actions',
+        orderId: 'Order ID',
+        enterOrderId: 'Enter order ID...',
+        dateFrom: 'Date From',
+        dateTo: 'Date To',
+        dateTime: 'Date/Time',
+        user: 'User',
+        product: 'Product',
+        before: 'Before',
+        after: 'After',
+        change: 'Change',
+        reason: 'Reason',
+        stockIncrease: 'Stock Increase',
+        stockDecrease: 'Stock Decrease',
+        stockAdjustment: 'Stock Adjustment',
+        stockMapped: 'Stock Mapped',
+        stockRestored: 'Stock Restored',
+        manualAdjustment: 'Manual Adjustment',
+        system: 'System',
+        na: 'N/A',
+        clickToCheckProductions: 'Click to check productions',
+        variantProductions: {
+          title: 'Productions for Variant',
+          variantId: 'Variant ID',
+          productionId: 'Production #',
+          orderId: 'Order ID',
+          orderRef: 'Order Ref',
+          quantity: 'Quantity',
+          units: 'units',
+          noProductions: 'No productions found for this variant',
+          close: 'Close',
+          status: {
+            pending: 'Pending',
+            pickup: 'Pickup',
+            mapped: 'Mapped',
+            completed: 'Completed',
+            cancelled: 'Cancelled',
+            unknown: 'Unknown',
+          },
+        },
+      },
+    },
   },
 } satisfies Record<AppLocale, {
   language: {
@@ -2253,7 +4228,969 @@ const uiMessages = {
       createFailed: string
     }
   }
-}>
+  storesPage: {
+    title: string
+    subtitle: string
+    totalStores: string
+    addStore: string
+    searchPlaceholder: string
+    allStatus: string
+    loading: string
+    noStores: string
+    noStoresAvailable: string
+    failedToLoad: string
+    columns: {
+      id: string
+      user: string
+      storeName: string
+      status: string
+      createdAt: string
+      actions: string
+    }
+    status: {
+      active: string
+      unconfirmed: string
+      banned: string
+    }
+    dialog: {
+      createTitle: string
+      createSubtitle: string
+      editTitle: string
+      editSubtitle: string
+      loadingUsers: string
+      loadingStore: string
+      user: string
+      selectUser: string
+      storeName: string
+      enterStoreName: string
+      apiKey: string
+      status: string
+      cancel: string
+      create: string
+      creating: string
+      update: string
+      updating: string
+      onlySelf: string
+      onlyAdmin: string
+      statusHint: string
+      apiKeyHint: string
+      apiKeyEditHint: string
+      refreshKey: string
+      successCreate: string
+      successUpdate: string
+      failedCreate: string
+      failedUpdate: string
+      failedLoadUsers: string
+      failedLoadStore: string
+      validation: {
+        requiredUser: string
+        requiredName: string
+        requiredApiKey: string
+      }
+      active: string
+      unconfirmed: string
+      banned: string
+    }
+  }
+  usersPage: {
+    title: string
+    addFund: string
+    addNew: string
+    backToList: string
+    backToDetail: string
+    createTitle: string
+    editTitle: string
+    viewTitle: string
+    accountInfo: string
+    userDetails: string
+    integrationSettings: string
+    debitSettings: string
+    additionalOptions: string
+    username: string
+    email: string
+    role: string
+    statusLabel: string
+    registrationDate: string
+    firstName: string
+    lastName: string
+    phone: string
+    dob: string
+    address: string
+    webhookUrl: string
+    telegramId: string
+    apiKey: string
+    maxDebit: string
+    maxDateDebit: string
+    minDateDebit: string
+    balanceLabel: string
+    supportUs: string
+    privateSeller: string
+    days: string
+    yes: string
+    no: string
+    filters: {
+      search: string
+      allStatus: string
+      allRoles: string
+      allTiers: string
+    }
+    status: {
+      active: string
+      unconfirmed: string
+      banned: string
+    }
+    columns: {
+      username: string
+      fullName: string
+      role: string
+      email: string
+      balance: string
+      tier: string
+      registrationDate: string
+      status: string
+      actions: string
+    }
+    form: {
+      accountInfo: string
+      userDetails: string
+      integrationSettings: string
+      debitSettings: string
+      additionalOptions: string
+      email: string
+      username: string
+      password: string
+      confirmPassword: string
+      newPassword: string
+      confirmNewPassword: string
+      leaveBlank: string
+      role: string
+      status: string
+      firstName: string
+      lastName: string
+      phone: string
+      dob: string
+      address: string
+      webhookUrl: string
+      telegramId: string
+      apiKey: string
+      maxDebit: string
+      maxDateDebit: string
+      minDateDebit: string
+      supportUs: string
+      yes: string
+      no: string
+      optional: string
+      loadingRoles: string
+      noRoles: string
+      submit: string
+      update: string
+      cancel: string
+    }
+    addFundModal: {
+      title: string
+      selectSeller: string
+      loadingSellers: string
+      selectPlaceholder: string
+      currentBalance: string
+      type: string
+      deposit: string
+      withdraw: string
+      amount: string
+      enterAmount: string
+      note: string
+      notePlaceholder: string
+      newBalance: string
+      cancel: string
+      submit: string
+      selectSellerRequired: string
+      invalidAmount: string
+      fundFailed: string
+      fundSuccess: string
+    }
+    tiers: {
+      silver: string
+      gold: string
+      platinum: string
+      diamond: string
+    }
+    roles: {
+      admin: string
+      seller: string
+      user: string
+      supplier: string
+      staff: string
+      support: string
+      designer: string
+      finance: string
+    }
+    notFound: string
+    loadFailed: string
+    deleteConfirm: string
+    deleteSuccess: string
+    deleteFailed: string
+    createSuccess: string
+    updateSuccess: string
+    loading: string
+    deleteTitle: string
+    error: string
+    na: string
+  }
+  staffReportPage: {
+    title: string
+    subtitle: string
+    filters: {
+      dateFrom: string
+      dateTo: string
+      staffMember: string
+      allStaff: string
+      apply: string
+      refresh: string
+    }
+    summary: {
+      title: string
+      staffName: string
+      username: string
+      itemsProcessed: string
+      contribution: string
+      share: string
+      noData: string
+      total: string
+      items: string
+    }
+    details: {
+      title: string
+      staffName: string
+      username: string
+      orderItem: string
+      order: string
+      item: string
+      metaKey: string
+      processedAt: string
+      noData: string
+    }
+    loading: string
+    failedLoadList: string
+    failedLoadReport: string
+  }
+  attendancesPage: {
+    title: string
+    subtitle: string
+    importBtn: string
+    importing: string
+    filters: {
+      employeeName: string
+      searchPlaceholder: string
+      customRange: string
+      from: string
+      to: string
+      date: string
+      month: string
+      clear: string
+    }
+    columns: {
+      id: string
+      employeeName: string
+      totalDays: string
+      week: string
+      month: string
+      year: string
+    }
+    days: string
+    logs: {
+      show: string
+      entries: string
+      showing: string
+      of: string
+      records: string
+      noRecords: string
+      date: string
+      checkIn: string
+      checkOut: string
+      totalWork: string
+      loading: string
+      noRecordsFound: string
+      completeMissing: string
+      previous: string
+      next: string
+      pageOf: string
+    }
+    editModal: {
+      title: string
+      employee: string
+      workDate: string
+      existingTime: string
+      missingType: string
+      checkIn: string
+      checkOut: string
+      time: string
+      cancel: string
+      save: string
+      saving: string
+      validation: {
+        timeRequired: string
+      }
+    }
+    messages: {
+      failedLoadData: string
+      failedLoadLogs: string
+      importSuccess: string
+      importFailed: string
+      noRecords: string
+      updateSuccess: string
+      updateFailed: string
+    }
+  }
+  payrollPage: {
+    title: string
+    subtitle: string
+    setRate: string
+    rewardsPenalties: string
+    month: string
+    customRange: string
+    from: string
+    to: string
+    totalHours: string
+    totalSalary: string
+    netTotal: string
+    companyTaxTotal: string
+    missingRate: string
+    staffs: string
+    noEmployees: string
+    employee: string
+    rateHr: string
+    hours: string
+    adjustments: string
+    grossSalary: string
+    netSalary: string
+    companyTax: string
+    totalSalaryCol: string
+    actions: string
+    edit: string
+    log: string
+    view: string
+    clickToEdit: string
+    save: string
+    cancel: string
+    close: string
+    loading: string
+    selectEmployee: string
+    selectTierOrRate: string
+    fillTypeAmount: string
+    rateSetSuccess: string
+    failedSetRate: string
+    rateUpdated: string
+    failedUpdateRate: string
+    adjustmentSuccess: string
+    failedAdjustment: string
+    failedLoadPayroll: string
+    fieldUpdated: string
+    failedUpdate: string
+    setRateModal: {
+      title: string
+      selectEmployees: string
+      selectAll: string
+      selected: string
+      selectTier: string
+      or: string
+      customRate: string
+      effectiveFrom: string
+      setting: string
+      setRateBtn: string
+    }
+    editRateModal: {
+      title: string
+      hourlyRate: string
+      detachNote: string
+      note: string
+      reasonPlaceholder: string
+      saving: string
+    }
+    salaryLog: {
+      title: string
+      noHistory: string
+      custom: string
+      from: string
+      ended: string
+      current: string
+    }
+    adjustmentModal: {
+      title: string
+      type: string
+      typePlaceholder: string
+      amount: string
+      action: string
+      addReward: string
+      deductPenalty: string
+      date: string
+      processing: string
+      add: string
+      deduct: string
+    }
+    adjustmentDetail: {
+      title: string
+      noAdjustments: string
+      typeReason: string
+    }
+    guide: {
+      title: string
+      close: string
+      steps: Array<{
+        icon: string
+        title: string
+        desc: string
+      }>
+    }
+  }
+  payrollTiersPage: {
+    title: string
+    subtitle: string
+    createTier: string
+    tierName: string
+    hourlyRate: string
+    currency: string
+    description: string
+    actions: string
+    noTiers: string
+    createTitle: string
+    editTitle: string
+    deleteTitle: string
+    namePlaceholder: string
+    ratePlaceholder: string
+    descriptionPlaceholder: string
+    create: string
+    creating: string
+    save: string
+    saving: string
+    cancel: string
+    delete: string
+    deleting: string
+    confirmDelete: string
+    fillTypeAmount: string
+    tierCreated: string
+    tierUpdated: string
+    tierDeleted: string
+    failedLoadTiers: string
+    failedCreateTier: string
+    failedUpdateTier: string
+    failedDeleteTier: string
+  }
+  ticketsPage: {
+    title: string
+    subtitle: string
+    totalTickets: string
+    tabs: {
+      all: string
+      new: string
+      solved: string
+    }
+    filters: {
+      ticketId: string
+      orderId: string
+      subject: string
+      allSellers: string
+      allSupport: string
+    }
+    columns: {
+      id: string
+      orderId: string
+      subject: string
+      status: string
+      userReply: string
+      lastReply: string
+      owner: string
+      updated: string
+      actions: string
+    }
+    status: {
+      new: string
+      solved: string
+    }
+    actions: {
+      view: string
+      solve: string
+    }
+    noTicketsTitle: string
+    noTicketsDescriptionFiltered: string
+    noTicketsDescriptionEmpty: string
+    loadFailed: string
+    statusUpdated: string
+    statusUpdateFailed: string
+    createSuccess: string
+    createDialog: {
+      createTitle: string
+      subject: string
+      subjectPlaceholder: string
+      message: string
+      messagePlaceholder: string
+      attachFile: string
+      clickToUpload: string
+      fileHint: string
+      cancel: string
+      creating: string
+      createNew: string
+      subjectRequired: string
+      messageRequired: string
+      orderIdMissing: string
+      fileSizeError: string
+      fileTypeError: string
+      createFailed: string
+    }
+  }
+  ticketDetailPage: {
+    back: string
+    backToTickets: string
+    loading: string
+    notFound: string
+    loadDetailFailed: string
+    fileSizeError: string
+    fileTypeError: string
+    viewPdf: string
+    noMessages: string
+    placeholder: string
+    placeholderImage: string
+    enterMessage: string
+    sendFailed: string
+    statusUpdated: string
+    statusUpdateFailed: string
+    markSolved: string
+    reopen: string
+    remove: string
+    status: {
+      new: string
+      solved: string
+    }
+    unknown: string
+  }
+  walletTransactionsPage: {
+    title: string
+    subtitle: string
+    totalTransactions: string
+    exportAll: string
+    exportPayments: string
+    exportDeposits: string
+    exportRefunds: string
+    tabs: {
+      all: string
+      payments: string
+      deposits: string
+      refunds: string
+    }
+    filters: {
+      allSellers: string
+      fromDate: string
+      toDate: string
+      search: string
+    }
+    columns: {
+      id: string
+      transactionId: string
+      seller: string
+      orderId: string
+      store: string
+      type: string
+      amount: string
+      balance: string
+      note: string
+      status: string
+      date: string
+    }
+    status: {
+      completed: string
+      pending: string
+      failed: string
+    }
+    type: {
+      add_fund: string
+      order_payment: string
+      refund: string
+    }
+    summary: {
+      total: string
+      page: string
+    }
+    loading: string
+    noTransactionsTitle: string
+    noTransactionsDescriptionFiltered: string
+    noTransactionsDescriptionEmpty: string
+    loadFailed: string
+    loadSellersFailed: string
+    exporting: string
+    exportSuccess: string
+    exportFailed: string
+    na: string
+    none: string
+  }
+  pendingFundPage: {
+    title: string
+    subtitle: string
+    showing: string
+    loading: string
+    noRequests: string
+    allCaught: string
+    fetchError: string
+    confirmApprove: string
+    approveSuccess: string
+    approveFailed: string
+    rejectSuccess: string
+    rejectFailed: string
+    approve: string
+    reject: string
+    columns: {
+      id: string
+      seller: string
+      type: string
+      amount: string
+      transactionId: string
+      note: string
+      date: string
+      actions: string
+    }
+    rejectModal: {
+      title: string
+      subtitle: string
+      placeholder: string
+      cancel: string
+      confirm: string
+    }
+    type: {
+      deposit: string
+      refund: string
+    }
+    na: string
+  }
+  stock: {
+    manage: {
+      title: string
+      description: string
+      importExport: string
+      loading: string
+      loadError: string
+      summary: {
+        totalStock: string
+        reserved: string
+        available: string
+        lowStockItems: string
+      }
+      filters: {
+        variantId: string
+        sku: string
+        style: string
+        color: string
+        size: string
+        stockLevel: string
+        status: string
+        searchPlaceholder: string
+        allStyles: string
+        allColors: string
+        allSizes: string
+        all: string
+        lowStock: string
+        outOfStock: string
+        active: string
+        inactive: string
+        reset: string
+      }
+      empty: {
+        title: string
+        description: string
+      }
+      tabs: {
+        variants: string
+      }
+      bulk: {
+        selected: string
+        hint: string
+        clearSelection: string
+        operation: string
+        selectOperation: string
+        stockOperations: string
+        statusOperations: string
+        addStock: string
+        subtractStock: string
+        setStock: string
+        activate: string
+        deactivate: string
+        amountToAdd: string
+        amountToSubtract: string
+        newStockLevel: string
+        enterValue: string
+        reason: string
+        reasonPlaceholder: string
+        applyTo: string
+        selectVariantsAndAction: string
+        enterValidStock: string
+        success: string
+      }
+      table: {
+        variantId: string
+        sku: string
+        style: string
+        color: string
+        size: string
+        stock: string
+        reserved: string
+        available: string
+        active: string
+        actions: string
+        save: string
+        cancel: string
+        edit: string
+        history: string
+        noVariants: string
+        stockCannotBeNegative: string
+        noChangesToSave: string
+        variantUpdated: string
+        updateFailed: string
+        variantStatusUpdated: string
+      }
+      historyDialog: {
+        title: string
+        currentStock: string
+        loading: string
+        noRecords: string
+        increase: string
+        decrease: string
+        adjust: string
+        import: string
+        skuUpdated: string
+        styleUpdated: string
+        activated: string
+        deactivated: string
+        bulkUpdate: string
+        bulkOperation: string
+        operation: string
+        showingLast: string
+        sku: string
+        style: string
+        active: string
+        empty: string
+        variantId: string
+      }
+      importExportDialog: {
+        title: string
+        import: string
+        export: string
+        importInstructions: string
+        instructionFile: string
+        instructionId: string
+        instructionFields: string
+        instructionUpdate: string
+        stockOperationType: string
+        setStock: string
+        addStock: string
+        subtractStock: string
+        hintSet: string
+        hintAdd: string
+        hintSubtract: string
+        selectCsvFile: string
+        chooseFile: string
+        downloadTemplate: string
+        skuImport: string
+        variantImport: string
+        fullImport: string
+        skuTemplateHint: string
+        variantTemplateHint: string
+        fullTemplateHint: string
+        importing: string
+        importBtn: string
+        importResults: string
+        success: string
+        failed: string
+        errors: string
+        moreErrors: string
+        exportStockData: string
+        exportDesc: string
+        exportFields1: string
+        exportFields2: string
+        exportFields3: string
+        exportFields4: string
+        exportPreview1: string
+        exportPreview2: string
+        exporting: string
+        exportToCsv: string
+        pleaseSelectCsv: string
+        pleaseSelectFile: string
+        importSuccess: string
+        importFailed: string
+        failedToImport: string
+        exportSuccess: string
+        exportFailed: string
+        failedToExport: string
+      }
+    }
+    shortage: {
+      title: string
+      subtitleWithCount: string
+      subtitleAllGood: string
+      viewByVariant: string
+      exportCsv: string
+      exporting: string
+      exportSuccess: string
+      exportFailed: string
+      failedToLoadReport: string
+      loading: string
+      noPendingOrders: string
+      totalPendingOrders: string
+      ordersWithShortage: string
+      variantsAffected: string
+      totalShortage: string
+      searchOrder: string
+      orderIdRefIdPlaceholder: string
+      searchVariant: string
+      variantIdPlaceholder: string
+      pendingReason: string
+      fromDate: string
+      toDate: string
+      sortBy: string
+      orderId: string
+      refId: string
+      seller: string
+      items: string
+      shortage: string
+      daysPending: string
+      action: string
+      view: string
+      day: string
+      days: string
+      awaitingProcessing: string
+      awaitingProcessingDesc: string
+      missingFiles: string
+      noItems: string
+      noItemsDesc: string
+      unknownReason: string
+      unknownReasonDesc: string
+      status: {
+        shortage: string
+        missing_files: string
+        awaiting_allocation: string
+        no_items: string
+        unknown: string
+      }
+      sortOptions: {
+        seller_username: string
+        days_pending: string
+        shortage: string
+        created_at: string
+      }
+      variantTable: {
+        title: string
+        noVariants: string
+        variantId: string
+        style: string
+        color: string
+        size: string
+        stock: string
+        demand: string
+        shortage: string
+      }
+    }
+    shortageByVariant: {
+      title: string
+      subtitleWithCount: string
+      subtitleAllGood: string
+      viewByOrder: string
+      failedToLoad: string
+      totalVariants: string
+      totalShortage: string
+      ordersAffected: string
+      searchVariant: string
+      variantIdPlaceholder: string
+      style: string
+      stylePlaceholder: string
+      fromDate: string
+      toDate: string
+      sortBy: string
+      loading: string
+      noShortage: string
+      noShortageDesc: string
+      variantId: string
+      color: string
+      size: string
+      stock: string
+      demand: string
+      shortage: string
+      orders: string
+      day: string
+      days: string
+      sortOptions: {
+        shortage: string
+        orders_count: string
+        demand: string
+        variant_id: string
+      }
+      ordersTable: {
+        title: string
+        noOrders: string
+        orderId: string
+        refId: string
+        seller: string
+        quantity: string
+        shortage: string
+        daysPending: string
+        action: string
+        view: string
+      }
+    }
+    auditLogs: {
+      title: string
+      subtitle: string
+      loading: string
+      noLogs: string
+      failedToLoadLogs: string
+      failedToLoadOptions: string
+      failedToCheckProductions: string
+      searchVariant: string
+      enterVariantId: string
+      style: string
+      allStyles: string
+      color: string
+      allColors: string
+      size: string
+      allSizes: string
+      action: string
+      allActions: string
+      orderId: string
+      enterOrderId: string
+      dateFrom: string
+      dateTo: string
+      dateTime: string
+      user: string
+      product: string
+      before: string
+      after: string
+      change: string
+      reason: string
+      stockIncrease: string
+      stockDecrease: string
+      stockAdjustment: string
+      stockMapped: string
+      stockRestored: string
+      manualAdjustment: string
+      system: string
+      na: string
+      clickToCheckProductions: string
+      variantProductions: {
+        title: string
+        variantId: string
+        productionId: string
+        orderId: string
+        orderRef: string
+        quantity: string
+        units: string
+        noProductions: string
+        close: string
+        status: {
+          pending: string
+          pickup: string
+          mapped: string
+          completed: string
+          cancelled: string
+          unknown: string
+        }
+      }
+    }
+  }
+}> 
 
 type I18nContextType = {
   locale: AppLocale

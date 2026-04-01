@@ -1,5 +1,5 @@
-import { LemiexStores } from '@/features/lemiex/stores'
+import { LemiexStoresPage } from '@/features/lemiex/stores/page'
 
-export default function LemiexStoresPage() {
-  return <LemiexStores />
+export default function LemiexStoresRoute() {
+  return <LemiexStoresPage />
 }

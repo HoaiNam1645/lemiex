@@ -1,5 +1,5 @@
-import { LemiexWallets } from '@/features/lemiex/wallets'
+import { redirect } from 'next/navigation'
 
 export default function LemiexWalletsPage() {
-  return <LemiexWallets />
+  redirect('/lemiex/wallets/transactions')
 }
