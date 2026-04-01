@@ -1,5 +1,17 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
-const nextConfig: NextConfig = {};
+const backendApiOrigin =
+  process.env.BACKEND_API_ORIGIN || 'http://127.0.0.1:8000/api'
 
-export default nextConfig;
+const nextConfig: NextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: `${backendApiOrigin}/:path*`,
+      },
+    ]
+  },
+}
+
+export default nextConfig

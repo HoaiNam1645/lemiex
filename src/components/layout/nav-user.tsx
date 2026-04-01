@@ -11,7 +11,7 @@ import {
   Sparkles,
 } from 'lucide-react'
 import useDialogState from '@/hooks/use-dialog-state'
-import { useAuthStore, type LemiexRole } from '@/stores/auth-store'
+import { useAuthStore } from '@/stores/auth-store'
 import { getLemiexRole } from '@/features/lemiex/layout/sidebar-data'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
@@ -20,8 +20,6 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
@@ -48,20 +46,14 @@ export function NavUser({ user }: NavUserProps) {
   const { messages } = useI18n()
   const pathname = usePathname()
   const authUser = useAuthStore((state) => state.auth.user)
-  const setRole = useAuthStore((state) => state.auth.setRole)
   const activeRole = getLemiexRole(authUser?.role)
   const isLemiexRoute = pathname.startsWith('/lemiex')
-  const displayName = authUser?.email ? authUser.email.split('@')[0] : user.name
+  const displayName =
+    authUser?.name ||
+    authUser?.full_name ||
+    authUser?.username ||
+    (authUser?.email ? authUser.email.split('@')[0] : user.name)
   const displayEmail = authUser?.email ?? user.email
-  const lemiexRoles: LemiexRole[] = [
-    'Admin',
-    'Support',
-    'Seller',
-    'Staff',
-    'QC',
-    'Packing',
-    'Shipout',
-  ]
 
   return (
     <>
@@ -101,7 +93,9 @@ export function NavUser({ user }: NavUserProps) {
                   <div className='grid flex-1 text-start text-sm leading-tight'>
                     <span className='truncate font-semibold'>{displayName}</span>
                     <span className='truncate text-xs'>
-                      {isLemiexRoute ? `${activeRole} role` : displayEmail}
+                      {isLemiexRoute
+                        ? `${messages.profile.roleLabel}: ${activeRole}`
+                        : displayEmail}
                     </span>
                   </div>
                 </div>
@@ -109,7 +103,7 @@ export function NavUser({ user }: NavUserProps) {
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
-                  <Link to='/settings'>
+                  <Link to='/lemiex/profile'>
                     <Sparkles />
                     {messages.profile.manageProfile}
                   </Link>
@@ -118,7 +112,7 @@ export function NavUser({ user }: NavUserProps) {
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
-                  <Link to='/settings'>
+                  <Link to='/lemiex/profile'>
                     <BadgeCheck />
                     {messages.profile.manageProfile}
                   </Link>
@@ -138,23 +132,11 @@ export function NavUser({ user }: NavUserProps) {
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               {isLemiexRoute ? (
-                <>
-                  <DropdownMenuLabel className='text-xs text-muted-foreground'>
-                    Lemiex role
-                  </DropdownMenuLabel>
-                  <DropdownMenuRadioGroup
-                    value={activeRole}
-                    onValueChange={(value) => setRole(value as LemiexRole)}
-                  >
-                    {lemiexRoles.map((role) => (
-                      <DropdownMenuRadioItem key={role} value={role}>
-                        {role}
-                      </DropdownMenuRadioItem>
-                    ))}
-                  </DropdownMenuRadioGroup>
-                  <DropdownMenuSeparator />
-                </>
+                <DropdownMenuLabel className='text-xs text-muted-foreground'>
+                  {messages.profile.roleLabel}: {activeRole}
+                </DropdownMenuLabel>
               ) : null}
+              {isLemiexRoute ? <DropdownMenuSeparator /> : null}
               <DropdownMenuItem
                 variant='destructive'
                 onClick={() => setOpen(true)}

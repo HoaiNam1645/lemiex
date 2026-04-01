@@ -6,9 +6,9 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useNavigate } from '@/lib/router'
 import { Loader2, LogIn } from 'lucide-react'
-import { toast } from 'sonner'
 import { useAuthStore } from '@/stores/auth-store'
-import { sleep, cn } from '@/lib/utils'
+import { cn } from '@/lib/utils'
+import { login as loginWithApi, getLoginRedirectPath } from '@/services/auth/api'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -22,9 +22,7 @@ import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
 
 const formSchema = z.object({
-  email: z.email({
-    error: (iss) => (iss.input === '' ? 'Vui lòng nhập email' : undefined),
-  }),
+  login: z.string().min(1, 'Vui lòng nhập email hoặc tên đăng nhập'),
   password: z
     .string()
     .min(1, 'Vui lòng nhập mật khẩu')
@@ -33,11 +31,17 @@ const formSchema = z.object({
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLFormElement> {
   redirectTo?: string
+  defaultRedirectTo?: string
+  showForgotPassword?: boolean
+  showSignUpPrompt?: boolean
 }
 
 export function UserAuthForm({
   className,
   redirectTo,
+  defaultRedirectTo = '/tasks',
+  showForgotPassword = true,
+  showSignUpPrompt = true,
   ...props
 }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = useState(false)
@@ -47,39 +51,33 @@ export function UserAuthForm({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: '',
+      login: '',
       password: '',
     },
   })
 
-  function onSubmit(data: z.infer<typeof formSchema>) {
+  async function onSubmit(data: z.infer<typeof formSchema>) {
     setIsLoading(true)
+    form.clearErrors('root')
 
-    toast.promise(sleep(2000), {
-      loading: 'Đang đăng nhập...',
-      success: () => {
-        setIsLoading(false)
+    const result = await loginWithApi(data.login, data.password)
 
-        // Mock successful authentication with expiry computed at success time
-        const mockUser = {
-          accountNo: 'ACC001',
-          email: data.email,
-          role: 'Admin' as const,
-          exp: Date.now() + 24 * 60 * 60 * 1000, // 24 hours from now
-        }
+    if (!result.success) {
+      form.setError('root', {
+        message: result.message,
+      })
+      setIsLoading(false)
+      return
+    }
 
-        // Set user and access token
-        auth.setUser(mockUser)
-        auth.setAccessToken('mock-access-token')
+    auth.setUser(result.user)
+    auth.setAccessToken(result.token)
 
-        // Redirect to the stored location or default to dashboard
-        const targetPath = redirectTo || '/tasks'
-        navigate({ to: targetPath, replace: true })
+    const targetPath =
+      redirectTo || getLoginRedirectPath(result.user) || defaultRedirectTo
 
-        return `Chào mừng quay lại, ${data.email}!`
-      },
-      error: 'Đăng nhập thất bại',
-    })
+    navigate({ to: targetPath, replace: true })
+    setIsLoading(false)
   }
 
   return (
@@ -89,12 +87,17 @@ export function UserAuthForm({
         className={cn('grid gap-3', className)}
         {...props}
       >
+        {form.formState.errors.root?.message ? (
+          <div className='rounded-lg border border-destructive/20 bg-destructive/5 px-3 py-2 text-sm text-destructive'>
+            {form.formState.errors.root.message}
+          </div>
+        ) : null}
         <FormField
           control={form.control}
-          name='email'
+          name='login'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Email hoặc tài khoản</FormLabel>
               <FormControl>
                 <Input placeholder='ban@example.com' {...field} />
               </FormControl>
@@ -112,12 +115,14 @@ export function UserAuthForm({
                 <PasswordInput placeholder='********' {...field} />
               </FormControl>
               <FormMessage />
-              <Link
-                to='/forgot-password'
-                className='absolute end-0 -top-0.5 text-sm font-medium text-muted-foreground hover:opacity-75'
-              >
-                Quên mật khẩu?
-              </Link>
+              {showForgotPassword ? (
+                <Link
+                  to='/forgot-password'
+                  className='absolute end-0 -top-0.5 text-sm font-medium text-muted-foreground hover:opacity-75'
+                >
+                  Quên mật khẩu?
+                </Link>
+              ) : null}
             </FormItem>
           )}
         />
@@ -125,15 +130,17 @@ export function UserAuthForm({
           {isLoading ? <Loader2 className='animate-spin' /> : <LogIn />}
           Đăng nhập
         </Button>
-        <p className='text-center text-sm text-muted-foreground'>
-          Chưa có tài khoản?{' '}
-          <Link
-            to='/sign-up'
-            className='font-medium underline underline-offset-4 hover:text-primary'
-          >
-            Tạo tài khoản mới
-          </Link>
-        </p>
+        {showSignUpPrompt ? (
+          <p className='text-center text-sm text-muted-foreground'>
+            Chưa có tài khoản?{' '}
+            <Link
+              to='/sign-up'
+              className='font-medium underline underline-offset-4 hover:text-primary'
+            >
+              Tạo tài khoản mới
+            </Link>
+          </p>
+        ) : null}
       </form>
     </Form>
   )

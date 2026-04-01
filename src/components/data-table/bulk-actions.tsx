@@ -13,11 +13,24 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 
-type DataTableBulkActionsProps<TData> = {
+type DataTableBulkActionsWithTableProps<TData> = {
   table: Table<TData>
   entityName: string
   children: React.ReactNode
+  className?: string
 }
+
+type DataTableBulkActionsControlledProps = {
+  selectedCount: number
+  entityName: string
+  children: React.ReactNode
+  onClearSelection: () => void
+  className?: string
+}
+
+type DataTableBulkActionsProps<TData> =
+  | DataTableBulkActionsWithTableProps<TData>
+  | DataTableBulkActionsControlledProps
 
 /**
  * A modular toolbar for displaying bulk actions when table rows are selected.
@@ -30,14 +43,17 @@ type DataTableBulkActionsProps<TData> = {
  * @returns {React.ReactNode | null} The rendered component or null if no rows are selected.
  */
 export function DataTableBulkActions<TData>({
-  table,
   entityName,
   children,
+  className,
+  ...props
 }: DataTableBulkActionsProps<TData>): React.ReactNode | null {
-  const selectedRows = table.getFilteredSelectedRowModel().rows
-  const selectedCount = selectedRows.length
   const toolbarRef = useRef<HTMLDivElement>(null)
   const [announcement, setAnnouncement] = useState('')
+  const isControlled = 'selectedCount' in props
+  const selectedCount = isControlled
+    ? props.selectedCount
+    : props.table.getFilteredSelectedRowModel().rows.length
 
   // Announce selection changes to screen readers
   useEffect(() => {
@@ -56,7 +72,12 @@ export function DataTableBulkActions<TData>({
   }, [selectedCount, entityName])
 
   const handleClearSelection = () => {
-    table.resetRowSelection()
+    if (isControlled) {
+      props.onClearSelection()
+      return
+    }
+
+    props.table.resetRowSelection()
   }
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -147,7 +168,8 @@ export function DataTableBulkActions<TData>({
         className={cn(
           'fixed bottom-6 left-1/2 z-50 -translate-x-1/2 rounded-xl',
           'transition-all delay-100 duration-300 ease-out hover:scale-105',
-          'focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none'
+          'focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none',
+          className
         )}
       >
         <div

@@ -27,65 +27,103 @@ function WorkspaceLogo(props: React.ComponentProps<'div'>) {
 }
 
 function getTeams(_locale: AppLocale): Team[] {
+  const labels = {
+    vi: {
+      teamName: 'Không gian quản trị',
+      teamPlan: 'Next.js + shadcn/ui',
+    },
+    en: {
+      teamName: 'Admin Workspace',
+      teamPlan: 'Next.js + shadcn/ui',
+    },
+  }[_locale]
+
   return [
     {
       id: 'workspace',
-      name: 'Admin Workspace',
+      name: labels.teamName,
       logo: WorkspaceLogo,
-      plan: 'Next.js + shadcn/ui',
+      plan: labels.teamPlan,
       defaultUrl: '/tasks',
     },
-    getLemiexTeam(),
+    getLemiexTeam(_locale),
   ]
 }
 
-function getWorkspaceNavGroups(_locale: AppLocale): NavGroup[] {
+function getWorkspaceNavGroups(locale: AppLocale): NavGroup[] {
+  const labels = {
+    vi: {
+      general: 'Tổng quan',
+      overview: 'Tổng quan',
+      tasks: 'Công việc',
+      apps: 'Ứng dụng',
+      users: 'Người dùng',
+      support: 'Hỗ trợ',
+      helpCenter: 'Trung tâm trợ giúp',
+      notifications: 'Thông báo',
+      settings: 'Cài đặt',
+      profile: 'Hồ sơ',
+    },
+    en: {
+      general: 'General',
+      overview: 'Overview',
+      tasks: 'Tasks',
+      apps: 'Apps',
+      users: 'Users',
+      support: 'Support',
+      helpCenter: 'Help Center',
+      notifications: 'Notifications',
+      settings: 'Settings',
+      profile: 'Profile',
+    },
+  }[locale]
+
   return [
     {
-      title: 'General',
+      title: labels.general,
       items: [
         {
-          title: 'Overview',
+          title: labels.overview,
           url: '/tasks',
           icon: LayoutDashboard,
         },
         {
-          title: 'Tasks',
+          title: labels.tasks,
           url: '/tasks',
           icon: ListTodo,
         },
         {
-          title: 'Apps',
+          title: labels.apps,
           url: '/apps',
           icon: Package,
         },
         {
-          title: 'Users',
+          title: labels.users,
           url: '/users',
           icon: Users,
         },
       ],
     },
     {
-      title: 'Support',
+      title: labels.support,
       items: [
         {
-          title: 'Help Center',
+          title: labels.helpCenter,
           url: '/help-center',
           icon: HelpCircle,
         },
         {
-          title: 'Notifications',
+          title: labels.notifications,
           url: '/settings/notifications',
           icon: Bell,
         },
       ],
     },
     {
-      title: 'Settings',
+      title: labels.settings,
       items: [
         {
-          title: 'Profile',
+          title: labels.profile,
           url: '/settings',
           icon: Settings,
         },
@@ -114,7 +152,7 @@ export function getSidebarNavGroups(
   role: LemiexRole = 'Admin'
 ) {
   if (teamId === 'lemiex') {
-    return getLemiexNavGroups(getLemiexRole(role))
+    return getLemiexNavGroups(locale, getLemiexRole(role))
   }
 
   return getWorkspaceNavGroups(locale)

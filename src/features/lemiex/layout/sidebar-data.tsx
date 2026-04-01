@@ -18,6 +18,7 @@ import {
   Warehouse,
 } from 'lucide-react'
 import { type NavCollapsible, type NavGroup, type Team } from '@/components/layout/types'
+import { type AppLocale } from '@/lib/i18n/types'
 import { type LemiexRole } from '@/stores/auth-store'
 
 const ALL_ACCESS_ROLES: LemiexRole[] = ['Admin', 'Support']
@@ -66,6 +67,95 @@ const ROLE_PERMISSIONS: Record<LemiexRole, string[]> = {
 
 type LemiexNavItem = NavGroup['items'][number]
 
+const LEMIEX_SIDEBAR_LABELS = {
+  vi: {
+    teamName: 'Không gian Lemiex',
+    teamPlan: 'Sidebar theo vai trò',
+    overview: 'Tổng quan',
+    commerce: 'Thương mại',
+    operations: 'Vận hành',
+    supportTools: 'Công cụ hỗ trợ',
+    administration: 'Quản trị',
+    dashboard: 'Bảng điều khiển',
+    welcome: 'Chào mừng',
+    orders: 'Đơn hàng',
+    designs: 'Thiết kế',
+    products: 'Sản phẩm',
+    catalog: 'Danh mục',
+    productVariants: 'Biến thể sản phẩm',
+    stores: 'Cửa hàng',
+    tickets: 'Khiếu nại',
+    stockManagement: 'Quản lý kho',
+    stockDashboard: 'Tổng quan kho',
+    manageStock: 'Quản lý tồn kho',
+    productions: 'Sản xuất',
+    shortageReport: 'Báo cáo thiếu hàng',
+    shortageByVariant: 'Thiếu hàng theo biến thể',
+    auditLogs: 'Lịch sử kiểm tra',
+    hrPayroll: 'Nhân sự & lương',
+    attendances: 'Chấm công',
+    payrollReport: 'Báo cáo lương',
+    salaryTiers: 'Bậc lương',
+    embroideryProgress: 'Tiến độ thêu',
+    trackings: 'Theo dõi đơn',
+    videos: 'Video',
+    wallets: 'Ví',
+    transactions: 'Giao dịch',
+    pendingFund: 'Tiền chờ duyệt',
+    refunds: 'Hoàn tiền',
+    surcharge: 'Phụ thu',
+    debits: 'Công nợ',
+    staffReport: 'Báo cáo nhân sự',
+    systems: 'Hệ thống',
+    users: 'Người dùng',
+    permissions: 'Phân quyền',
+    tiers: 'Tiers',
+  },
+  en: {
+    teamName: 'Lemiex Workspace',
+    teamPlan: 'Role-aware sidebar',
+    overview: 'Overview',
+    commerce: 'Commerce',
+    operations: 'Operations',
+    supportTools: 'Support Tools',
+    administration: 'Administration',
+    dashboard: 'Dashboard',
+    welcome: 'Welcome',
+    orders: 'Orders',
+    designs: 'Designs',
+    products: 'Products',
+    catalog: 'Catalog',
+    productVariants: 'Product Variants',
+    stores: 'Stores',
+    tickets: 'Tickets',
+    stockManagement: 'Stock Management',
+    stockDashboard: 'Dashboard',
+    manageStock: 'Manage Stock',
+    productions: 'Productions',
+    shortageReport: 'Shortage Report',
+    shortageByVariant: 'Shortage by Variant',
+    auditLogs: 'Audit Logs',
+    hrPayroll: 'HR & Payroll',
+    attendances: 'Attendances',
+    payrollReport: 'Payroll Report',
+    salaryTiers: 'Salary Tiers',
+    embroideryProgress: 'Embroidery Progress',
+    trackings: 'Trackings',
+    videos: 'Videos',
+    wallets: 'Wallets',
+    transactions: 'Transactions',
+    pendingFund: 'Pending Fund',
+    refunds: 'Refunds',
+    surcharge: 'Surcharge',
+    debits: 'Debits',
+    staffReport: 'Staff Report',
+    systems: 'Systems',
+    users: 'Users',
+    permissions: 'Permissions',
+    tiers: 'Tiers',
+  },
+} satisfies Record<AppLocale, Record<string, string>>
+
 function LemiexLogo(props: React.ComponentProps<'div'>) {
   const { className, ...rest } = props
 
@@ -78,155 +168,157 @@ function LemiexLogo(props: React.ComponentProps<'div'>) {
   )
 }
 
-function createLemiexNavGroups(): NavGroup[] {
+function createLemiexNavGroups(locale: AppLocale): NavGroup[] {
+  const labels = LEMIEX_SIDEBAR_LABELS[locale]
+
   return [
     {
-      title: 'Overview',
+      title: labels.overview,
       items: [
         {
-          title: 'Dashboard',
+          title: labels.dashboard,
           url: '/lemiex/dashboard',
           icon: LayoutDashboard,
         },
         {
-          title: 'Welcome',
+          title: labels.welcome,
           url: '/lemiex/welcome',
           icon: Radar,
         },
       ],
     },
     {
-      title: 'Commerce',
+      title: labels.commerce,
       items: [
         {
-          title: 'Orders',
+          title: labels.orders,
           url: '/lemiex/orders',
           icon: ReceiptText,
         },
         {
-          title: 'Designs',
+          title: labels.designs,
           url: '/lemiex/designs',
           icon: BrushCleaning,
         },
         {
-          title: 'Products',
+          title: labels.products,
           icon: Package,
           items: [
             {
-              title: 'Catalog',
+              title: labels.catalog,
               url: '/lemiex/products',
             },
             {
-              title: 'Product Variants',
+              title: labels.productVariants,
               url: '/lemiex/product-variants',
             },
           ],
         },
         {
-          title: 'Stores',
+          title: labels.stores,
           url: '/lemiex/stores',
           icon: Store,
         },
         {
-          title: 'Tickets',
+          title: labels.tickets,
           url: '/lemiex/tickets',
           icon: Ticket,
         },
       ],
     },
     {
-      title: 'Operations',
+      title: labels.operations,
       items: [
         {
-          title: 'Stock Management',
+          title: labels.stockManagement,
           icon: Warehouse,
           items: [
             {
-              title: 'Dashboard',
+              title: labels.stockDashboard,
               url: '/lemiex/stock/dashboard',
             },
             {
-              title: 'Manage Stock',
+              title: labels.manageStock,
               url: '/lemiex/stock/manage',
             },
             {
-              title: 'Productions',
+              title: labels.productions,
               url: '/lemiex/stock/productions',
             },
             {
-              title: 'Shortage Report',
+              title: labels.shortageReport,
               url: '/lemiex/stock/shortage',
             },
             {
-              title: 'Shortage by Variant',
+              title: labels.shortageByVariant,
               url: '/lemiex/stock/shortage-by-variant',
             },
             {
-              title: 'Audit Logs',
+              title: labels.auditLogs,
               url: '/lemiex/stock/audit-logs',
             },
           ],
         },
         {
-          title: 'HR & Payroll',
+          title: labels.hrPayroll,
           icon: CalendarClock,
           items: [
             {
-              title: 'Attendances',
+              title: labels.attendances,
               url: '/lemiex/attendances',
             },
             {
-              title: 'Payroll Report',
+              title: labels.payrollReport,
               url: '/lemiex/payroll',
             },
             {
-              title: 'Salary Tiers',
+              title: labels.salaryTiers,
               url: '/lemiex/payroll/tiers',
             },
           ],
         },
         {
-          title: 'Embroidery Progress',
+          title: labels.embroideryProgress,
           url: '/lemiex/embroidery-progress',
           icon: ChartColumnBig,
         },
       ],
     },
     {
-      title: 'Support Tools',
+      title: labels.supportTools,
       items: [
         {
-          title: 'Trackings',
+          title: labels.trackings,
           url: '/lemiex/trackings',
           icon: Radar,
         },
         {
-          title: 'Videos',
+          title: labels.videos,
           url: '/lemiex/videos',
           icon: Video,
         },
         {
-          title: 'Wallets',
+          title: labels.wallets,
           icon: Wallet,
           items: [
             {
-              title: 'Transactions',
+              title: labels.transactions,
               url: '/lemiex/wallets/transactions',
             },
             {
-              title: 'Pending Fund',
+              title: labels.pendingFund,
               url: '/lemiex/wallets/pending-fund',
             },
             {
-              title: 'Refunds',
+              title: labels.refunds,
               url: '/lemiex/wallets/refunds',
             },
             {
-              title: 'Surcharge',
+              title: labels.surcharge,
               url: '/lemiex/wallets/surcharge',
             },
             {
-              title: 'Debits',
+              title: labels.debits,
               url: '/lemiex/wallets/debits',
             },
           ],
@@ -234,29 +326,29 @@ function createLemiexNavGroups(): NavGroup[] {
       ],
     },
     {
-      title: 'Administration',
+      title: labels.administration,
       items: [
         {
-          title: 'Staff Report',
+          title: labels.staffReport,
           url: '/lemiex/staff-report',
           icon: FileClock,
         },
         {
-          title: 'Systems',
+          title: labels.systems,
           icon: ShieldCheck,
           items: [
             {
-              title: 'Users',
+              title: labels.users,
               url: '/lemiex/systems/users',
             },
             {
-              title: 'Permissions',
+              title: labels.permissions,
               url: '/lemiex/systems/permissions',
             },
           ],
         },
         {
-          title: 'Tiers',
+          title: labels.tiers,
           url: '/lemiex/tiers',
           icon: Boxes,
         },
@@ -266,9 +358,12 @@ function createLemiexNavGroups(): NavGroup[] {
 }
 
 function hasAccess(role: LemiexRole, path: string) {
-  if (ALL_ACCESS_ROLES.includes(role)) return true
+  const resolvedRole = normalizeLemiexRole(role)
+  if (!resolvedRole) return false
 
-  return ROLE_PERMISSIONS[role].some((route) => {
+  if (ALL_ACCESS_ROLES.includes(resolvedRole)) return true
+
+  return ROLE_PERMISSIONS[resolvedRole].some((route) => {
     if (route === '*') return true
     if (route === path) return true
     if (route.endsWith('/*')) {
@@ -277,6 +372,10 @@ function hasAccess(role: LemiexRole, path: string) {
     }
     return false
   })
+}
+
+export function canAccessLemiexPath(role: LemiexRole, path: string) {
+  return hasAccess(role, path)
 }
 
 function filterNavItem(role: LemiexRole, item: LemiexNavItem): LemiexNavItem | null {
@@ -300,27 +399,48 @@ function filterNavItem(role: LemiexRole, item: LemiexNavItem): LemiexNavItem | n
 
 export function getLemiexRole(role: LemiexRole | LemiexRole[] | null | undefined): LemiexRole {
   const resolvedRole = Array.isArray(role) ? role[0] : role
+  const normalizedRole = normalizeLemiexRole(resolvedRole)
 
-  if (!resolvedRole) return 'Admin'
-  return resolvedRole
+  if (!normalizedRole) return 'Admin'
+  return normalizedRole
 }
 
 export function isScannerRole(role: LemiexRole) {
-  return STAFF_SCANNER_ROLES.includes(role)
+  const resolvedRole = normalizeLemiexRole(role)
+  return resolvedRole ? STAFF_SCANNER_ROLES.includes(resolvedRole) : false
 }
 
-export function getLemiexTeam(): Team {
+export function getDefaultLemiexRoute(role: LemiexRole) {
+  return isScannerRole(role) ? '/lemiex/welcome' : '/lemiex/dashboard'
+}
+
+function normalizeLemiexRole(role: string | null | undefined): LemiexRole | null {
+  if (!role) return null
+
+  if ((Object.keys(ROLE_PERMISSIONS) as LemiexRole[]).includes(role as LemiexRole)) {
+    return role as LemiexRole
+  }
+
+  return null
+}
+
+export function getLemiexTeam(locale: AppLocale = 'vi'): Team {
+  const labels = LEMIEX_SIDEBAR_LABELS[locale]
+
   return {
     id: 'lemiex',
-    name: 'Lemiex Workspace',
+    name: labels.teamName,
     logo: LemiexLogo,
-    plan: 'Role-aware sidebar',
+    plan: labels.teamPlan,
     defaultUrl: '/lemiex/dashboard',
   }
 }
 
-export function getLemiexNavGroups(role: LemiexRole = 'Admin'): NavGroup[] {
-  return createLemiexNavGroups()
+export function getLemiexNavGroups(
+  locale: AppLocale = 'vi',
+  role: LemiexRole = 'Admin'
+): NavGroup[] {
+  return createLemiexNavGroups(locale)
     .map((group) => ({
       ...group,
       items: group.items
