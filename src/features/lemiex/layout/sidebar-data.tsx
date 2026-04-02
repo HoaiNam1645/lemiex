@@ -17,12 +17,13 @@ import { type NavCollapsible, type NavGroup, type Team } from '@/components/layo
 import { type AppLocale } from '@/lib/i18n/types'
 import { type LemiexRole } from '@/stores/auth-store'
 
-const ALL_ACCESS_ROLES: LemiexRole[] = ['Admin', 'Support']
 const STAFF_SCANNER_ROLES: LemiexRole[] = ['QC', 'Packing', 'Shipout']
+const PAGE_ACCESS_STORAGE_KEY = 'lemiex_page_permissions_v1'
+const PAGE_ACCESS_EVENT = 'lemiex-page-access-updated'
 
-const ROLE_PERMISSIONS: Record<LemiexRole, string[]> = {
+const DEFAULT_ROLE_PERMISSIONS: Record<LemiexRole, string[]> = {
   Admin: ['*'],
-  Support: ['*'],
+  Support: ['/lemiex/welcome'],
   Seller: [
     '/lemiex/dashboard',
     '/lemiex/orders',
@@ -40,28 +41,52 @@ const ROLE_PERMISSIONS: Record<LemiexRole, string[]> = {
     '/lemiex/wallets/transactions',
   ],
   Staff: [
-    '/lemiex/dashboard',
     '/lemiex/orders',
     '/lemiex/orders/*',
-    '/lemiex/stock/dashboard',
     '/lemiex/stock/manage',
-    '/lemiex/stock/productions',
     '/lemiex/stock/shortage',
     '/lemiex/stock/shortage-by-variant',
     '/lemiex/stock/audit-logs',
-    '/lemiex/attendances',
-    '/lemiex/attendances/*',
     '/lemiex/payroll',
     '/lemiex/payroll/*',
     '/lemiex/payroll/tiers',
-    '/lemiex/embroidery-progress',
   ],
   QC: ['/lemiex/welcome'],
   Packing: ['/lemiex/welcome'],
   Shipout: ['/lemiex/welcome'],
 }
 
+const PAGE_ROUTE_PATTERNS: Record<string, string[]> = {
+  '/lemiex/dashboard': ['/lemiex/dashboard'],
+  '/lemiex/welcome': ['/lemiex/welcome'],
+  '/lemiex/orders': ['/lemiex/orders', '/lemiex/orders/*'],
+  '/lemiex/products': ['/lemiex/products', '/lemiex/products/*'],
+  '/lemiex/product-variants': ['/lemiex/product-variants', '/lemiex/product-variants/*'],
+  '/lemiex/stores': ['/lemiex/stores', '/lemiex/stores/*'],
+  '/lemiex/tickets': ['/lemiex/tickets', '/lemiex/tickets/*'],
+  '/lemiex/stock/manage': ['/lemiex/stock/manage'],
+  '/lemiex/stock/shortage': ['/lemiex/stock/shortage'],
+  '/lemiex/stock/shortage-by-variant': ['/lemiex/stock/shortage-by-variant'],
+  '/lemiex/stock/audit-logs': ['/lemiex/stock/audit-logs'],
+  '/lemiex/payroll': ['/lemiex/payroll', '/lemiex/payroll/*'],
+  '/lemiex/payroll/tiers': ['/lemiex/payroll/tiers'],
+  '/lemiex/wallets/transactions': ['/lemiex/wallets/transactions'],
+  '/lemiex/systems/users': ['/lemiex/systems/users', '/lemiex/systems/users/*'],
+  '/lemiex/systems/permissions': ['/lemiex/systems/permissions'],
+  '/lemiex/systems/permissions-sidebar': ['/lemiex/systems/permissions-sidebar'],
+  '/lemiex/tiers': ['/lemiex/tiers', '/lemiex/tiers/*'],
+}
+
+type StoredRolePermissions = Partial<Record<LemiexRole, string[]>>
+
 type LemiexNavItem = NavGroup['items'][number]
+export type PageAccessTreeNode = {
+  id: string
+  title: string
+  url?: string
+  patterns?: string[]
+  children?: PageAccessTreeNode[]
+}
 
 const LEMIEX_SIDEBAR_LABELS = {
   vi: {
@@ -105,6 +130,7 @@ const LEMIEX_SIDEBAR_LABELS = {
     systems: 'Hệ thống',
     users: 'Người dùng',
     permissions: 'Phân quyền',
+    permissionsSidebar: 'Phân quyền trang',
     tiers: 'Tiers',
   },
   en: {
@@ -148,6 +174,7 @@ const LEMIEX_SIDEBAR_LABELS = {
     systems: 'Systems',
     users: 'Users',
     permissions: 'Permissions',
+    permissionsSidebar: 'Page Access',
     tiers: 'Tiers',
   },
 } satisfies Record<AppLocale, Record<string, string>>
@@ -162,6 +189,82 @@ function LemiexLogo(props: React.ComponentProps<'div'>) {
       className: 'size-4',
     })
   )
+}
+
+function readStoredRolePermissions(): StoredRolePermissions {
+  if (typeof window === 'undefined') return {}
+
+  try {
+    const rawValue = window.localStorage.getItem(PAGE_ACCESS_STORAGE_KEY)
+    if (!rawValue) return {}
+    const parsed = JSON.parse(rawValue) as StoredRolePermissions
+
+    return parsed && typeof parsed === 'object' ? parsed : {}
+  } catch {
+    return {}
+  }
+}
+
+function getResolvedRolePermissions(): Record<LemiexRole, string[]> {
+  const stored = readStoredRolePermissions()
+
+  return (Object.keys(DEFAULT_ROLE_PERMISSIONS) as LemiexRole[]).reduce(
+    (acc, role) => {
+      acc[role] = Array.isArray(stored[role])
+        ? (stored[role] as string[])
+        : DEFAULT_ROLE_PERMISSIONS[role]
+
+      return acc
+    },
+    {} as Record<LemiexRole, string[]>
+  )
+}
+
+function getRoutePatterns(path: string) {
+  if (
+    path === '/lemiex/systems/permissions' ||
+    path === '/lemiex/systems/permissions-sidebar'
+  ) {
+    return []
+  }
+
+  return PAGE_ROUTE_PATTERNS[path] || [path]
+}
+
+export function getRolePagePermissions() {
+  return getResolvedRolePermissions()
+}
+
+export function saveRolePagePermissions(nextPermissions: StoredRolePermissions) {
+  if (typeof window === 'undefined') return
+
+  window.localStorage.setItem(PAGE_ACCESS_STORAGE_KEY, JSON.stringify(nextPermissions))
+  window.dispatchEvent(new CustomEvent(PAGE_ACCESS_EVENT))
+}
+
+export function resetRolePagePermissions() {
+  if (typeof window === 'undefined') return
+
+  window.localStorage.removeItem(PAGE_ACCESS_STORAGE_KEY)
+  window.dispatchEvent(new CustomEvent(PAGE_ACCESS_EVENT))
+}
+
+export function subscribeToPageAccessChanges(listener: () => void) {
+  if (typeof window === 'undefined') return () => undefined
+
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key === PAGE_ACCESS_STORAGE_KEY) {
+      listener()
+    }
+  }
+
+  window.addEventListener(PAGE_ACCESS_EVENT, listener)
+  window.addEventListener('storage', handleStorage)
+
+  return () => {
+    window.removeEventListener(PAGE_ACCESS_EVENT, listener)
+    window.removeEventListener('storage', handleStorage)
+  }
 }
 
 function createLemiexNavGroups(locale: AppLocale): NavGroup[] {
@@ -297,7 +400,20 @@ function createLemiexNavGroups(locale: AppLocale): NavGroup[] {
               title: labels.users,
               url: '/lemiex/systems/users',
             },
+            {
+              title: labels.permissions,
+              url: '/lemiex/systems/permissions',
+            },
+            {
+              title: labels.permissionsSidebar,
+              url: '/lemiex/systems/permissions-sidebar',
+            },
           ],
+        },
+        {
+          title: labels.tiers,
+          url: '/lemiex/tiers',
+          icon: ShieldCheck,
         },
       ],
     },
@@ -308,9 +424,19 @@ function hasAccess(role: LemiexRole, path: string) {
   const resolvedRole = normalizeLemiexRole(role)
   if (!resolvedRole) return false
 
-  if (ALL_ACCESS_ROLES.includes(resolvedRole)) return true
+  if (
+    path === '/lemiex/systems/permissions' ||
+    path.startsWith('/lemiex/systems/permissions/') ||
+    path === '/lemiex/permissions' ||
+    path === '/lemiex/systems/permissions-sidebar' ||
+    path.startsWith('/lemiex/systems/permissions-sidebar/')
+  ) {
+    return resolvedRole === 'Admin'
+  }
 
-  return ROLE_PERMISSIONS[resolvedRole].some((route) => {
+  const resolvedPermissions = getResolvedRolePermissions()
+
+  return resolvedPermissions[resolvedRole].some((route) => {
     if (route === '*') return true
     if (route === path) return true
     if (route.endsWith('/*')) {
@@ -373,13 +499,21 @@ export function isScannerRole(role: LemiexRole) {
 }
 
 export function getDefaultLemiexRoute(role: LemiexRole) {
-  return isScannerRole(role) ? '/lemiex/welcome' : '/lemiex/dashboard'
+  if (isScannerRole(role)) return '/lemiex/welcome'
+
+  const resolvedRole = normalizeLemiexRole(role) || 'Admin'
+  const resolvedPermissions = getResolvedRolePermissions()
+  const firstAllowedRoute = resolvedPermissions[resolvedRole].find(
+    (route) => route !== '*' && !route.endsWith('/*')
+  )
+
+  return firstAllowedRoute || '/lemiex/welcome'
 }
 
 function normalizeLemiexRole(role: string | null | undefined): LemiexRole | null {
   if (!role) return null
 
-  if ((Object.keys(ROLE_PERMISSIONS) as LemiexRole[]).includes(role as LemiexRole)) {
+  if ((Object.keys(DEFAULT_ROLE_PERMISSIONS) as LemiexRole[]).includes(role as LemiexRole)) {
     return role as LemiexRole
   }
 
@@ -410,4 +544,33 @@ export function getLemiexNavGroups(
         .filter(Boolean) as NavGroup['items'],
     }))
     .filter((group) => group.items.length > 0)
+}
+
+function mapNavItemToPageAccessNode(item: LemiexNavItem): PageAccessTreeNode {
+  if ('url' in item && item.url) {
+    return {
+      id: item.url,
+      title: item.title,
+      url: item.url,
+      patterns: getRoutePatterns(item.url),
+    }
+  }
+
+  const children = ('items' in item && item.items ? item.items : []).map((child) =>
+    mapNavItemToPageAccessNode(child)
+  )
+
+  return {
+    id: item.title,
+    title: item.title,
+    children,
+  }
+}
+
+export function getLemiexPageAccessTree(locale: AppLocale = 'vi'): PageAccessTreeNode[] {
+  return createLemiexNavGroups(locale).map((group) => ({
+    id: group.title,
+    title: group.title,
+    children: group.items.map((item) => mapNavItemToPageAccessNode(item)),
+  }))
 }

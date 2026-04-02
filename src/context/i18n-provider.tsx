@@ -978,6 +978,150 @@ const uiMessages = {
       error: 'Có lỗi xảy ra',
       na: 'N/A',
     },
+    permissionsPage: {
+      title: 'Phân quyền',
+      subtitle: 'Quản lý ma trận phân quyền theo vai trò',
+      syncPermissions: 'Đồng bộ quyền',
+      syncing: 'Đang đồng bộ...',
+      permission: 'Quyền',
+      save: 'Lưu',
+      saving: 'Đang lưu...',
+      adminHasAllPermissions: 'Admin có toàn bộ quyền',
+      savePermissions: 'Lưu phân quyền',
+      selectAllInGroup: 'Chọn tất cả trong nhóm',
+      noPermissions: 'Không tìm thấy quyền nào',
+      loadFailed: 'Không thể tải dữ liệu phân quyền',
+      saveSuccess: 'Lưu phân quyền thành công',
+      saveFailed: 'Không thể lưu phân quyền',
+      syncSuccess: 'Đồng bộ quyền thành công',
+      syncFailed: 'Không thể đồng bộ quyền',
+      otherGroup: 'Khác',
+    },
+    tiersPage: {
+      title: 'Tiers',
+      createTier: 'Tạo tier',
+      loading: 'Đang tải tiers...',
+      noTiers: 'Chưa có tier nào',
+      tierBadge: 'Tier',
+      extraFees: 'Phí cộng thêm',
+      refundFees: 'Phí hoàn',
+      embroideryFees: 'Phí thêu',
+      priorityFees: 'Phí ưu tiên',
+      addExtraFee: 'Thêm phí cộng thêm',
+      addRefundFee: 'Thêm phí hoàn',
+      addEmbroideryFee: 'Thêm phí thêu',
+      addPriorityFee: 'Thêm phí ưu tiên',
+      emptyExtraFees: 'Chưa cấu hình phí cộng thêm',
+      emptyRefundFees: 'Chưa cấu hình phí hoàn',
+      emptyEmbroideryFees: 'Chưa cấu hình phí thêu',
+      emptyPriorityFees: 'Chưa cấu hình phí ưu tiên',
+      minStitch: 'Stitch tối thiểu',
+      maxStitch: 'Stitch tối đa',
+      amount: 'Số tiền ($)',
+      stitch: 'Stitch',
+      type: 'Loại',
+      name: 'Tên',
+      displayName: 'Tên hiển thị',
+      description: 'Mô tả',
+      price: 'Giá ($)',
+      actions: 'Thao tác',
+      edit: 'Sửa',
+      delete: 'Xóa',
+      createTitle: 'Tạo tier',
+      editTitle: 'Chỉnh sửa tier',
+      tierName: 'Tên tier',
+      tierNamePlaceholder: 'Nhập tên tier',
+      save: 'Lưu',
+      cancel: 'Hủy',
+      creating: 'Đang tạo...',
+      saving: 'Đang lưu...',
+      deleting: 'Đang xóa...',
+      confirmDeleteTitle: 'Xác nhận xóa',
+      confirmDeleteDescription: 'Hành động này không thể hoàn tác.',
+      extraFeeDialogTitle: 'Phí cộng thêm',
+      refundFeeDialogTitle: 'Phí hoàn',
+      embroideryFeeDialogTitle: 'Phí thêu',
+      priorityFeeDialogTitle: 'Phí ưu tiên',
+      embroideryType: 'Loại thêu',
+      embroideryTypePlaceholder: 'Chọn loại thêu',
+      priorityName: 'Tên mức ưu tiên',
+      priorityDisplayNamePlaceholder: 'Ưu tiên',
+      priorityDescriptionPlaceholder: 'Xử lý tiêu chuẩn 3-5 ngày',
+      standard: 'Standard',
+      metallic: 'Metallic',
+      glow: 'Glow',
+      puff: 'Puff',
+      normalPriority: 'Thường',
+      rushPriority: 'Ưu tiên',
+      requiredTierName: 'Tên tier là bắt buộc',
+      requiredFields: 'Vui lòng nhập đầy đủ các trường bắt buộc',
+      tierCreated: 'Tạo tier thành công',
+      tierUpdated: 'Cập nhật tier thành công',
+      tierDeleted: 'Xóa tier thành công',
+      feeCreated: 'Tạo phí thành công',
+      feeUpdated: 'Cập nhật phí thành công',
+      feeDeleted: 'Xóa phí thành công',
+      failedLoad: 'Không thể tải tiers',
+      failedCreateTier: 'Không thể tạo tier',
+      failedUpdateTier: 'Không thể cập nhật tier',
+      failedDeleteTier: 'Không thể xóa tier',
+      failedSaveFee: 'Không thể lưu phí',
+      failedDeleteFee: 'Không thể xóa phí',
+    },
+    dashboardPage: {
+      title: 'Bảng điều khiển',
+      subtitle: 'Tổng quan về đơn hàng, doanh thu, tồn kho và hoạt động gần đây của hệ thống.',
+      loading: 'Đang tải bảng điều khiển...',
+      failedLoad: 'Không thể tải dữ liệu thống kê bảng điều khiển',
+      timeRangeLabel: 'Khoảng thời gian',
+      last7Days: '7N',
+      last30Days: '30N',
+      last90Days: '90N',
+      lastYear: '1N',
+      sellerScope: 'Chế độ seller',
+      sellerScopeDescription: 'Thống kê đang được giới hạn theo dữ liệu của riêng cửa hàng bạn.',
+      totalOrders: 'Đơn hàng',
+      totalRevenue: 'Doanh thu',
+      productsVariants: 'Sản phẩm',
+      totalStock: 'Tồn kho',
+      ordersThisPeriod: '{count} đơn trong giai đoạn này',
+      revenueThisPeriod: '{amount} trong giai đoạn này',
+      variants: '{count} biến thể · {active} đang hoạt động',
+      lowStockWarning: '{count} biến thể sắp hết hàng',
+      totalDeposits: 'Nạp tiền',
+      totalWithdrawals: 'Rút tiền',
+      totalPayments: 'Thanh toán',
+      pendingTransactions: 'Đang chờ',
+      transactionsThisPeriod: '{count} giao dịch trong giai đoạn này',
+      productSalesQuantity: 'Số lượng bán theo sản phẩm',
+      top5Products: 'Hiệu suất nhóm sản phẩm nổi bật theo thời gian',
+      revenueByPaymentStatus: 'Doanh thu theo trạng thái thanh toán',
+      dailyBreakdown: 'Phân rã doanh thu theo ngày',
+      dailyOrders: 'Đơn hàng theo ngày',
+      ordersPerDay: 'Số đơn được tạo mỗi ngày',
+      transactionsOverview: 'Tổng quan giao dịch',
+      dailyTransactions: 'Giá trị giao dịch theo từng loại mỗi ngày',
+      noSalesData: 'Chưa có dữ liệu bán hàng theo sản phẩm',
+      noRevenueData: 'Chưa có dữ liệu doanh thu',
+      noOrderData: 'Chưa có dữ liệu đơn hàng theo ngày',
+      noTransactionData: 'Chưa có dữ liệu giao dịch',
+      ordersByPaymentStatus: 'Đơn hàng theo trạng thái thanh toán',
+      ordersByFulfillStatus: 'Đơn hàng theo trạng thái xử lý',
+      topProducts: 'Sản phẩm nổi bật',
+      recentOrders: 'Đơn hàng gần đây',
+      noRecentOrders: 'Chưa có đơn hàng gần đây',
+      noTopProducts: 'Chưa có sản phẩm nổi bật',
+      orderId: 'Mã đơn',
+      store: 'Cửa hàng',
+      items: 'Số món',
+      paymentStatus: 'Thanh toán',
+      fulfillStatus: 'Xử lý',
+      created: 'Tạo lúc',
+      viewAll: 'Xem tất cả',
+      vsPrevious: 'so với kỳ trước',
+      empty: 'Không có dữ liệu',
+      units: 'sản phẩm',
+    },
     staffReportPage: {
       title: 'Báo cáo hiệu suất nhân sự',
       subtitle: 'Theo dõi hiệu suất xử lý công việc của nhân sự',
@@ -2730,6 +2874,150 @@ const uiMessages = {
       error: 'An error occurred',
       na: 'N/A',
     },
+    permissionsPage: {
+      title: 'Permissions',
+      subtitle: 'Manage role-based access control matrix',
+      syncPermissions: 'Sync Permissions',
+      syncing: 'Syncing...',
+      permission: 'Permission',
+      save: 'Save',
+      saving: 'Saving...',
+      adminHasAllPermissions: 'Admin has all permissions',
+      savePermissions: 'Save permissions',
+      selectAllInGroup: 'Select all in group',
+      noPermissions: 'No permissions found',
+      loadFailed: 'Failed to load permissions data',
+      saveSuccess: 'Permissions saved successfully',
+      saveFailed: 'Failed to save permissions',
+      syncSuccess: 'Permissions synced successfully',
+      syncFailed: 'Failed to sync permissions',
+      otherGroup: 'Other',
+    },
+    tiersPage: {
+      title: 'Tiers',
+      createTier: 'Create Tier',
+      loading: 'Loading tiers...',
+      noTiers: 'No tiers available',
+      tierBadge: 'Tier',
+      extraFees: 'Extra Fees',
+      refundFees: 'Refund Fees',
+      embroideryFees: 'Embroidery Fees',
+      priorityFees: 'Priority Fees',
+      addExtraFee: 'Add Extra Fee',
+      addRefundFee: 'Add Refund Fee',
+      addEmbroideryFee: 'Add Embroidery Fee',
+      addPriorityFee: 'Add Priority Fee',
+      emptyExtraFees: 'No extra fees configured',
+      emptyRefundFees: 'No refund fees configured',
+      emptyEmbroideryFees: 'No embroidery fees configured',
+      emptyPriorityFees: 'No priority fees configured',
+      minStitch: 'Min Stitch',
+      maxStitch: 'Max Stitch',
+      amount: 'Amount ($)',
+      stitch: 'Stitch',
+      type: 'Type',
+      name: 'Name',
+      displayName: 'Display Name',
+      description: 'Description',
+      price: 'Price ($)',
+      actions: 'Actions',
+      edit: 'Edit',
+      delete: 'Delete',
+      createTitle: 'Create Tier',
+      editTitle: 'Edit Tier',
+      tierName: 'Tier Name',
+      tierNamePlaceholder: 'Enter tier name',
+      save: 'Save',
+      cancel: 'Cancel',
+      creating: 'Creating...',
+      saving: 'Saving...',
+      deleting: 'Deleting...',
+      confirmDeleteTitle: 'Confirm Delete',
+      confirmDeleteDescription: 'This action cannot be undone.',
+      extraFeeDialogTitle: 'Extra Fee',
+      refundFeeDialogTitle: 'Refund Fee',
+      embroideryFeeDialogTitle: 'Embroidery Fee',
+      priorityFeeDialogTitle: 'Priority Fee',
+      embroideryType: 'Embroidery Type',
+      embroideryTypePlaceholder: 'Select embroidery type',
+      priorityName: 'Priority Name',
+      priorityDisplayNamePlaceholder: 'Priority',
+      priorityDescriptionPlaceholder: 'Standard processing 3-5 days',
+      standard: 'Standard',
+      metallic: 'Metallic',
+      glow: 'Glow',
+      puff: 'Puff',
+      normalPriority: 'Normal',
+      rushPriority: 'Priority',
+      requiredTierName: 'Tier name is required',
+      requiredFields: 'Please fill in all required fields',
+      tierCreated: 'Tier created successfully',
+      tierUpdated: 'Tier updated successfully',
+      tierDeleted: 'Tier deleted successfully',
+      feeCreated: 'Fee created successfully',
+      feeUpdated: 'Fee updated successfully',
+      feeDeleted: 'Fee deleted successfully',
+      failedLoad: 'Failed to load tiers',
+      failedCreateTier: 'Failed to create tier',
+      failedUpdateTier: 'Failed to update tier',
+      failedDeleteTier: 'Failed to delete tier',
+      failedSaveFee: 'Failed to save fee',
+      failedDeleteFee: 'Failed to delete fee',
+    },
+    dashboardPage: {
+      title: 'Dashboard',
+      subtitle: 'Overview of orders, revenue, stock, and recent system activity.',
+      loading: 'Loading dashboard...',
+      failedLoad: 'Failed to load dashboard statistics',
+      timeRangeLabel: 'Time range',
+      last7Days: '7D',
+      last30Days: '30D',
+      last90Days: '90D',
+      lastYear: '1Y',
+      sellerScope: 'Seller view',
+      sellerScopeDescription: 'Statistics are scoped to your own store activity.',
+      totalOrders: 'Orders',
+      totalRevenue: 'Revenue',
+      productsVariants: 'Products',
+      totalStock: 'Stock',
+      ordersThisPeriod: '{count} orders this period',
+      revenueThisPeriod: '{amount} this period',
+      variants: '{count} variants · {active} active',
+      lowStockWarning: '{count} variants are low on stock',
+      totalDeposits: 'Deposits',
+      totalWithdrawals: 'Withdrawals',
+      totalPayments: 'Payments',
+      pendingTransactions: 'Pending',
+      transactionsThisPeriod: '{count} transactions this period',
+      productSalesQuantity: 'Product sales quantity',
+      top5Products: 'Top product performance over time',
+      revenueByPaymentStatus: 'Revenue by payment status',
+      dailyBreakdown: 'Daily revenue breakdown',
+      dailyOrders: 'Daily orders',
+      ordersPerDay: 'Orders created per day',
+      transactionsOverview: 'Transactions overview',
+      dailyTransactions: 'Daily transaction amounts by type',
+      noSalesData: 'No product sales data',
+      noRevenueData: 'No revenue data',
+      noOrderData: 'No daily order data',
+      noTransactionData: 'No transaction data',
+      ordersByPaymentStatus: 'Orders by payment status',
+      ordersByFulfillStatus: 'Orders by fulfill status',
+      topProducts: 'Top products',
+      recentOrders: 'Recent orders',
+      noRecentOrders: 'No recent orders',
+      noTopProducts: 'No top products',
+      orderId: 'Order ID',
+      store: 'Store',
+      items: 'Items',
+      paymentStatus: 'Payment',
+      fulfillStatus: 'Fulfill',
+      created: 'Created',
+      viewAll: 'View all',
+      vsPrevious: 'vs previous period',
+      empty: 'No data available',
+      units: 'units',
+    },
     staffReportPage: {
       title: 'Staff Performance Report',
       subtitle: 'Track staff workflow performance and efficiency',
@@ -4461,6 +4749,150 @@ const uiMessages = {
     deleteTitle: string
     error: string
     na: string
+  }
+  permissionsPage: {
+    title: string
+    subtitle: string
+    syncPermissions: string
+    syncing: string
+    permission: string
+    save: string
+    saving: string
+    adminHasAllPermissions: string
+    savePermissions: string
+    selectAllInGroup: string
+    noPermissions: string
+    loadFailed: string
+    saveSuccess: string
+    saveFailed: string
+    syncSuccess: string
+    syncFailed: string
+    otherGroup: string
+  }
+  tiersPage: {
+    title: string
+    createTier: string
+    loading: string
+    noTiers: string
+    tierBadge: string
+    extraFees: string
+    refundFees: string
+    embroideryFees: string
+    priorityFees: string
+    addExtraFee: string
+    addRefundFee: string
+    addEmbroideryFee: string
+    addPriorityFee: string
+    emptyExtraFees: string
+    emptyRefundFees: string
+    emptyEmbroideryFees: string
+    emptyPriorityFees: string
+    minStitch: string
+    maxStitch: string
+    amount: string
+    stitch: string
+    type: string
+    name: string
+    displayName: string
+    description: string
+    price: string
+    actions: string
+    edit: string
+    delete: string
+    createTitle: string
+    editTitle: string
+    tierName: string
+    tierNamePlaceholder: string
+    save: string
+    cancel: string
+    creating: string
+    saving: string
+    deleting: string
+    confirmDeleteTitle: string
+    confirmDeleteDescription: string
+    extraFeeDialogTitle: string
+    refundFeeDialogTitle: string
+    embroideryFeeDialogTitle: string
+    priorityFeeDialogTitle: string
+    embroideryType: string
+    embroideryTypePlaceholder: string
+    priorityName: string
+    priorityDisplayNamePlaceholder: string
+    priorityDescriptionPlaceholder: string
+    standard: string
+    metallic: string
+    glow: string
+    puff: string
+    normalPriority: string
+    rushPriority: string
+    requiredTierName: string
+    requiredFields: string
+    tierCreated: string
+    tierUpdated: string
+    tierDeleted: string
+    feeCreated: string
+    feeUpdated: string
+    feeDeleted: string
+    failedLoad: string
+    failedCreateTier: string
+    failedUpdateTier: string
+    failedDeleteTier: string
+    failedSaveFee: string
+    failedDeleteFee: string
+  }
+  dashboardPage: {
+    title: string
+    subtitle: string
+    loading: string
+    failedLoad: string
+    timeRangeLabel: string
+    last7Days: string
+    last30Days: string
+    last90Days: string
+    lastYear: string
+    sellerScope: string
+    sellerScopeDescription: string
+    totalOrders: string
+    totalRevenue: string
+    productsVariants: string
+    totalStock: string
+    ordersThisPeriod: string
+    revenueThisPeriod: string
+    variants: string
+    lowStockWarning: string
+    totalDeposits: string
+    totalWithdrawals: string
+    totalPayments: string
+    pendingTransactions: string
+    transactionsThisPeriod: string
+    productSalesQuantity: string
+    top5Products: string
+    revenueByPaymentStatus: string
+    dailyBreakdown: string
+    dailyOrders: string
+    ordersPerDay: string
+    transactionsOverview: string
+    dailyTransactions: string
+    noSalesData: string
+    noRevenueData: string
+    noOrderData: string
+    noTransactionData: string
+    ordersByPaymentStatus: string
+    ordersByFulfillStatus: string
+    topProducts: string
+    recentOrders: string
+    noRecentOrders: string
+    noTopProducts: string
+    orderId: string
+    store: string
+    items: string
+    paymentStatus: string
+    fulfillStatus: string
+    created: string
+    viewAll: string
+    vsPrevious: string
+    empty: string
+    units: string
   }
   staffReportPage: {
     title: string

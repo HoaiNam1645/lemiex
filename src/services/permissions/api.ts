@@ -1,0 +1,92 @@
+'use client'
+
+import { API_BASE_URL } from '@/config/api'
+import { apiRequest } from '@/lib/client'
+
+type BaseResponse<T> = {
+  code?: number
+  status?: boolean
+  success?: boolean
+  message?: string
+  data?: T
+}
+
+export type PermissionRecord = {
+  id: number
+  name?: string | null
+  display_name?: string | null
+  description?: string | null
+  group?: string | null
+  route?: string | null
+  method?: string | null
+  removable?: boolean | null
+}
+
+export type PermissionRole = {
+  id: number
+  name?: string | null
+  display_name?: string | null
+}
+
+type PermissionMatrixEntry = {
+  role?: PermissionRole | null
+  permissions?: number[]
+}
+
+type PermissionMatrixPayload = {
+  roles?: PermissionRole[]
+  permissions?: PermissionRecord[]
+  grouped?: Record<string, PermissionRecord[]>
+  groups?: string[]
+  matrix?: Record<string, PermissionMatrixEntry>
+}
+
+function isSuccess(response: BaseResponse<unknown>) {
+  return Boolean(response.status || response.success)
+}
+
+export async function fetchPermissionMatrix() {
+  const response = await apiRequest<BaseResponse<PermissionMatrixPayload>>(
+    `${API_BASE_URL}/permissions/matrix`,
+    { method: 'GET' }
+  )
+
+  if (!isSuccess(response) || !response.data) {
+    throw new Error(response.message || 'Failed to load permissions')
+  }
+
+  return response.data
+}
+
+export async function updateRolePermissions(roleId: number, permissionIds: number[]) {
+  const response = await apiRequest<BaseResponse<{ permissions?: number[] }>>(
+    `${API_BASE_URL}/permissions/roles/${roleId}`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ permissions: permissionIds }),
+    }
+  )
+
+  if (!isSuccess(response)) {
+    throw new Error(response.message || 'Failed to update permissions')
+  }
+
+  return response
+}
+
+export async function seedPermissionsFromRoutes() {
+  const response = await apiRequest<
+    BaseResponse<{ created?: number; total_defined?: number; already_exists?: number }>
+  >(`${API_BASE_URL}/permissions/seed`, {
+    method: 'POST',
+  })
+
+  if (!isSuccess(response)) {
+    throw new Error(response.message || 'Failed to sync permissions')
+  }
+
+  return response
+}

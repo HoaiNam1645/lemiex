@@ -1,5 +1,5 @@
-import { LemiexPermissions } from '@/features/lemiex/permissions'
+import { redirect } from 'next/navigation'
 
 export default function LemiexPermissionsPage() {
-  return <LemiexPermissions />
+  redirect('/lemiex/systems/permissions')
 }

@@ -6,7 +6,10 @@ import { useRouter } from 'next/navigation'
 import { useLayout } from '@/context/layout-provider'
 import { useI18n } from '@/context/i18n-provider'
 import { useAuthStore } from '@/stores/auth-store'
-import { getLemiexRole } from '@/features/lemiex/layout/sidebar-data'
+import {
+  getLemiexRole,
+  subscribeToPageAccessChanges,
+} from '@/features/lemiex/layout/sidebar-data'
 import {
   Sidebar,
   SidebarContent,
@@ -35,6 +38,7 @@ export function AppSidebar() {
   const lemiexRole = getLemiexRole(user?.role)
   const teams = useMemo(() => getSidebarTeams(locale), [locale])
   const [selectedTeam, setSelectedTeam] = useState<Team>(teams[0])
+  const [, setPageAccessVersion] = useState(0)
 
   useEffect(() => {
     queueMicrotask(() => {
@@ -51,19 +55,10 @@ export function AppSidebar() {
   }, [selectedTeam.id])
 
   useEffect(() => {
-    if (pathname.startsWith('/lemiex')) {
-      const lemiexTeam = teams.find((team) => team.id === 'lemiex')
-      if (lemiexTeam && lemiexTeam.id !== selectedTeam.id) {
-        setSelectedTeam(lemiexTeam)
-      }
-      return
-    }
-
-    const workspaceTeam = teams.find((team) => team.id === 'workspace')
-    if (workspaceTeam && selectedTeam.id !== 'workspace') {
-      setSelectedTeam(workspaceTeam)
-    }
-  }, [pathname, selectedTeam.id, teams])
+    return subscribeToPageAccessChanges(() => {
+      setPageAccessVersion((value) => value + 1)
+    })
+  }, [])
 
   const handleTeamChange = (team: Team) => {
     setSelectedTeam(team)

@@ -1,6 +1,5 @@
 import { API_BASE_URL, API_ENDPOINTS } from '@/config/api'
 import type { AuthUser, LemiexRole } from '@/stores/auth-store'
-import { getDefaultLemiexRoute } from '@/features/lemiex/layout/sidebar-data'
 import { apiRequest } from '@/lib/client'
 
 type AuthSuccessResult = {
@@ -39,9 +38,7 @@ export function getUserRoleName(user: AuthUser | null | undefined): LemiexRole |
 }
 
 export function getLoginRedirectPath(user: AuthUser | null | undefined) {
-  const role = getUserRoleName(user)
-  if (!role) return '/lemiex/dashboard'
-  return getDefaultLemiexRoute(role)
+  return '/lemiex/dashboard'
 }
 
 export async function login(loginValue: string, password: string): Promise<AuthResult> {

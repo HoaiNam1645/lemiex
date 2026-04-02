@@ -321,7 +321,7 @@ export function LemiexOrders() {
       try {
         const response = await fetchOrders(buildOrdersRequest(state))
         if (cancelled) return
-        setResult(response)
+        setResult(role === 'Staff' ? { ...response, summary: null } : response)
       } catch (loadError) {
         if (cancelled) return
         setError(
@@ -341,7 +341,7 @@ export function LemiexOrders() {
     return () => {
       cancelled = true
     }
-  }, [state, refreshKey, ordersMessages.loadErrorTitle])
+  }, [role, state, refreshKey, ordersMessages.loadErrorTitle])
 
   useEffect(() => {
     let cancelled = false

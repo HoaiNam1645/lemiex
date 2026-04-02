@@ -8,7 +8,10 @@ import { useSearch } from '@/context/search-provider'
 import { useI18n } from '@/context/i18n-provider'
 import { useTheme } from '@/context/theme-provider'
 import { useAuthStore } from '@/stores/auth-store'
-import { getLemiexRole } from '@/features/lemiex/layout/sidebar-data'
+import {
+  getLemiexRole,
+  subscribeToPageAccessChanges,
+} from '@/features/lemiex/layout/sidebar-data'
 import {
   CommandDialog,
   CommandEmpty,
@@ -27,9 +30,10 @@ export function CommandMenu() {
   const { locale, messages } = useI18n()
   const { setTheme } = useTheme()
   const { open, setOpen } = useSearch()
-  const teamId = pathname.startsWith('/lemiex') ? 'lemiex' : 'workspace'
+  const teamId = 'lemiex'
   const user = useAuthStore((state) => state.auth.user)
   const lemiexRole = getLemiexRole(user?.role)
+  const [, setPageAccessVersion] = React.useState(0)
 
   const runCommand = React.useCallback(
     (command: () => unknown) => {
@@ -43,6 +47,12 @@ export function CommandMenu() {
     () => getSidebarNavGroups(teamId, locale, lemiexRole),
     [lemiexRole, locale, teamId]
   )
+
+  React.useEffect(() => {
+    return subscribeToPageAccessChanges(() => {
+      setPageAccessVersion((value) => value + 1)
+    })
+  }, [])
 
   return (
     <CommandDialog modal open={open} onOpenChange={setOpen}>

@@ -39,7 +39,7 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLFormElement> {
 export function UserAuthForm({
   className,
   redirectTo,
-  defaultRedirectTo = '/tasks',
+  defaultRedirectTo = '/lemiex/dashboard',
   showForgotPassword = true,
   showSignUpPrompt = true,
   ...props
