@@ -18,8 +18,6 @@ import { type AppLocale } from '@/lib/i18n/types'
 import { type LemiexRole } from '@/stores/auth-store'
 
 const STAFF_SCANNER_ROLES: LemiexRole[] = ['QC', 'Packing', 'Shipout']
-const PAGE_ACCESS_STORAGE_KEY = 'lemiex_page_permissions_v1'
-const PAGE_ACCESS_EVENT = 'lemiex-page-access-updated'
 
 const DEFAULT_ROLE_PERMISSIONS: Record<LemiexRole, string[]> = {
   Admin: ['*'],
@@ -56,7 +54,7 @@ const DEFAULT_ROLE_PERMISSIONS: Record<LemiexRole, string[]> = {
   Shipout: ['/lemiex/welcome'],
 }
 
-const PAGE_ROUTE_PATTERNS: Record<string, string[]> = {
+export const PAGE_ACCESS_ROUTE_PATTERNS: Record<string, string[]> = {
   '/lemiex/dashboard': ['/lemiex/dashboard'],
   '/lemiex/welcome': ['/lemiex/welcome'],
   '/lemiex/orders': ['/lemiex/orders', '/lemiex/orders/*'],
@@ -77,7 +75,28 @@ const PAGE_ROUTE_PATTERNS: Record<string, string[]> = {
   '/lemiex/tiers': ['/lemiex/tiers', '/lemiex/tiers/*'],
 }
 
-type StoredRolePermissions = Partial<Record<LemiexRole, string[]>>
+export const PAGE_ACCESS_PERMISSION_BY_PATH: Record<string, string> = {
+  '/lemiex/dashboard': 'page.dashboard',
+  '/lemiex/welcome': 'page.welcome',
+  '/lemiex/orders': 'page.orders',
+  '/lemiex/products': 'page.products',
+  '/lemiex/product-variants': 'page.product_variants',
+  '/lemiex/stores': 'page.stores',
+  '/lemiex/tickets': 'page.tickets',
+  '/lemiex/stock/manage': 'page.stock_manage',
+  '/lemiex/stock/shortage': 'page.stock_shortage',
+  '/lemiex/stock/shortage-by-variant': 'page.stock_shortage_by_variant',
+  '/lemiex/stock/audit-logs': 'page.stock_audit_logs',
+  '/lemiex/payroll': 'page.payroll',
+  '/lemiex/payroll/tiers': 'page.payroll_tiers',
+  '/lemiex/wallets/transactions': 'page.wallet_transactions',
+  '/lemiex/systems/users': 'page.system_users',
+  '/lemiex/systems/permissions': 'page.system_permissions',
+  '/lemiex/systems/permissions-sidebar': 'page.system_page_access',
+  '/lemiex/tiers': 'page.tiers',
+}
+
+export const PAGE_ACCESS_GROUP_NAME = 'Page Access'
 
 type LemiexNavItem = NavGroup['items'][number]
 export type PageAccessTreeNode = {
@@ -191,34 +210,21 @@ function LemiexLogo(props: React.ComponentProps<'div'>) {
   )
 }
 
-function readStoredRolePermissions(): StoredRolePermissions {
-  if (typeof window === 'undefined') return {}
-
-  try {
-    const rawValue = window.localStorage.getItem(PAGE_ACCESS_STORAGE_KEY)
-    if (!rawValue) return {}
-    const parsed = JSON.parse(rawValue) as StoredRolePermissions
-
-    return parsed && typeof parsed === 'object' ? parsed : {}
-  } catch {
-    return {}
-  }
+export type LemiexRolePermission = {
+  id?: number
+  name?: string | null
+  display_name?: string | null
+  group?: string | null
+  route?: string | null
+  method?: string | null
 }
 
-function getResolvedRolePermissions(): Record<LemiexRole, string[]> {
-  const stored = readStoredRolePermissions()
-
-  return (Object.keys(DEFAULT_ROLE_PERMISSIONS) as LemiexRole[]).reduce(
-    (acc, role) => {
-      acc[role] = Array.isArray(stored[role])
-        ? (stored[role] as string[])
-        : DEFAULT_ROLE_PERMISSIONS[role]
-
-      return acc
-    },
-    {} as Record<LemiexRole, string[]>
-  )
-}
+type UserPermissionsSource =
+  | Array<LemiexRolePermission | string | null | undefined>
+  | string
+  | { permissions?: Array<LemiexRolePermission | string | null | undefined> | null }
+  | null
+  | undefined
 
 function getRoutePatterns(path: string) {
   if (
@@ -228,43 +234,45 @@ function getRoutePatterns(path: string) {
     return []
   }
 
-  return PAGE_ROUTE_PATTERNS[path] || [path]
+  return PAGE_ACCESS_ROUTE_PATTERNS[path] || [path]
+}
+
+function getDefaultRolePermissionNames(role: LemiexRole) {
+  const routes = DEFAULT_ROLE_PERMISSIONS[role]
+  if (routes.includes('*')) return ['*']
+
+  return routes
+    .filter((route) => !route.endsWith('/*'))
+    .map((route) => PAGE_ACCESS_PERMISSION_BY_PATH[route])
+    .filter(Boolean)
+}
+
+export function extractPermissionNames(source?: UserPermissionsSource) {
+  const permissions = Array.isArray(source)
+    ? source
+    : source && typeof source === 'object' && 'permissions' in source
+      ? source.permissions || []
+      : []
+
+  return permissions
+    .map((permission) =>
+      typeof permission === 'string'
+        ? permission
+        : permission && typeof permission === 'object'
+          ? permission.name || ''
+          : ''
+    )
+    .filter(Boolean)
 }
 
 export function getRolePagePermissions() {
-  return getResolvedRolePermissions()
-}
-
-export function saveRolePagePermissions(nextPermissions: StoredRolePermissions) {
-  if (typeof window === 'undefined') return
-
-  window.localStorage.setItem(PAGE_ACCESS_STORAGE_KEY, JSON.stringify(nextPermissions))
-  window.dispatchEvent(new CustomEvent(PAGE_ACCESS_EVENT))
-}
-
-export function resetRolePagePermissions() {
-  if (typeof window === 'undefined') return
-
-  window.localStorage.removeItem(PAGE_ACCESS_STORAGE_KEY)
-  window.dispatchEvent(new CustomEvent(PAGE_ACCESS_EVENT))
-}
-
-export function subscribeToPageAccessChanges(listener: () => void) {
-  if (typeof window === 'undefined') return () => undefined
-
-  const handleStorage = (event: StorageEvent) => {
-    if (event.key === PAGE_ACCESS_STORAGE_KEY) {
-      listener()
-    }
-  }
-
-  window.addEventListener(PAGE_ACCESS_EVENT, listener)
-  window.addEventListener('storage', handleStorage)
-
-  return () => {
-    window.removeEventListener(PAGE_ACCESS_EVENT, listener)
-    window.removeEventListener('storage', handleStorage)
-  }
+  return (Object.keys(DEFAULT_ROLE_PERMISSIONS) as LemiexRole[]).reduce(
+    (acc, role) => {
+      acc[role] = getDefaultRolePermissionNames(role)
+      return acc
+    },
+    {} as Record<LemiexRole, string[]>
+  )
 }
 
 function createLemiexNavGroups(locale: AppLocale): NavGroup[] {
@@ -420,7 +428,7 @@ function createLemiexNavGroups(locale: AppLocale): NavGroup[] {
   ]
 }
 
-function hasAccess(role: LemiexRole, path: string) {
+function hasAccess(role: LemiexRole, path: string, permissionNames?: string[]) {
   const resolvedRole = normalizeLemiexRole(role)
   if (!resolvedRole) return false
 
@@ -434,32 +442,60 @@ function hasAccess(role: LemiexRole, path: string) {
     return resolvedRole === 'Admin'
   }
 
-  const resolvedPermissions = getResolvedRolePermissions()
+  if (resolvedRole === 'Admin') return true
 
-  return resolvedPermissions[resolvedRole].some((route) => {
+  const effectivePermissionNames =
+    permissionNames && permissionNames.length > 0
+      ? permissionNames
+      : getDefaultRolePermissionNames(resolvedRole)
+
+  if (effectivePermissionNames.includes('*')) return true
+
+  const allowedRoutes = effectivePermissionNames
+    .map((permissionName) =>
+      Object.entries(PAGE_ACCESS_PERMISSION_BY_PATH).find(
+        ([, value]) => value === permissionName
+      )?.[0]
+    )
+    .filter(Boolean) as string[]
+
+  return allowedRoutes.some((route) => {
     if (route === '*') return true
     if (route === path) return true
-    if (route.endsWith('/*')) {
-      const baseRoute = route.slice(0, -2)
-      return path.startsWith(baseRoute)
-    }
+    const patterns = getRoutePatterns(route)
+    if (
+      patterns.some((pattern) =>
+        pattern.endsWith('/*')
+          ? path.startsWith(pattern.slice(0, -2))
+          : pattern === path
+      )
+    )
+      return true
     return false
   })
 }
 
-export function canAccessLemiexPath(role: LemiexRole, path: string) {
-  return hasAccess(role, path)
+export function canAccessLemiexPath(
+  role: LemiexRole,
+  path: string,
+  permissionNames?: string[]
+) {
+  return hasAccess(role, path, permissionNames)
 }
 
-function filterNavItem(role: LemiexRole, item: LemiexNavItem): LemiexNavItem | null {
+function filterNavItem(
+  role: LemiexRole,
+  item: LemiexNavItem,
+  permissionNames?: string[]
+): LemiexNavItem | null {
   if ('url' in item && item.url) {
-    return hasAccess(role, item.url) ? item : null
+    return hasAccess(role, item.url, permissionNames) ? item : null
   }
 
   if (!('items' in item) || !item.items) return null
 
   const children = item.items
-    .map((child) => filterNavItem(role, child))
+    .map((child) => filterNavItem(role, child, permissionNames))
     .filter(Boolean) as NavCollapsible['items']
 
   if (children.length === 0) return null
@@ -502,10 +538,37 @@ export function getDefaultLemiexRoute(role: LemiexRole) {
   if (isScannerRole(role)) return '/lemiex/welcome'
 
   const resolvedRole = normalizeLemiexRole(role) || 'Admin'
-  const resolvedPermissions = getResolvedRolePermissions()
-  const firstAllowedRoute = resolvedPermissions[resolvedRole].find(
-    (route) => route !== '*' && !route.endsWith('/*')
-  )
+  const permissionNames = getDefaultRolePermissionNames(resolvedRole)
+  const firstAllowedRoute = permissionNames
+    .map((permissionName) =>
+      Object.entries(PAGE_ACCESS_PERMISSION_BY_PATH).find(
+        ([, value]) => value === permissionName
+      )?.[0]
+    )
+    .find(Boolean)
+
+  return firstAllowedRoute || '/lemiex/welcome'
+}
+
+export function getDefaultLemiexRouteForPermissions(
+  role: LemiexRole,
+  permissionNames?: string[]
+) {
+  if (isScannerRole(role)) return '/lemiex/welcome'
+  if (role === 'Admin') return '/lemiex/dashboard'
+
+  const effectivePermissionNames =
+    permissionNames && permissionNames.length > 0
+      ? permissionNames
+      : getDefaultRolePermissionNames(role)
+
+  const firstAllowedRoute = effectivePermissionNames
+    .map((permissionName) =>
+      Object.entries(PAGE_ACCESS_PERMISSION_BY_PATH).find(
+        ([, value]) => value === permissionName
+      )?.[0]
+    )
+    .find(Boolean)
 
   return firstAllowedRoute || '/lemiex/welcome'
 }
@@ -534,13 +597,14 @@ export function getLemiexTeam(locale: AppLocale = 'vi'): Team {
 
 export function getLemiexNavGroups(
   locale: AppLocale = 'vi',
-  role: LemiexRole = 'Admin'
+  role: LemiexRole = 'Admin',
+  permissionNames?: string[]
 ): NavGroup[] {
   return createLemiexNavGroups(locale)
     .map((group) => ({
       ...group,
       items: group.items
-        .map((item) => filterNavItem(role, item))
+        .map((item) => filterNavItem(role, item, permissionNames))
         .filter(Boolean) as NavGroup['items'],
     }))
     .filter((group) => group.items.length > 0)

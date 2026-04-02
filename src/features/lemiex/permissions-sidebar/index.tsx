@@ -1,8 +1,8 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ChevronDown, RotateCcw, Save, ShieldCheck } from 'lucide-react'
+import { ChevronDown, Loader2, RotateCcw, Save, ShieldCheck } from 'lucide-react'
 import { toast } from 'sonner'
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
@@ -16,17 +16,24 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { useI18n } from '@/context/i18n-provider'
 import {
+  PAGE_ACCESS_GROUP_NAME,
+  PAGE_ACCESS_PERMISSION_BY_PATH,
   type PageAccessTreeNode,
-  getLemiexRole,
   getLemiexPageAccessTree,
-  getRolePagePermissions as readRolePagePermissions,
-  resetRolePagePermissions,
-  saveRolePagePermissions,
+  getLemiexRole,
+  getRolePagePermissions as getDefaultRolePagePermissions,
 } from '@/features/lemiex/layout/sidebar-data'
 import { cn } from '@/lib/utils'
+import {
+  type PermissionRecord,
+  createPermission,
+  fetchPermissionMatrix,
+  updateRolePermissions,
+} from '@/services/permissions/api'
 import { type LemiexRole, useAuthStore } from '@/stores/auth-store'
 
-type RolePermissionsState = ReturnType<typeof readRolePagePermissions>
+type RolePermissionNamesState = Record<LemiexRole, string[]>
+type RoleIdsState = Partial<Record<LemiexRole, number>>
 
 const MANAGEABLE_ROLES: LemiexRole[] = [
   'Support',
@@ -37,49 +44,100 @@ const MANAGEABLE_ROLES: LemiexRole[] = [
   'Shipout',
 ]
 
+const EMPTY_ROLE_PERMISSION_NAMES: RolePermissionNamesState = {
+  Admin: [],
+  Support: [],
+  Seller: [],
+  Staff: [],
+  QC: [],
+  Packing: [],
+  Shipout: [],
+}
+
 const FALLBACK_MESSAGES = {
   vi: {
     title: 'Phân quyền trang',
-    subtitle: 'Bật hoặc chặn quyền truy cập menu và page theo từng vai trò.',
-    adminNotice: 'Admin luôn có toàn quyền và không chỉnh ở đây.',
+    subtitle: 'Tích hoặc bỏ tích từng page để áp quyền truy cập theo vai trò.',
+    adminNotice: 'Chỉ Admin mới thấy và chỉnh được màn này. Vai trò khác sẽ nhận cấu hình đã lưu.',
     reset: 'Khôi phục mặc định',
     save: 'Lưu cấu hình',
+    saving: 'Đang lưu...',
+    loading: 'Đang tải cấu hình phân quyền trang...',
     saved: 'Đã lưu cấu hình quyền truy cập trang',
     resetDone: 'Đã khôi phục cấu hình mặc định',
     page: 'Menu / Page',
     admin: 'Admin',
     fullAccess: 'Toàn quyền',
     empty: 'Không có page nào để cấu hình',
+    initError: 'Không thể khởi tạo quyền truy cập trang',
   },
   en: {
     title: 'Page access',
-    subtitle: 'Allow or block menu and page access by role.',
-    adminNotice: 'Admin always has full access and is not configured here.',
+    subtitle: 'Tick or untick each page to manage access by role.',
+    adminNotice: 'Only Admin can access and edit this screen. Other roles will receive the saved setup.',
     reset: 'Reset defaults',
     save: 'Save access',
+    saving: 'Saving...',
+    loading: 'Loading page access configuration...',
     saved: 'Page access configuration saved',
     resetDone: 'Default access configuration restored',
     page: 'Menu / Page',
     admin: 'Admin',
     fullAccess: 'Full access',
     empty: 'No pages available for configuration',
+    initError: 'Failed to initialize page access permissions',
   },
 } as const
 
-function togglePatterns(
-  current: string[],
-  patterns: string[],
-  checked: boolean
-) {
-  if (checked) {
-    return Array.from(new Set([...current, ...patterns]))
+function flattenTree(nodes: PageAccessTreeNode[]) {
+  const map = new Map<string, PageAccessTreeNode>()
+
+  function walk(node: PageAccessTreeNode) {
+    map.set(node.id, node)
+    node.children?.forEach(walk)
   }
 
-  return current.filter((route) => !patterns.includes(route))
+  nodes.forEach(walk)
+  return map
 }
 
-function hasAllPatterns(current: string[], patterns: string[]) {
-  return patterns.every((pattern) => current.includes(pattern))
+function getPageAccessPermissionName(url?: string) {
+  if (!url) return null
+  return PAGE_ACCESS_PERMISSION_BY_PATH[url] || null
+}
+
+function collectNodePermissionNames(node: PageAccessTreeNode): string[] {
+  const selfPermission = getPageAccessPermissionName(node.url)
+  const childPermissions = (node.children || []).flatMap((child) =>
+    collectNodePermissionNames(child)
+  )
+
+  return Array.from(new Set([...(selfPermission ? [selfPermission] : []), ...childPermissions]))
+}
+
+function hasAllPermissions(current: string[], permissionNames: string[]) {
+  return permissionNames.every((permissionName) => current.includes(permissionName))
+}
+
+function togglePermissionNames(current: string[], permissionNames: string[], checked: boolean) {
+  if (checked) {
+    return Array.from(new Set([...current, ...permissionNames]))
+  }
+
+  return current.filter((permissionName) => !permissionNames.includes(permissionName))
+}
+
+function buildPagePermissionDefinition(path: string, title: string) {
+  const permissionName = PAGE_ACCESS_PERMISSION_BY_PATH[path]
+
+  return {
+    name: permissionName,
+    display_name: title,
+    description: `Page access for ${title}`,
+    group: PAGE_ACCESS_GROUP_NAME,
+    route: path,
+    method: 'GET',
+  }
 }
 
 function PageAccessRow({
@@ -93,15 +151,15 @@ function PageAccessRow({
 }: {
   node: PageAccessTreeNode
   depth: number
-  permissions: RolePermissionsState
-  onToggleRole: (role: LemiexRole, patterns: string[], checked: boolean) => void
+  permissions: RolePermissionNamesState
+  onToggleRole: (role: LemiexRole, permissionNames: string[], checked: boolean) => void
   expanded: Record<string, boolean>
   onToggleExpand: (nodeId: string) => void
   adminAccessLabel: string
 }) {
   const hasChildren = Boolean(node.children?.length)
   const isExpanded = expanded[node.id] ?? true
-  const patterns = node.patterns || []
+  const permissionNames = collectNodePermissionNames(node)
 
   return (
     <>
@@ -145,10 +203,10 @@ function PageAccessRow({
 
         {MANAGEABLE_ROLES.map((role) => (
           <div key={`${node.id}-${role}`} className='flex items-center justify-center px-3 py-3'>
-            {patterns.length > 0 ? (
+            {permissionNames.length > 0 ? (
               <Checkbox
-                checked={hasAllPatterns(permissions[role], patterns)}
-                onCheckedChange={(checked) => onToggleRole(role, patterns, Boolean(checked))}
+                checked={hasAllPermissions(permissions[role], permissionNames)}
+                onCheckedChange={(checked) => onToggleRole(role, permissionNames, Boolean(checked))}
               />
             ) : (
               <span className='text-muted-foreground'>-</span>
@@ -183,24 +241,169 @@ export function LemiexPermissionsSidebarPage() {
   const role = getLemiexRole(user?.role)
   const isAdmin = role === 'Admin'
   const pageTree = useMemo(() => getLemiexPageAccessTree(locale), [locale])
-  const [permissions, setPermissions] = useState<RolePermissionsState>(() =>
-    readRolePagePermissions()
-  )
+  const treeMap = useMemo(() => flattenTree(pageTree), [pageTree])
+  const defaultRolePermissions = useMemo(() => getDefaultRolePagePermissions(), [])
+  const [permissions, setPermissions] = useState<RolePermissionNamesState>(EMPTY_ROLE_PERMISSION_NAMES)
+  const [roleIds, setRoleIds] = useState<RoleIdsState>({})
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
   const [expanded, setExpanded] = useState<Record<string, boolean>>(() => {
     const next: Record<string, boolean> = {}
     pageTree.forEach((group) => {
       next[group.id] = true
       group.children?.forEach((child) => {
-        if (child.children?.length) next[child.id] = true
+        next[child.id] = true
       })
     })
     return next
   })
 
-  function handleToggleRole(role: LemiexRole, patterns: string[], checked: boolean) {
+  const syncStateFromMatrix = useCallback(
+    (
+      permissionsList: PermissionRecord[],
+      roles: Array<{ id: number; name?: string | null; display_name?: string | null }>,
+      matrix: Record<string, { permissions?: number[] }>
+    ) => {
+      const pagePermissions = permissionsList.filter(
+        (permission) =>
+          permission.group === PAGE_ACCESS_GROUP_NAME ||
+          (permission.name && Object.values(PAGE_ACCESS_PERMISSION_BY_PATH).includes(permission.name))
+      )
+      const pagePermissionIdSet = new Set(pagePermissions.map((permission) => permission.id))
+      const permissionNameById = new Map(
+        pagePermissions
+          .filter((permission): permission is PermissionRecord & { name: string } => Boolean(permission.name))
+          .map((permission) => [permission.id, permission.name as string])
+      )
+
+      const nextRoleIds: RoleIdsState = {}
+      const nextPermissions: RolePermissionNamesState = {
+        Admin: [],
+        Support: [],
+        Seller: [],
+        Staff: [],
+        QC: [],
+        Packing: [],
+        Shipout: [],
+      }
+
+      roles.forEach((roleRecord) => {
+        const resolvedRole = getLemiexRole(roleRecord.name || roleRecord.display_name)
+        nextRoleIds[resolvedRole] = roleRecord.id
+        const assignedIds = matrix[String(roleRecord.id)]?.permissions || []
+        nextPermissions[resolvedRole] = assignedIds
+          .filter((permissionId) => pagePermissionIdSet.has(permissionId))
+          .map((permissionId) => permissionNameById.get(permissionId) || '')
+          .filter(Boolean)
+      })
+
+      setPermissions(nextPermissions)
+      setRoleIds(nextRoleIds)
+    },
+    []
+  )
+
+  const ensurePagePermissionsAndDefaults = useCallback(async () => {
+    let matrixData = await fetchPermissionMatrix()
+    let permissionsList = matrixData.permissions || []
+
+    const missingDefinitions = Object.entries(PAGE_ACCESS_PERMISSION_BY_PATH)
+      .filter(([, permissionName]) => !permissionsList.some((permission) => permission.name === permissionName))
+      .map(([path]) => {
+        const node = treeMap.get(path)
+        return buildPagePermissionDefinition(path, node?.title || path)
+      })
+
+    if (missingDefinitions.length > 0) {
+      for (const definition of missingDefinitions) {
+        await createPermission(definition)
+      }
+      matrixData = await fetchPermissionMatrix()
+      permissionsList = matrixData.permissions || []
+    }
+
+    const pagePermissions = permissionsList.filter(
+      (permission) =>
+        permission.group === PAGE_ACCESS_GROUP_NAME ||
+        (permission.name && Object.values(PAGE_ACCESS_PERMISSION_BY_PATH).includes(permission.name))
+    )
+    const pagePermissionIds = new Set(pagePermissions.map((permission) => permission.id))
+    const permissionIdByName = new Map(
+      pagePermissions
+        .filter((permission): permission is PermissionRecord & { name: string } => Boolean(permission.name))
+        .map((permission) => [permission.name as string, permission.id])
+    )
+
+    const initializationUpdates = MANAGEABLE_ROLES.flatMap((manageableRole) => {
+      const roleRecord = (matrixData.roles || []).find(
+        (item) => getLemiexRole(item.name || item.display_name) === manageableRole
+      )
+
+      if (!roleRecord) return []
+
+      const currentIds = matrixData.matrix?.[String(roleRecord.id)]?.permissions || []
+      const currentPageIds = currentIds.filter((permissionId) => pagePermissionIds.has(permissionId))
+      if (currentPageIds.length > 0) return []
+
+      const defaultIds = (defaultRolePermissions[manageableRole] || [])
+        .map((permissionName) => permissionIdByName.get(permissionName))
+        .filter((permissionId): permissionId is number => typeof permissionId === 'number')
+
+      const mergedIds = Array.from(
+        new Set([...currentIds.filter((permissionId) => !pagePermissionIds.has(permissionId)), ...defaultIds])
+      )
+
+      if (mergedIds.length === currentIds.length) return []
+
+      return [{ roleId: roleRecord.id, permissionIds: mergedIds }]
+    })
+
+    if (initializationUpdates.length > 0) {
+      for (const update of initializationUpdates) {
+        await updateRolePermissions(update.roleId, update.permissionIds)
+      }
+      matrixData = await fetchPermissionMatrix()
+      permissionsList = matrixData.permissions || []
+    }
+
+    syncStateFromMatrix(
+      permissionsList,
+      matrixData.roles || [],
+      matrixData.matrix || {}
+    )
+  }, [defaultRolePermissions, syncStateFromMatrix, treeMap])
+
+  useEffect(() => {
+    if (!isAdmin) {
+      router.replace('/lemiex/dashboard')
+      return
+    }
+
+    let active = true
+
+    async function load() {
+      try {
+        setLoading(true)
+        await ensurePagePermissionsAndDefaults()
+      } catch (error) {
+        const message = error instanceof Error ? error.message : m.initError
+        toast.error(message)
+      } finally {
+        if (active) setLoading(false)
+      }
+    }
+
+    void load()
+
+    return () => {
+      active = false
+    }
+  }, [ensurePagePermissionsAndDefaults, isAdmin, m.initError, router])
+
+  function handleToggleRole(role: LemiexRole, permissionNames: string[], checked: boolean) {
     setPermissions((prev) => ({
       ...prev,
-      [role]: togglePatterns(prev[role], patterns, checked),
+      [role]: togglePermissionNames(prev[role], permissionNames, checked),
     }))
   }
 
@@ -211,25 +414,71 @@ export function LemiexPermissionsSidebarPage() {
     }))
   }
 
-  function handleSave() {
+  async function handleSave() {
     if (!isAdmin) {
-      router.replace('/lemiex/welcome')
+      router.replace('/lemiex/dashboard')
       return
     }
 
-    saveRolePagePermissions(permissions)
-    toast.success(m.saved)
+    try {
+      setSaving(true)
+
+      const matrixData = await fetchPermissionMatrix()
+      const permissionsList = matrixData.permissions || []
+      const pagePermissions = permissionsList.filter(
+        (permission) =>
+          permission.group === PAGE_ACCESS_GROUP_NAME ||
+          (permission.name && Object.values(PAGE_ACCESS_PERMISSION_BY_PATH).includes(permission.name))
+      )
+      const pagePermissionIdsSet = new Set(pagePermissions.map((permission) => permission.id))
+      const permissionIdByName = new Map(
+        pagePermissions
+          .filter((permission): permission is PermissionRecord & { name: string } => Boolean(permission.name))
+          .map((permission) => [permission.name as string, permission.id])
+      )
+
+      for (const manageableRole of MANAGEABLE_ROLES) {
+        const roleId = roleIds[manageableRole]
+        if (!roleId) continue
+
+        const existingIds = matrixData.matrix?.[String(roleId)]?.permissions || []
+        const selectedIds = permissions[manageableRole]
+          .map((permissionName) => permissionIdByName.get(permissionName))
+          .filter((permissionId): permissionId is number => typeof permissionId === 'number')
+        const mergedIds = Array.from(
+          new Set([
+            ...existingIds.filter((permissionId) => !pagePermissionIdsSet.has(permissionId)),
+            ...selectedIds,
+          ])
+        )
+
+        await updateRolePermissions(roleId, mergedIds)
+      }
+
+      await ensurePagePermissionsAndDefaults()
+      toast.success(m.saved)
+    } catch (error) {
+      const message = error instanceof Error ? error.message : m.initError
+      toast.error(message)
+    } finally {
+      setSaving(false)
+    }
   }
 
-  function handleReset() {
+  async function handleReset() {
     if (!isAdmin) {
-      router.replace('/lemiex/welcome')
+      router.replace('/lemiex/dashboard')
       return
     }
 
-    resetRolePagePermissions()
-    const nextPermissions = readRolePagePermissions()
-    setPermissions(nextPermissions)
+    setPermissions((prev) => {
+      const next = { ...prev }
+      MANAGEABLE_ROLES.forEach((manageableRole) => {
+        next[manageableRole] = [...defaultRolePermissions[manageableRole]]
+      })
+      return next
+    })
+
     toast.success(m.resetDone)
   }
 
@@ -259,19 +508,31 @@ export function LemiexPermissionsSidebarPage() {
             <Button
               variant='outline'
               className='h-10 rounded-[6px]'
-              onClick={handleReset}
+              onClick={() => void handleReset()}
+              disabled={loading || saving}
             >
               <RotateCcw className='mr-2 size-4' />
               {m.reset}
             </Button>
-            <Button className='h-10 rounded-[6px]' onClick={handleSave}>
-              <Save className='mr-2 size-4' />
-              {m.save}
+            <Button
+              className='h-10 rounded-[6px]'
+              onClick={() => void handleSave()}
+              disabled={loading || saving}
+            >
+              {saving ? <Loader2 className='mr-2 size-4 animate-spin' /> : <Save className='mr-2 size-4' />}
+              {saving ? m.saving : m.save}
             </Button>
           </div>
         </div>
 
-        {pageTree.length === 0 ? (
+        {loading ? (
+          <div className='flex min-h-[240px] items-center justify-center rounded-[10px] border border-border/80 bg-background'>
+            <div className='flex items-center gap-3 text-sm text-muted-foreground'>
+              <Loader2 className='size-4 animate-spin' />
+              {m.loading}
+            </div>
+          </div>
+        ) : pageTree.length === 0 ? (
           <div className='py-16 text-center text-sm text-muted-foreground'>{m.empty}</div>
         ) : (
           <ScrollArea className='w-full whitespace-nowrap'>
@@ -282,9 +543,12 @@ export function LemiexPermissionsSidebarPage() {
               >
                 <div className='px-4 py-3 text-sm font-semibold'>{m.page}</div>
                 <div className='px-3 py-3 text-center text-sm font-semibold'>{m.admin}</div>
-                {MANAGEABLE_ROLES.map((role) => (
-                  <div key={`head-${role}`} className='px-3 py-3 text-center text-sm font-semibold'>
-                    {role}
+                {MANAGEABLE_ROLES.map((manageableRole) => (
+                  <div
+                    key={`head-${manageableRole}`}
+                    className='px-3 py-3 text-center text-sm font-semibold'
+                  >
+                    {manageableRole}
                   </div>
                 ))}
               </div>

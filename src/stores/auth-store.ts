@@ -22,7 +22,22 @@ export interface AuthUser {
   email?: string | null
   created_at?: string | null
   profile?: Record<string, unknown> | null
-  role?: { name?: LemiexRole | string; display_name?: string } | LemiexRole | string | null
+  role?:
+    | {
+        name?: LemiexRole | string
+        display_name?: string
+        permissions?: Array<{
+          id?: number
+          name?: string | null
+          display_name?: string | null
+          group?: string | null
+          route?: string | null
+          method?: string | null
+        }>
+      }
+    | LemiexRole
+    | string
+    | null
   role_name?: LemiexRole | string | null
   exp?: number | null
   [key: string]: unknown

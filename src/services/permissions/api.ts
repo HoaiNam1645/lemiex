@@ -22,6 +22,15 @@ export type PermissionRecord = {
   removable?: boolean | null
 }
 
+export type CreatePermissionPayload = {
+  name: string
+  display_name: string
+  description?: string | null
+  group?: string | null
+  route?: string | null
+  method?: string | null
+}
+
 export type PermissionRole = {
   id: number
   name?: string | null
@@ -53,6 +62,41 @@ export async function fetchPermissionMatrix() {
 
   if (!isSuccess(response) || !response.data) {
     throw new Error(response.message || 'Failed to load permissions')
+  }
+
+  return response.data
+}
+
+export async function fetchPermissions() {
+  const response = await apiRequest<
+    BaseResponse<{
+      permissions?: PermissionRecord[]
+      grouped?: Record<string, PermissionRecord[]>
+      groups?: string[]
+    }>
+  >(`${API_BASE_URL}/permissions`, { method: 'GET' })
+
+  if (!isSuccess(response) || !response.data) {
+    throw new Error(response.message || 'Failed to load permissions')
+  }
+
+  return response.data
+}
+
+export async function createPermission(payload: CreatePermissionPayload) {
+  const response = await apiRequest<BaseResponse<PermissionRecord>>(
+    `${API_BASE_URL}/permissions`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    }
+  )
+
+  if (!isSuccess(response) || !response.data) {
+    throw new Error(response.message || 'Failed to create permission')
   }
 
   return response.data

@@ -15,6 +15,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { PAGE_ACCESS_GROUP_NAME } from '@/features/lemiex/layout/sidebar-data'
 import { cn } from '@/lib/utils'
 import {
   fetchPermissionMatrix,
@@ -80,10 +81,19 @@ export function LemiexPermissionsPage() {
     try {
       setLoading(true)
       const response = await fetchPermissionMatrix()
-      const nextGrouped = response.grouped || {}
+      const nextGrouped = Object.fromEntries(
+        Object.entries(response.grouped || {}).filter(
+          ([groupName]) => groupName !== PAGE_ACCESS_GROUP_NAME
+        )
+      )
+      const visiblePermissionIds = new Set(
+        Object.values(nextGrouped)
+          .flat()
+          .map((permission) => permission.id)
+      )
 
       setRoles(response.roles || [])
-      setPermissions(response.permissions || [])
+      setPermissions((response.permissions || []).filter((permission) => visiblePermissionIds.has(permission.id)))
       setGrouped(nextGrouped)
       setMatrix(buildMatrixFromServer(response.matrix))
 

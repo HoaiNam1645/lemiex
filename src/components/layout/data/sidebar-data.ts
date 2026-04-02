@@ -1,7 +1,11 @@
 import * as React from 'react'
 import type { AppLocale } from '@/lib/i18n/types'
 import { type NavGroup, type SidebarData, type TeamId, type Team } from '../types'
-import { getLemiexNavGroups, getLemiexRole, getLemiexTeam } from '@/features/lemiex/layout/sidebar-data'
+import {
+  getLemiexNavGroups,
+  getLemiexRole,
+  getLemiexTeam,
+} from '@/features/lemiex/layout/sidebar-data'
 import { type LemiexRole } from '@/stores/auth-store'
 
 function getTeams(_locale: AppLocale): Team[] {
@@ -25,9 +29,10 @@ export function getSidebarTeams(locale: AppLocale = 'vi') {
 export function getSidebarNavGroups(
   teamId: TeamId,
   locale: AppLocale = 'vi',
-  role: LemiexRole = 'Admin'
+  role: LemiexRole = 'Admin',
+  permissionNames?: string[]
 ) {
-  return getLemiexNavGroups(locale, getLemiexRole(role))
+  return getLemiexNavGroups(locale, getLemiexRole(role), permissionNames)
 }
 
 export function getSidebarUser(_teamId: TeamId) {

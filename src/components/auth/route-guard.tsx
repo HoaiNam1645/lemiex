@@ -4,7 +4,8 @@ import { useEffect } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import {
   canAccessLemiexPath,
-  getDefaultLemiexRoute,
+  extractPermissionNames,
+  getDefaultLemiexRouteForPermissions,
   getLemiexRole,
 } from '@/features/lemiex/layout/sidebar-data'
 import { useAuthStore } from '@/stores/auth-store'
@@ -37,10 +38,11 @@ export function RouteGuard({ children }: RouteGuardProps) {
     if (!pathname.startsWith('/lemiex')) return
 
     const role = getLemiexRole(user?.role)
-    if (canAccessLemiexPath(role, pathname)) return
+    const permissionNames = extractPermissionNames(user?.role)
+    if (canAccessLemiexPath(role, pathname, permissionNames)) return
 
-    router.replace(getDefaultLemiexRoute(role))
-  }, [accessToken, hydrated, pathname, router, searchParams, user?.role])
+    router.replace(getDefaultLemiexRouteForPermissions(role, permissionNames))
+  }, [accessToken, hydrated, pathname, router, searchParams, user])
 
   if (!hydrated) return null
   if (!accessToken) return null
@@ -48,7 +50,8 @@ export function RouteGuard({ children }: RouteGuardProps) {
 
   if (pathname.startsWith('/lemiex')) {
     const role = getLemiexRole(user?.role)
-    if (!canAccessLemiexPath(role, pathname)) return null
+    const permissionNames = extractPermissionNames(user?.role)
+    if (!canAccessLemiexPath(role, pathname, permissionNames)) return null
   }
 
   return <>{children}</>

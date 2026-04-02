@@ -1,17 +1,13 @@
 'use client'
 
 import React from 'react'
-import { usePathname } from 'next/navigation'
 import { useNavigate } from '@/lib/router'
 import { ArrowRight, ChevronRight, Laptop, Moon, Sun } from 'lucide-react'
 import { useSearch } from '@/context/search-provider'
 import { useI18n } from '@/context/i18n-provider'
 import { useTheme } from '@/context/theme-provider'
 import { useAuthStore } from '@/stores/auth-store'
-import {
-  getLemiexRole,
-  subscribeToPageAccessChanges,
-} from '@/features/lemiex/layout/sidebar-data'
+import { extractPermissionNames, getLemiexRole } from '@/features/lemiex/layout/sidebar-data'
 import {
   CommandDialog,
   CommandEmpty,
@@ -25,7 +21,6 @@ import { getSidebarNavGroups } from './layout/data/sidebar-data'
 import { ScrollArea } from './ui/scroll-area'
 
 export function CommandMenu() {
-  const pathname = usePathname()
   const navigate = useNavigate()
   const { locale, messages } = useI18n()
   const { setTheme } = useTheme()
@@ -33,7 +28,7 @@ export function CommandMenu() {
   const teamId = 'lemiex'
   const user = useAuthStore((state) => state.auth.user)
   const lemiexRole = getLemiexRole(user?.role)
-  const [, setPageAccessVersion] = React.useState(0)
+  const permissionNames = React.useMemo(() => extractPermissionNames(user?.role), [user?.role])
 
   const runCommand = React.useCallback(
     (command: () => unknown) => {
@@ -44,15 +39,9 @@ export function CommandMenu() {
   )
 
   const navGroups = React.useMemo(
-    () => getSidebarNavGroups(teamId, locale, lemiexRole),
-    [lemiexRole, locale, teamId]
+    () => getSidebarNavGroups(teamId, locale, lemiexRole, permissionNames),
+    [lemiexRole, locale, permissionNames, teamId]
   )
-
-  React.useEffect(() => {
-    return subscribeToPageAccessChanges(() => {
-      setPageAccessVersion((value) => value + 1)
-    })
-  }, [])
 
   return (
     <CommandDialog modal open={open} onOpenChange={setOpen}>
