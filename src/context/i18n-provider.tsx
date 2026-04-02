@@ -1562,6 +1562,130 @@ const uiMessages = {
       },
       na: 'N/A',
     },
+    partnerAppsPage: {
+      title: 'Ứng dụng đối tác',
+      subtitle: 'Sao chép link xác thực và quản lý cấu hình kết nối ứng dụng đối tác.',
+      addApp: 'Thêm ứng dụng đối tác',
+      loading: 'Đang tải ứng dụng đối tác...',
+      empty: 'Không tìm thấy ứng dụng đối tác',
+      copied: 'Đã sao chép link xác thực',
+      noAuthLink: 'Ứng dụng đối tác này chưa có link xác thực',
+      na: 'N/A',
+      columns: {
+        name: 'Tên',
+        linkAuth: 'Link Auth',
+        proxyStatus: 'Trạng thái proxy',
+        status: 'Trạng thái',
+        actions: 'Thao tác',
+      },
+      copyLink: 'Sao chép link auth',
+      edit: 'Sửa',
+      dialog: {
+        createTitle: 'Tạo ứng dụng đối tác',
+        editTitle: 'Chỉnh sửa ứng dụng đối tác',
+        name: 'Tên',
+        slug: 'Slug',
+        authUrl: 'URL xác thực',
+        proxyStatus: 'Trạng thái proxy',
+        status: 'Trạng thái',
+        cancel: 'Hủy',
+        create: 'Tạo',
+        update: 'Cập nhật',
+        successCreate: 'Tạo ứng dụng đối tác thành công',
+        successUpdate: 'Cập nhật ứng dụng đối tác thành công',
+      },
+    },
+    partnerStoresPage: {
+      title: 'Cửa hàng đối tác',
+      subtitle: 'Tạo và quản lý các shop đối tác tách biệt với cửa hàng legacy.',
+      addStore: 'Thêm cửa hàng đối tác',
+      searchPlaceholder: 'Tìm theo tên, mã, user, tài khoản...',
+      loading: 'Đang tải cửa hàng đối tác...',
+      empty: 'Không tìm thấy cửa hàng đối tác',
+      failed: 'Tải cửa hàng đối tác thất bại',
+      syncTitle: 'Đồng bộ đơn hàng',
+      syncDescription: 'Xác nhận đồng bộ các đơn hàng mới nhất từ shop đối tác này.',
+      syncConfirm: 'Bắt đầu đồng bộ',
+      syncCancel: 'Hủy',
+      syncProgressTitle: 'Đang đồng bộ đơn hàng...',
+      syncProgressDescription: 'Vui lòng chờ trong lúc hệ thống xử lý đơn hàng đối tác.',
+      syncDone: 'Đồng bộ đơn hàng thành công',
+      na: 'N/A',
+      columns: {
+        id: 'ID',
+        partner: 'Đối tác',
+        name: 'Tên',
+        user: 'User',
+        status: 'Trạng thái',
+        totalOrders: 'Tổng đơn hàng',
+        accountNo: 'Số tài khoản',
+        actions: 'Thao tác',
+      },
+      dialog: {
+        createTitle: 'Thêm cửa hàng đối tác',
+        editTitle: 'Chỉnh sửa cửa hàng đối tác',
+        storeName: 'Tên cửa hàng',
+        storeCode: 'Mã shop',
+        user: 'Staff',
+        partnerApp: 'Ứng dụng đối tác',
+        status: 'Trạng thái',
+        accountNo: 'Số tài khoản',
+        cancel: 'Hủy',
+        create: 'Gửi',
+        update: 'Cập nhật',
+        successCreate: 'Tạo cửa hàng đối tác thành công',
+        successUpdate: 'Cập nhật cửa hàng đối tác thành công',
+        na: 'N/A',
+      },
+    },
+    partnerSyncOrdersPage: {
+      title: 'Đơn hàng đã đồng bộ',
+      subtitle: 'Xem các đơn hàng đối tác mới đồng bộ trước khi chuyển vào luồng chính.',
+      loading: 'Đang tải đơn hàng đã đồng bộ...',
+      empty: 'Chưa có đơn hàng đồng bộ. Hãy chạy sync từ Partner Stores trước.',
+      filters: {
+        store: 'Cửa hàng',
+        orderNo: 'Mã đơn đối tác',
+        status: 'Trạng thái',
+        fulfillment: 'Fulfillment',
+        allStores: 'Tất cả cửa hàng',
+        allStatuses: 'Tất cả trạng thái',
+        allFulfillment: 'Tất cả fulfillment',
+        orderNoPlaceholder: 'Tìm mã đơn đối tác...',
+        search: 'Tìm kiếm',
+        clearAll: 'Xóa bộ lọc',
+        pending: 'Chờ xử lý',
+        paid: 'Đã thanh toán',
+        cancelled: 'Đã hủy',
+        noFulfillment: 'Chưa fulfillment',
+        ready: 'Sẵn sàng',
+        shipped: 'Đã giao',
+      },
+      columns: {
+        id: 'ID',
+        store: 'Cửa hàng',
+        customer: 'Khách hàng',
+        user: 'User',
+        partnerOrder: 'Mã đơn TikTok',
+        tracking: 'Tracking',
+        items: 'Sản phẩm',
+        discount: 'Giảm giá',
+        total: 'Tổng',
+        status: 'Trạng thái',
+        fulfillment: 'Fulfillment',
+        note: 'Ghi chú',
+        actions: 'Thao tác',
+      },
+      labels: {
+        sku: 'SKU',
+        qty: 'SL',
+        buyLabel: 'Mua label',
+        buyLabels: 'Mua labels',
+        edit: 'Sửa',
+        ship: 'Giao',
+        delete: 'Xóa',
+      },
+    },
     stock: {
       manage: {
         title: 'Quản lý tồn kho',
@@ -3458,6 +3582,130 @@ const uiMessages = {
       },
       na: 'N/A',
     },
+    partnerAppsPage: {
+      title: 'Partner Apps',
+      subtitle: 'Copy auth links and manage partner app connection settings.',
+      addApp: 'Add Partner App',
+      loading: 'Loading partner apps...',
+      empty: 'No partner apps found',
+      copied: 'Auth link copied',
+      noAuthLink: 'This partner app does not have an auth link yet',
+      na: 'N/A',
+      columns: {
+        name: 'Name',
+        linkAuth: 'Link Auth',
+        proxyStatus: 'Proxy Status',
+        status: 'Status',
+        actions: 'Actions',
+      },
+      copyLink: 'Copy Link Auth',
+      edit: 'Edit',
+      dialog: {
+        createTitle: 'Create Partner App',
+        editTitle: 'Edit Partner App',
+        name: 'Name',
+        slug: 'Slug',
+        authUrl: 'Auth URL',
+        proxyStatus: 'Proxy Status',
+        status: 'Status',
+        cancel: 'Cancel',
+        create: 'Create',
+        update: 'Update',
+        successCreate: 'Partner app created successfully',
+        successUpdate: 'Partner app updated successfully',
+      },
+    },
+    partnerStoresPage: {
+      title: 'Partner Stores',
+      subtitle: 'Create and manage connected partner shops separately from legacy stores.',
+      addStore: 'Add Partner Store',
+      searchPlaceholder: 'Search by name, code, user, account...',
+      loading: 'Loading partner stores...',
+      empty: 'No partner stores found',
+      failed: 'Failed to load partner stores',
+      syncTitle: 'Sync Orders',
+      syncDescription: 'Confirm to sync the latest orders from this partner shop.',
+      syncConfirm: 'Start Sync',
+      syncCancel: 'Cancel',
+      syncProgressTitle: 'Syncing orders...',
+      syncProgressDescription: 'Please wait while the system processes partner orders.',
+      syncDone: 'Orders synced successfully',
+      na: 'N/A',
+      columns: {
+        id: 'ID',
+        partner: 'Partner',
+        name: 'Name',
+        user: 'User',
+        status: 'Status',
+        totalOrders: 'Total Orders',
+        accountNo: 'Account No',
+        actions: 'Actions',
+      },
+      dialog: {
+        createTitle: 'Add Partner Store',
+        editTitle: 'Edit Partner Store',
+        storeName: 'Store Name',
+        storeCode: 'Shop Code',
+        user: 'Staff',
+        partnerApp: 'Partner App',
+        status: 'Status',
+        accountNo: 'Account No',
+        cancel: 'Cancel',
+        create: 'Submit',
+        update: 'Update',
+        successCreate: 'Partner store created successfully',
+        successUpdate: 'Partner store updated successfully',
+        na: 'N/A',
+      },
+    },
+    partnerSyncOrdersPage: {
+      title: 'Synced Orders',
+      subtitle: 'Review the latest synced partner orders before moving into the main flow.',
+      loading: 'Loading synced orders...',
+      empty: 'No synced orders yet. Run sync from Partner Stores first.',
+      filters: {
+        store: 'Store',
+        orderNo: 'Partner Order',
+        status: 'Status',
+        fulfillment: 'Fulfillment',
+        allStores: 'All Stores',
+        allStatuses: 'All Statuses',
+        allFulfillment: 'All Fulfillment',
+        orderNoPlaceholder: 'Search partner order...',
+        search: 'Search',
+        clearAll: 'Clear All',
+        pending: 'Pending',
+        paid: 'Paid',
+        cancelled: 'Cancelled',
+        noFulfillment: 'No fulfillment',
+        ready: 'Ready',
+        shipped: 'Shipped',
+      },
+      columns: {
+        id: 'ID',
+        store: 'Store',
+        customer: 'Customer',
+        user: 'User',
+        partnerOrder: 'TikTok Order',
+        tracking: 'Tracking',
+        items: 'Items',
+        discount: 'Discount',
+        total: 'Total',
+        status: 'Status',
+        fulfillment: 'Fulfillment',
+        note: 'Note',
+        actions: 'Actions',
+      },
+      labels: {
+        sku: 'SKU',
+        qty: 'QTY',
+        buyLabel: 'Buy Label',
+        buyLabels: 'Buy Labels',
+        edit: 'Edit',
+        ship: 'Ship',
+        delete: 'Delete',
+      },
+    },
     stock: {
       manage: {
         title: 'Stock Management',
@@ -5316,6 +5564,130 @@ const uiMessages = {
       refund: string
     }
     na: string
+  }
+  partnerAppsPage: {
+    title: string
+    subtitle: string
+    addApp: string
+    loading: string
+    empty: string
+    copied: string
+    noAuthLink: string
+    na: string
+    columns: {
+      name: string
+      linkAuth: string
+      proxyStatus: string
+      status: string
+      actions: string
+    }
+    copyLink: string
+    edit: string
+    dialog: {
+      createTitle: string
+      editTitle: string
+      name: string
+      slug: string
+      authUrl: string
+      proxyStatus: string
+      status: string
+      cancel: string
+      create: string
+      update: string
+      successCreate: string
+      successUpdate: string
+    }
+  }
+  partnerStoresPage: {
+    title: string
+    subtitle: string
+    addStore: string
+    searchPlaceholder: string
+    loading: string
+    empty: string
+    failed: string
+    syncTitle: string
+    syncDescription: string
+    syncConfirm: string
+    syncCancel: string
+    syncProgressTitle: string
+    syncProgressDescription: string
+    syncDone: string
+    na: string
+    columns: {
+      id: string
+      partner: string
+      name: string
+      user: string
+      status: string
+      totalOrders: string
+      accountNo: string
+      actions: string
+    }
+    dialog: {
+      createTitle: string
+      editTitle: string
+      storeName: string
+      storeCode: string
+      user: string
+      partnerApp: string
+      status: string
+      accountNo: string
+      cancel: string
+      create: string
+      update: string
+      successCreate: string
+      successUpdate: string
+      na: string
+    }
+  }
+  partnerSyncOrdersPage: {
+    title: string
+    subtitle: string
+    loading: string
+    empty: string
+    filters: {
+      store: string
+      orderNo: string
+      status: string
+      fulfillment: string
+      allStores: string
+      allStatuses: string
+      allFulfillment: string
+      orderNoPlaceholder: string
+      search: string
+      clearAll: string
+      pending: string
+      paid: string
+      cancelled: string
+      noFulfillment: string
+      ready: string
+      shipped: string
+    }
+    columns: {
+      id: string
+      store: string
+      customer: string
+      user: string
+      partnerOrder: string
+      tracking: string
+      items: string
+      discount: string
+      total: string
+      status: string
+      fulfillment: string
+      note: string
+      actions: string
+    }
+    labels: {
+      sku: string
+      qty: string
+      buyLabel: string
+      buyLabels: string
+      edit: string
+      ship: string
+      delete: string
+    }
   }
   stock: {
     manage: {

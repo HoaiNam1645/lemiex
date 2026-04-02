@@ -85,7 +85,7 @@ export function LemiexDataTable<TData>({
   return (
     <div className={cn('flex flex-1 flex-col gap-4', className)}>
       <div className='overflow-x-auto overflow-y-visible rounded-[6px] border bg-card'>
-        <Table className='min-w-[1120px]'>
+        <Table className='min-w-max'>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
