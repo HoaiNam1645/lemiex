@@ -24,6 +24,7 @@ import {
   getRolePagePermissions as getDefaultRolePagePermissions,
 } from '@/features/lemiex/layout/sidebar-data'
 import { cn } from '@/lib/utils'
+import { fetchCurrentUser } from '@/services/auth/api'
 import {
   type PermissionRecord,
   createPermission,
@@ -238,6 +239,9 @@ export function LemiexPermissionsSidebarPage() {
   const { locale } = useI18n()
   const m = FALLBACK_MESSAGES[locale]
   const user = useAuthStore((state) => state.auth.user)
+  const accessToken = useAuthStore((state) => state.auth.accessToken)
+  const setUser = useAuthStore((state) => state.auth.setUser)
+  const resetAuth = useAuthStore((state) => state.auth.reset)
   const role = getLemiexRole(user?.role)
   const isAdmin = role === 'Admin'
   const pageTree = useMemo(() => getLemiexPageAccessTree(locale), [locale])
@@ -374,8 +378,8 @@ export function LemiexPermissionsSidebarPage() {
   }, [defaultRolePermissions, syncStateFromMatrix, treeMap])
 
   useEffect(() => {
-    if (!isAdmin) {
-      router.replace('/lemiex/dashboard')
+    if (!accessToken) {
+      router.replace('/login?redirect=/lemiex/systems/permissions-sidebar')
       return
     }
 
@@ -384,6 +388,28 @@ export function LemiexPermissionsSidebarPage() {
     async function load() {
       try {
         setLoading(true)
+
+        let resolvedUser = user
+        if (!resolvedUser) {
+          const currentUserResponse = await fetchCurrentUser()
+
+          if (!currentUserResponse.success || !currentUserResponse.user) {
+            resetAuth()
+            router.replace('/login?redirect=/lemiex/systems/permissions-sidebar')
+            return
+          }
+
+          resolvedUser = currentUserResponse.user
+          if (active) {
+            setUser(currentUserResponse.user)
+          }
+        }
+
+        if (getLemiexRole(resolvedUser?.role) !== 'Admin') {
+          router.replace('/lemiex/dashboard')
+          return
+        }
+
         await ensurePagePermissionsAndDefaults()
       } catch (error) {
         const message = error instanceof Error ? error.message : m.initError
@@ -398,7 +424,7 @@ export function LemiexPermissionsSidebarPage() {
     return () => {
       active = false
     }
-  }, [ensurePagePermissionsAndDefaults, isAdmin, m.initError, router])
+  }, [accessToken, ensurePagePermissionsAndDefaults, m.initError, resetAuth, router, setUser, user])
 
   function handleToggleRole(role: LemiexRole, permissionNames: string[], checked: boolean) {
     setPermissions((prev) => ({
@@ -482,7 +508,7 @@ export function LemiexPermissionsSidebarPage() {
     toast.success(m.resetDone)
   }
 
-  if (!isAdmin) return null
+  if (!accessToken || !isAdmin) return null
 
   return (
     <>

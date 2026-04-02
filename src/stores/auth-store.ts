@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { getCookie, setCookie, removeCookie } from '@/lib/cookies'
 
 const ACCESS_TOKEN = 'lemiex_access_token'
+const LEGACY_TOKEN = 'token'
 const AUTH_USER = 'lemiex_auth_user'
 
 export type LemiexRole =
@@ -77,12 +78,21 @@ function readStoredToken() {
   if (storedToken) return storedToken
 
   const cookieState = getCookie(ACCESS_TOKEN)
-  if (!cookieState) return ''
+  if (cookieState) {
+    try {
+      return JSON.parse(cookieState) as string
+    } catch {
+      return cookieState
+    }
+  }
+
+  const legacyCookieState = getCookie(LEGACY_TOKEN)
+  if (!legacyCookieState) return ''
 
   try {
-    return JSON.parse(cookieState) as string
+    return JSON.parse(legacyCookieState) as string
   } catch {
-    return cookieState
+    return legacyCookieState
   }
 }
 
@@ -117,6 +127,7 @@ export const useAuthStore = create<AuthState>()((set) => {
       setAccessToken: (accessToken) =>
         set((state) => {
           setCookie(ACCESS_TOKEN, JSON.stringify(accessToken))
+          setCookie(LEGACY_TOKEN, accessToken)
           if (typeof window !== 'undefined') {
             window.localStorage.setItem(ACCESS_TOKEN, accessToken)
           }
@@ -125,6 +136,7 @@ export const useAuthStore = create<AuthState>()((set) => {
       resetAccessToken: () =>
         set((state) => {
           removeCookie(ACCESS_TOKEN)
+          removeCookie(LEGACY_TOKEN)
           if (typeof window !== 'undefined') {
             window.localStorage.removeItem(ACCESS_TOKEN)
           }
@@ -133,6 +145,7 @@ export const useAuthStore = create<AuthState>()((set) => {
       reset: () =>
         set((state) => {
           removeCookie(ACCESS_TOKEN)
+          removeCookie(LEGACY_TOKEN)
           if (typeof window !== 'undefined') {
             window.localStorage.removeItem(ACCESS_TOKEN)
             window.localStorage.removeItem(AUTH_USER)
