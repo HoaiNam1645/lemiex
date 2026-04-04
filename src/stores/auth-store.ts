@@ -47,9 +47,11 @@ export interface AuthUser {
 interface AuthState {
   auth: {
     hydrated: boolean
+    serverChecked: boolean
     hydrate: () => void
     user: AuthUser | null
     setUser: (user: AuthUser | null) => void
+    setServerChecked: (checked: boolean) => void
     accessToken: string
     setAccessToken: (accessToken: string) => void
     resetAccessToken: () => void
@@ -100,12 +102,14 @@ export const useAuthStore = create<AuthState>()((set) => {
   return {
     auth: {
       hydrated: false,
+      serverChecked: false,
       hydrate: () =>
         set((state) => ({
           ...state,
           auth: {
             ...state.auth,
             hydrated: true,
+            serverChecked: false,
             user: readStoredUser(),
             accessToken: readStoredToken(),
           },
@@ -123,6 +127,14 @@ export const useAuthStore = create<AuthState>()((set) => {
 
           return { ...state, auth: { ...state.auth, user } }
         }),
+      setServerChecked: (checked) =>
+        set((state) => ({
+          ...state,
+          auth: {
+            ...state.auth,
+            serverChecked: checked,
+          },
+        })),
       accessToken: '',
       setAccessToken: (accessToken) =>
         set((state) => {
@@ -131,7 +143,14 @@ export const useAuthStore = create<AuthState>()((set) => {
           if (typeof window !== 'undefined') {
             window.localStorage.setItem(ACCESS_TOKEN, accessToken)
           }
-          return { ...state, auth: { ...state.auth, accessToken } }
+          return {
+            ...state,
+            auth: {
+              ...state.auth,
+              accessToken,
+              serverChecked: false,
+            },
+          }
         }),
       resetAccessToken: () =>
         set((state) => {
@@ -140,7 +159,14 @@ export const useAuthStore = create<AuthState>()((set) => {
           if (typeof window !== 'undefined') {
             window.localStorage.removeItem(ACCESS_TOKEN)
           }
-          return { ...state, auth: { ...state.auth, accessToken: '' } }
+          return {
+            ...state,
+            auth: {
+              ...state.auth,
+              accessToken: '',
+              serverChecked: false,
+            },
+          }
         }),
       reset: () =>
         set((state) => {
@@ -152,7 +178,12 @@ export const useAuthStore = create<AuthState>()((set) => {
           }
           return {
             ...state,
-            auth: { ...state.auth, user: null, accessToken: '' },
+            auth: {
+              ...state.auth,
+              user: null,
+              accessToken: '',
+              serverChecked: false,
+            },
           }
         }),
     },

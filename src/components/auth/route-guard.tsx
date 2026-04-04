@@ -20,6 +20,7 @@ export function RouteGuard({ children }: RouteGuardProps) {
   const searchParams = useSearchParams()
   const hydrated = useAuthStore((state) => state.auth.hydrated)
   const accessToken = useAuthStore((state) => state.auth.accessToken)
+  const serverChecked = useAuthStore((state) => state.auth.serverChecked)
   const user = useAuthStore((state) => state.auth.user)
 
   useEffect(() => {
@@ -34,6 +35,7 @@ export function RouteGuard({ children }: RouteGuardProps) {
     }
 
     if (!user) return
+    if (!serverChecked) return
 
     if (!pathname.startsWith('/lemiex')) return
 
@@ -42,11 +44,12 @@ export function RouteGuard({ children }: RouteGuardProps) {
     if (canAccessLemiexPath(role, pathname, permissionNames)) return
 
     router.replace(getDefaultLemiexRouteForPermissions(role, permissionNames))
-  }, [accessToken, hydrated, pathname, router, searchParams, user])
+  }, [accessToken, hydrated, pathname, router, searchParams, serverChecked, user])
 
   if (!hydrated) return null
   if (!accessToken) return null
   if (!user) return null
+  if (!serverChecked) return null
 
   if (pathname.startsWith('/lemiex')) {
     const role = getLemiexRole(user?.role)

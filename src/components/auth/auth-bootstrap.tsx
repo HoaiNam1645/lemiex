@@ -9,6 +9,7 @@ export function AuthBootstrap() {
   const hydrated = useAuthStore((state) => state.auth.hydrated)
   const accessToken = useAuthStore((state) => state.auth.accessToken)
   const setUser = useAuthStore((state) => state.auth.setUser)
+  const setServerChecked = useAuthStore((state) => state.auth.setServerChecked)
   const reset = useAuthStore((state) => state.auth.reset)
   const bootstrappedTokenRef = useRef<string>('')
 
@@ -32,6 +33,7 @@ export function AuthBootstrap() {
 
         if (!cancelled) {
           setUser(result.user)
+          setServerChecked(true)
         }
       })
       .catch(() => {
@@ -41,7 +43,7 @@ export function AuthBootstrap() {
     return () => {
       cancelled = true
     }
-  }, [accessToken, hydrated, reset, setUser])
+  }, [accessToken, hydrated, reset, setServerChecked, setUser])
 
   useEffect(() => {
     if (accessToken) return

@@ -64,6 +64,23 @@ const uiMessages = {
         refunds: 'Hoàn tiền',
         surcharge: 'Phụ thu',
         debits: 'Công nợ',
+        quickAccess: {
+          balance: 'Số dư',
+          add: 'Nạp',
+          orderIdPlaceholder: 'Order ID',
+          openTrackPage: 'Mở trang track',
+          scanQr: 'Quét QR',
+          scanUnavailable: 'Tính năng quét QR sẽ được bổ sung sau.',
+          orderIdRequired: 'Vui lòng nhập Order ID',
+          addFundTitle: 'Tạo yêu cầu nạp/rút tiền',
+          addFundDescription: 'Gửi yêu cầu giao dịch ví để admin duyệt.',
+          transactionId: 'Transaction ID',
+          generateTransactionId: 'Tạo Transaction ID mới',
+          processing: 'Đang xử lý...',
+          submit: 'Gửi yêu cầu',
+          addFundPending: 'Yêu cầu giao dịch đã được gửi và đang chờ duyệt.',
+          addFundFailed: 'Không thể tạo yêu cầu giao dịch.',
+        },
         staffReport: 'Báo cáo nhân sự',
         systems: 'Hệ thống',
         users: 'Người dùng',
@@ -2084,6 +2101,23 @@ const uiMessages = {
         refunds: 'Refunds',
         surcharge: 'Surcharge',
         debits: 'Debits',
+        quickAccess: {
+          balance: 'Balance',
+          add: 'Add',
+          orderIdPlaceholder: 'Order ID',
+          openTrackPage: 'Open track page',
+          scanQr: 'Scan QR',
+          scanUnavailable: 'QR scanning will be added later.',
+          orderIdRequired: 'Please enter an order ID',
+          addFundTitle: 'Create a fund request',
+          addFundDescription: 'Send a wallet transaction request for admin approval.',
+          transactionId: 'Transaction ID',
+          generateTransactionId: 'Generate a new transaction ID',
+          processing: 'Processing...',
+          submit: 'Submit request',
+          addFundPending: 'Your fund request has been submitted and is pending approval.',
+          addFundFailed: 'Failed to create the transaction request.',
+        },
         staffReport: 'Staff Report',
         systems: 'Systems',
         users: 'Users',
@@ -4105,6 +4139,23 @@ const uiMessages = {
       refunds: string
       surcharge: string
       debits: string
+      quickAccess: {
+        balance: string
+        add: string
+        orderIdPlaceholder: string
+        openTrackPage: string
+        scanQr: string
+        scanUnavailable: string
+        orderIdRequired: string
+        addFundTitle: string
+        addFundDescription: string
+        transactionId: string
+        generateTransactionId: string
+        processing: string
+        submit: string
+        addFundPending: string
+        addFundFailed: string
+      }
       staffReport: string
       systems: string
       users: string

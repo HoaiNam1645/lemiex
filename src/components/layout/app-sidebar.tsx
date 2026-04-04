@@ -19,6 +19,7 @@ import {
   getSidebarUser,
 } from './data/sidebar-data'
 import { NavGroup } from './nav-group'
+import { LemiexSidebarQuickAccess } from './lemiex-sidebar-quick-access'
 import { NavUser } from './nav-user'
 import { TeamSwitcher } from './team-switcher'
 import { type Team } from './types'
@@ -30,8 +31,13 @@ export function AppSidebar() {
   const { locale } = useI18n()
   const router = useRouter()
   const user = useAuthStore((state) => state.auth.user)
+  const accessToken = useAuthStore((state) => state.auth.accessToken)
+  const serverChecked = useAuthStore((state) => state.auth.serverChecked)
   const lemiexRole = getLemiexRole(user?.role)
-  const permissionNames = useMemo(() => extractPermissionNames(user?.role), [user?.role])
+  const permissionNames = useMemo(() => {
+    if (accessToken && !serverChecked) return []
+    return extractPermissionNames(user?.role)
+  }, [accessToken, serverChecked, user?.role])
   const teams = useMemo(() => getSidebarTeams(locale), [locale])
   const [selectedTeam, setSelectedTeam] = useState<Team>(teams[0])
 
@@ -68,6 +74,7 @@ export function AppSidebar() {
         />
       </SidebarHeader>
       <SidebarContent>
+        {selectedTeam.id === 'lemiex' ? <LemiexSidebarQuickAccess /> : null}
         {navGroups.map((props) => (
           <NavGroup key={props.title} {...props} />
         ))}
