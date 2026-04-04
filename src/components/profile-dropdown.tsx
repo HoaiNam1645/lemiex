@@ -11,7 +11,6 @@ import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -53,20 +52,12 @@ export function ProfileDropdown() {
             </div>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem asChild>
-              <Link to='/lemiex/profile'>
-                {messages.profile.manageProfile}
-                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to='/settings/notifications'>
-                {messages.profile.notifications}
-                <DropdownMenuShortcut>⌘N</DropdownMenuShortcut>
-              </Link>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <Link to='/lemiex/profile'>
+              {messages.profile.manageProfile}
+              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           {isLemiexRoute ? (
             <DropdownMenuLabel className='px-2 pb-1 text-xs text-muted-foreground'>

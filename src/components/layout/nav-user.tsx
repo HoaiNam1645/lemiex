@@ -3,12 +3,9 @@
 import { usePathname } from 'next/navigation'
 import { Link } from '@/lib/router'
 import {
-  BadgeCheck,
-  Bell,
   ChevronsUpDown,
-  CreditCard,
   LogOut,
-  Sparkles,
+  UserCircle2,
 } from 'lucide-react'
 import useDialogState from '@/hooks/use-dialog-state'
 import { useAuthStore } from '@/stores/auth-store'
@@ -104,29 +101,8 @@ export function NavUser({ user }: NavUserProps) {
               <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
                   <Link to='/lemiex/profile'>
-                    <Sparkles />
+                    <UserCircle2 />
                     {messages.profile.manageProfile}
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem asChild>
-                  <Link to='/lemiex/profile'>
-                    <BadgeCheck />
-                    {messages.profile.manageProfile}
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to='/settings'>
-                    <CreditCard />
-                    {messages.profile.billing}
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link to='/settings/notifications'>
-                    <Bell />
-                    {messages.profile.notifications}
                   </Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
