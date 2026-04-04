@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { fetchCurrentUser } from '@/services/auth/api'
 import { useAuthStore } from '@/stores/auth-store'
 
@@ -8,18 +8,20 @@ export function AuthBootstrap() {
   const hydrate = useAuthStore((state) => state.auth.hydrate)
   const hydrated = useAuthStore((state) => state.auth.hydrated)
   const accessToken = useAuthStore((state) => state.auth.accessToken)
-  const user = useAuthStore((state) => state.auth.user)
   const setUser = useAuthStore((state) => state.auth.setUser)
   const reset = useAuthStore((state) => state.auth.reset)
+  const bootstrappedTokenRef = useRef<string>('')
 
   useEffect(() => {
     hydrate()
   }, [hydrate])
 
   useEffect(() => {
-    if (!hydrated || !accessToken || user) return
+    if (!hydrated || !accessToken) return
+    if (bootstrappedTokenRef.current === accessToken) return
 
     let cancelled = false
+    bootstrappedTokenRef.current = accessToken
 
     fetchCurrentUser()
       .then((result) => {
@@ -39,7 +41,12 @@ export function AuthBootstrap() {
     return () => {
       cancelled = true
     }
-  }, [accessToken, hydrated, reset, setUser, user])
+  }, [accessToken, hydrated, reset, setUser])
+
+  useEffect(() => {
+    if (accessToken) return
+    bootstrappedTokenRef.current = ''
+  }, [accessToken])
 
   return null
 }

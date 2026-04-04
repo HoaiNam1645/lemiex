@@ -27,19 +27,12 @@ const DEFAULT_ROLE_PERMISSIONS: Record<LemiexRole, string[]> = {
     '/lemiex/dashboard',
     '/lemiex/orders',
     '/lemiex/orders/*',
-    '/lemiex/designs',
-    '/lemiex/designs/*',
     '/lemiex/products',
     '/lemiex/products/*',
     '/lemiex/product-variants',
     '/lemiex/product-variants/*',
     '/lemiex/stores',
     '/lemiex/stores/*',
-    '/lemiex/partner-stores',
-    '/lemiex/partner-stores/*',
-    '/lemiex/partner-apps',
-    '/lemiex/partner-apps/*',
-    '/lemiex/list-sync-orders',
     '/lemiex/tickets',
     '/lemiex/tickets/*',
     '/lemiex/wallets/transactions',
@@ -60,31 +53,20 @@ const DEFAULT_ROLE_PERMISSIONS: Record<LemiexRole, string[]> = {
   Shipout: ['/lemiex/welcome'],
 }
 
-export const PAGE_ACCESS_ROUTE_PATTERNS: Record<string, string[]> = {
-  '/lemiex/dashboard': ['/lemiex/dashboard'],
-  '/lemiex/welcome': ['/lemiex/welcome'],
+const PAGE_ACCESS_PATTERN_OVERRIDES: Record<string, string[]> = {
   '/lemiex/orders': ['/lemiex/orders', '/lemiex/orders/*'],
   '/lemiex/products': ['/lemiex/products', '/lemiex/products/*'],
   '/lemiex/product-variants': ['/lemiex/product-variants', '/lemiex/product-variants/*'],
   '/lemiex/stores': ['/lemiex/stores', '/lemiex/stores/*'],
   '/lemiex/partner-stores': ['/lemiex/partner-stores', '/lemiex/partner-stores/*'],
   '/lemiex/partner-apps': ['/lemiex/partner-apps', '/lemiex/partner-apps/*'],
-  '/lemiex/list-sync-orders': ['/lemiex/list-sync-orders'],
   '/lemiex/tickets': ['/lemiex/tickets', '/lemiex/tickets/*'],
-  '/lemiex/stock/manage': ['/lemiex/stock/manage'],
-  '/lemiex/stock/shortage': ['/lemiex/stock/shortage'],
-  '/lemiex/stock/shortage-by-variant': ['/lemiex/stock/shortage-by-variant'],
-  '/lemiex/stock/audit-logs': ['/lemiex/stock/audit-logs'],
   '/lemiex/payroll': ['/lemiex/payroll', '/lemiex/payroll/*'],
-  '/lemiex/payroll/tiers': ['/lemiex/payroll/tiers'],
-  '/lemiex/wallets/transactions': ['/lemiex/wallets/transactions'],
   '/lemiex/systems/users': ['/lemiex/systems/users', '/lemiex/systems/users/*'],
-  '/lemiex/systems/permissions': ['/lemiex/systems/permissions'],
-  '/lemiex/systems/permissions-sidebar': ['/lemiex/systems/permissions-sidebar'],
   '/lemiex/tiers': ['/lemiex/tiers', '/lemiex/tiers/*'],
 }
 
-export const PAGE_ACCESS_PERMISSION_BY_PATH: Record<string, string> = {
+const PAGE_ACCESS_PERMISSION_NAME_OVERRIDES: Record<string, string> = {
   '/lemiex/dashboard': 'page.dashboard',
   '/lemiex/welcome': 'page.welcome',
   '/lemiex/orders': 'page.orders',
@@ -99,9 +81,12 @@ export const PAGE_ACCESS_PERMISSION_BY_PATH: Record<string, string> = {
   '/lemiex/stock/shortage': 'page.stock_shortage',
   '/lemiex/stock/shortage-by-variant': 'page.stock_shortage_by_variant',
   '/lemiex/stock/audit-logs': 'page.stock_audit_logs',
+  '/lemiex/attendances': 'page.attendances',
   '/lemiex/payroll': 'page.payroll',
   '/lemiex/payroll/tiers': 'page.payroll_tiers',
   '/lemiex/wallets/transactions': 'page.wallet_transactions',
+  '/lemiex/wallets/pending-fund': 'page.wallet_pending_fund',
+  '/lemiex/staff-report': 'page.staff_report',
   '/lemiex/systems/users': 'page.system_users',
   '/lemiex/systems/permissions': 'page.system_permissions',
   '/lemiex/systems/permissions-sidebar': 'page.system_page_access',
@@ -226,6 +211,25 @@ function LemiexLogo(props: React.ComponentProps<'div'>) {
       className: 'size-4',
     })
   )
+}
+
+function slugifyPageAccessPath(path: string) {
+  return path
+    .replace(/^\/lemiex\//, '')
+    .replace(/^\//, '')
+    .replace(/\/+/g, '_')
+    .replace(/[^a-zA-Z0-9_]/g, '_')
+    .replace(/_+/g, '_')
+    .replace(/^_+|_+$/g, '')
+    .toLowerCase()
+}
+
+function collectMenuUrls(items: LemiexNavItem[]): string[] {
+  return items.flatMap((item) => {
+    if ('url' in item && item.url) return [item.url]
+    if ('items' in item && item.items) return collectMenuUrls(item.items)
+    return []
+  })
 }
 
 export type LemiexRolePermission = {
@@ -460,6 +464,21 @@ function createLemiexNavGroups(locale: AppLocale): NavGroup[] {
     },
   ]
 }
+
+const LEMIEX_PAGE_ACCESS_PATHS = Array.from(
+  new Set(createLemiexNavGroups('en').flatMap((group) => collectMenuUrls(group.items)))
+)
+
+export const PAGE_ACCESS_ROUTE_PATTERNS: Record<string, string[]> = Object.fromEntries(
+  LEMIEX_PAGE_ACCESS_PATHS.map((path) => [path, PAGE_ACCESS_PATTERN_OVERRIDES[path] || [path]])
+)
+
+export const PAGE_ACCESS_PERMISSION_BY_PATH: Record<string, string> = Object.fromEntries(
+  LEMIEX_PAGE_ACCESS_PATHS.map((path) => [
+    path,
+    PAGE_ACCESS_PERMISSION_NAME_OVERRIDES[path] || `page.${slugifyPageAccessPath(path)}`,
+  ])
+)
 
 function hasAccess(role: LemiexRole, path: string, permissionNames?: string[]) {
   const resolvedRole = normalizeLemiexRole(role)
