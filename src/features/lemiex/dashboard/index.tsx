@@ -459,7 +459,7 @@ export function LemiexDashboard() {
           <DashboardSkeleton />
         ) : (
           <>
-            <div className='flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between'>
+            <div className='flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between'>
               <div className='space-y-1'>
                 <h1 className='text-3xl font-semibold tracking-tight'>
                   {m.title}
@@ -469,13 +469,8 @@ export function LemiexDashboard() {
                 </p>
               </div>
 
-              <div className='flex flex-col items-start gap-3 lg:items-end'>
-                {isSeller ? (
-                  <Badge variant='secondary' className='rounded-[8px] px-3 py-1 text-xs font-medium'>
-                    {m.sellerScope}
-                  </Badge>
-                ) : null}
-                <div className='space-y-2'>
+              <div className='flex w-full flex-col items-start gap-3 lg:w-auto lg:min-w-[280px] lg:items-end'>
+                <div className='space-y-2 lg:text-right'>
                   <div className='text-xs font-medium uppercase tracking-wide text-muted-foreground'>
                     {m.timeRangeLabel}
                   </div>
