@@ -8,6 +8,7 @@ import { RouteGuard } from '@/components/auth/route-guard'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/layout/app-sidebar'
 import { SkipToMain } from '@/components/skip-to-main'
+import { SiteFooter } from '@/components/site-footer'
 
 type AuthenticatedLayoutProps = {
   children?: React.ReactNode
@@ -36,7 +37,10 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
                   'peer-data-[variant=inset]:has-data-[layout=fixed]:h-[calc(100svh-(var(--spacing)*4))]'
                 )}
               >
-                {children}
+                <div className='flex min-h-full flex-1 flex-col'>
+                  <div className='flex-1'>{children}</div>
+                  <SiteFooter />
+                </div>
               </SidebarInset>
             </SidebarProvider>
           </LayoutProvider>
