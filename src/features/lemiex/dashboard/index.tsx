@@ -63,6 +63,8 @@ const fallbackMessages = {
   loading: 'Loading dashboard...',
   failedLoad: 'Failed to load dashboard statistics',
   timeRangeLabel: 'Time range',
+  today: 'Today',
+  yesterday: 'Yesterday',
   last7Days: '7D',
   last30Days: '30D',
   last90Days: '90D',
@@ -476,6 +478,8 @@ export function LemiexDashboard() {
                   </div>
                   <Tabs value={timeRange} onValueChange={setTimeRange}>
                     <TabsList>
+                      <TabsTrigger value='1'>{m.today}</TabsTrigger>
+                      <TabsTrigger value='2'>{m.yesterday}</TabsTrigger>
                       <TabsTrigger value='7'>{m.last7Days}</TabsTrigger>
                       <TabsTrigger value='30'>{m.last30Days}</TabsTrigger>
                       <TabsTrigger value='90'>{m.last90Days}</TabsTrigger>

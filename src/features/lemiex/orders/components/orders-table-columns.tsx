@@ -101,13 +101,49 @@ export function getOrdersTableColumns(
         const order = row.original
 
         return (
-          <div className='space-y-1'>
+          <div className='space-y-2 rounded-[8px] border border-border/70 bg-background p-3'>
             <div className='font-semibold'>#{order.id}</div>
-            <div className='text-sm text-muted-foreground'>
+            <div className='text-sm text-muted-foreground break-words'>
               {order.ref_id || messages.status.noRefId}
             </div>
             <div className='line-clamp-1 text-xs text-muted-foreground'>
               {getVariantSummary(order, messages)}
+            </div>
+            <div className='space-y-1.5 rounded-[8px] border border-border/60 bg-muted/20 p-2'>
+              <div className='flex flex-wrap items-center gap-1.5'>
+                {showSellerColumn ? (
+                  <Badge variant='outline' className='rounded-[6px] text-[11px]'>
+                    {(order.seller?.username || order.seller?.name || messages.status.na)}
+                  </Badge>
+                ) : null}
+
+                {showTicketColumn ? (
+                  order.support_ticket?.id ? (
+                    <Badge variant='outline' className='rounded-[6px] text-[11px]'>
+                      #{order.support_ticket.id}
+                    </Badge>
+                  ) : order.has_ticket ? (
+                    <Badge className='rounded-[6px] text-[11px]' variant='destructive'>
+                      {messages.status.hasTicket}
+                    </Badge>
+                  ) : null
+                ) : null}
+              </div>
+
+              <div className='flex flex-wrap items-center gap-1.5'>
+                <Badge
+                  className='rounded-[6px] text-[11px]'
+                  variant={order.fulfillment_priority === 'priority' ? 'destructive' : 'secondary'}
+                >
+                  {order.fulfillment_priority === 'priority'
+                    ? messages.status.priority
+                    : messages.status.normal}
+                </Badge>
+
+                <Badge variant='outline' className='rounded-[6px] text-[11px] capitalize'>
+                  {getEmbroideryType(order)}
+                </Badge>
+              </div>
             </div>
           </div>
         )
@@ -115,84 +151,21 @@ export function getOrdersTableColumns(
     },
   ]
 
-  if (showSellerColumn) {
-    columns.push({
-      id: 'seller',
-      header: messages.headers.seller,
-      meta: { thClassName: 'min-w-[140px]' },
-      cell: ({ row }) => {
-        const seller = row.original.seller
-        return seller?.username || seller?.name || messages.status.na
-      },
-    })
-  }
-
-  if (showTicketColumn) {
-    columns.push({
-      id: 'ticket',
-      header: messages.headers.ticket,
-      meta: { thClassName: 'min-w-[96px]' },
-      cell: ({ row }) => {
-        const ticketId = row.original.support_ticket?.id
-
-        if (ticketId) {
-          return <span className='font-medium text-primary'>#{ticketId}</span>
-        }
-
-        return row.original.has_ticket ? (
-          <Badge className='rounded-[6px]' variant='destructive'>
-            {messages.status.hasTicket}
-          </Badge>
-        ) : (
-          <span className='text-muted-foreground'>-</span>
-        )
-      },
-    })
-  }
-
   columns.push(
     {
-      accessorKey: 'fulfillment_priority',
-      header: messages.headers.priority,
-      meta: { thClassName: 'min-w-[110px]' },
-      cell: ({ row }) => {
-        const isPriority = row.original.fulfillment_priority === 'priority'
-
-        return (
-          <Badge
-            className='rounded-[6px]'
-            variant={isPriority ? 'destructive' : 'secondary'}
-          >
-            {isPriority ? messages.status.priority : messages.status.normal}
-          </Badge>
-        )
-      },
-    },
-    {
-      id: 'embroidery_type',
-      header: messages.headers.embType,
-      meta: { thClassName: 'min-w-[120px]' },
-      cell: ({ row }) => {
-        const embroideryType = getEmbroideryType(row.original)
-        return (
-          <Badge variant='outline' className='rounded-[6px] capitalize'>
-            {embroideryType}
-          </Badge>
-        )
-      },
-    },
-    {
-      accessorKey: 'fulfill_status',
+      id: 'status',
       header: messages.headers.fulfillStatus,
-      meta: { thClassName: 'min-w-[160px]' },
+      meta: { thClassName: 'min-w-[220px]' },
       cell: ({ row }) => {
         return (
-          <OrderFulfillStatusCell
-            order={row.original}
-            user={user}
-            options={effectiveFulfillStatusOptions}
-            onUpdated={onOrderUpdated}
-          />
+          <div>
+            <OrderFulfillStatusCell
+              order={row.original}
+              user={user}
+              options={effectiveFulfillStatusOptions}
+              onUpdated={onOrderUpdated}
+            />
+          </div>
         )
       },
     },
@@ -203,24 +176,26 @@ export function getOrdersTableColumns(
       cell: ({ row }) => <OrderItemsCell order={row.original} user={user} />,
     },
     {
-      id: 'tracking',
+      id: 'logistics',
       header: messages.headers.tracking,
-      meta: { thClassName: 'min-w-[160px]' },
+      meta: { thClassName: 'min-w-[200px]' },
       cell: ({ row }) => {
         const trackingId = row.original.shipping?.tracking_id
 
-        if (!trackingId) return <span className='text-sm text-muted-foreground'>{messages.status.noTracking}</span>
-
         return (
-          <div className='flex flex-col items-start gap-2'>
-            <a
-              href={`https://t.17track.net/en#nums=${trackingId}`}
-              target='_blank'
-              rel='noreferrer'
-              className='inline-flex rounded-[6px] bg-muted px-2 py-1 text-[13px] font-medium leading-none text-foreground hover:underline'
-            >
-              {trackingId}
-            </a>
+          <div className='space-y-2 rounded-[8px] border border-border/70 bg-background p-3'>
+            {trackingId ? (
+              <a
+                href={`https://t.17track.net/en#nums=${trackingId}`}
+                target='_blank'
+                rel='noreferrer'
+                className='inline-flex rounded-[6px] bg-muted px-2 py-1 text-[13px] font-medium leading-none text-foreground hover:underline'
+              >
+                {trackingId}
+              </a>
+            ) : (
+              <div className='text-sm text-muted-foreground'>{messages.status.noTracking}</div>
+            )}
 
             {row.original.shipping?.label_url || row.original.convert_label ? (
               <div className='flex flex-wrap gap-2'>
@@ -247,61 +222,38 @@ export function getOrdersTableColumns(
                 ) : null}
               </div>
             ) : null}
+
+            <div className='text-xs text-muted-foreground'>
+              {formatDateTime(
+                row.original.timestamps?.created_at || row.original.created_at,
+                messages
+              )}
+            </div>
           </div>
         )
       },
     },
     {
-      id: 'print_cost',
-      header: messages.headers.printCost,
-      meta: { thClassName: 'min-w-[120px]' },
-      cell: ({ row }) => (
-        <span className='text-sm'>{formatCurrency(row.original.pricing?.print_cost)}</span>
-      ),
-    },
-    {
-      id: 'shipping_cost',
-      header: messages.headers.shipping,
-      meta: { thClassName: 'min-w-[120px]' },
-      cell: ({ row }) => (
-        <span className='text-sm'>
-          {formatCurrency(row.original.pricing?.shipping_cost)}
-        </span>
-      ),
-    },
-    {
-      id: 'total_cost',
+      id: 'cost',
       header: messages.headers.totalCost,
-      meta: { thClassName: 'min-w-[130px]' },
-      cell: ({ row }) => (
-        <span className='text-sm font-medium'>
-          {formatCurrency(
-            row.original.pricing?.total_cost ?? row.original.total_cost
-          )}
-        </span>
-      ),
-    },
-    {
-      accessorKey: 'payment_status',
-      header: messages.headers.payment,
-      meta: { thClassName: 'min-w-[120px]' },
-      cell: ({ row }) => (
-        <Badge variant='outline' className='rounded-[6px] capitalize'>
-          {formatStatusLabel(row.original.payment_status, messages)}
-        </Badge>
-      ),
-    },
-    {
-      accessorKey: 'created_at',
-      header: messages.headers.created,
       meta: { thClassName: 'min-w-[180px]' },
       cell: ({ row }) => (
-        <span className='text-sm text-muted-foreground'>
-          {formatDateTime(
-            row.original.timestamps?.created_at || row.original.created_at,
-            messages
-          )}
-        </span>
+        <div className='space-y-1.5 rounded-[8px] border border-border/70 bg-background p-3 text-sm'>
+          <Badge variant='outline' className='w-fit rounded-[6px] capitalize'>
+            {formatStatusLabel(row.original.payment_status, messages)}
+          </Badge>
+          <div className='text-xs text-emerald-700'>
+            {messages.headers.printCost}: {formatCurrency(row.original.pricing?.print_cost)}
+          </div>
+          <div className='text-xs text-emerald-700'>
+            {messages.headers.shipping}: {formatCurrency(row.original.pricing?.shipping_cost)}
+          </div>
+          <div className='border-t border-border/60 pt-1 font-semibold text-rose-600'>
+            {formatCurrency(
+              row.original.pricing?.total_cost ?? row.original.total_cost
+            )}
+          </div>
+        </div>
       ),
     },
     {

@@ -1091,6 +1091,8 @@ const uiMessages = {
       loading: 'Đang tải bảng điều khiển...',
       failedLoad: 'Không thể tải dữ liệu thống kê bảng điều khiển',
       timeRangeLabel: 'Khoảng thời gian',
+      today: 'Hôm nay',
+      yesterday: 'Hôm qua',
       last7Days: '7N',
       last30Days: '30N',
       last90Days: '90N',
@@ -3128,6 +3130,8 @@ const uiMessages = {
       loading: 'Loading dashboard...',
       failedLoad: 'Failed to load dashboard statistics',
       timeRangeLabel: 'Time range',
+      today: 'Today',
+      yesterday: 'Yesterday',
       last7Days: '7D',
       last30Days: '30D',
       last90Days: '90D',
@@ -5145,6 +5149,8 @@ const uiMessages = {
     loading: string
     failedLoad: string
     timeRangeLabel: string
+    today: string
+    yesterday: string
     last7Days: string
     last30Days: string
     last90Days: string

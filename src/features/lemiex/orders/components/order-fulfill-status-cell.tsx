@@ -21,31 +21,20 @@ import { getUserRoleName } from '@/services/auth/api'
 import { type LemiexOrderRow } from '@/features/lemiex/orders/types'
 import { type AuthUser } from '@/stores/auth-store'
 
-const statusColors: Record<string, string> = {
-  new_order: 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-200',
-  confirm: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-200',
-  pending_stock:
-    'bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-200',
-  in_stock:
-    'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-200',
-  producing:
-    'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-200',
-  qc_pass:
-    'bg-teal-100 text-teal-700 dark:bg-teal-500/20 dark:text-teal-200',
-  packed:
-    'bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-200',
-  shipped:
-    'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-200',
-  on_hold:
-    'bg-yellow-100 text-yellow-700 dark:bg-yellow-500/20 dark:text-yellow-200',
-  return_to_support:
-    'bg-purple-100 text-purple-700 dark:bg-purple-500/20 dark:text-purple-200',
-  cancelled:
-    'bg-zinc-200 text-zinc-700 dark:bg-zinc-500/20 dark:text-zinc-200',
-  cancelled_refund_shipping:
-    'bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-200',
-  closed:
-    'bg-slate-200 text-slate-700 dark:bg-slate-500/20 dark:text-slate-200',
+const statusTextColors: Record<string, string> = {
+  new_order: 'text-blue-700 dark:text-blue-300',
+  confirm: 'text-indigo-700 dark:text-indigo-300',
+  pending_stock: 'text-amber-700 dark:text-amber-300',
+  in_stock: 'text-emerald-700 dark:text-emerald-300',
+  producing: 'text-cyan-700 dark:text-cyan-300',
+  qc_pass: 'text-teal-700 dark:text-teal-300',
+  packed: 'text-violet-700 dark:text-violet-300',
+  shipped: 'text-green-700 dark:text-green-300',
+  on_hold: 'text-yellow-700 dark:text-yellow-300',
+  return_to_support: 'text-purple-700 dark:text-purple-300',
+  cancelled: 'text-zinc-700 dark:text-zinc-300',
+  cancelled_refund_shipping: 'text-rose-700 dark:text-rose-300',
+  closed: 'text-slate-700 dark:text-slate-300',
 }
 
 function formatStatusLabel(
@@ -151,10 +140,10 @@ export function OrderFulfillStatusCell({
 
   if (!canEdit) {
     return (
-      <div className='flex flex-col items-center justify-center gap-2'>
+      <div className='flex w-full flex-col items-start justify-start gap-2'>
         <Badge
-          className={`rounded-[6px] ${statusColors[order.fulfill_status || ''] || 'bg-muted text-foreground'}`}
-          variant='secondary'
+          className={`rounded-[6px] border border-border/60 bg-transparent ${statusTextColors[order.fulfill_status || ''] || 'text-foreground'}`}
+          variant='outline'
         >
           {formatStatusLabel(
             order.fulfill_status,
@@ -181,7 +170,7 @@ export function OrderFulfillStatusCell({
 
   return (
     <div
-      className='flex flex-col items-center justify-center gap-2'
+      className='flex w-full flex-col items-start justify-start gap-2'
       onClick={(event) => event.stopPropagation()}
     >
       <Select
@@ -189,7 +178,9 @@ export function OrderFulfillStatusCell({
         onValueChange={(value) => void handleStatusChange(value)}
         disabled={pending}
       >
-        <SelectTrigger className='h-8 min-w-[148px] rounded-[6px] text-[12px]'>
+        <SelectTrigger
+          className={`h-8 min-w-[148px] rounded-[6px] text-[12px] ${statusTextColors[order.fulfill_status || ''] || ''}`}
+        >
           <SelectValue
             placeholder={formatStatusLabel(
               order.fulfill_status,
@@ -203,7 +194,7 @@ export function OrderFulfillStatusCell({
             <SelectItem
               key={option.value}
               value={option.value}
-              className='text-[12px]'
+              className={`text-[12px] ${statusTextColors[option.value] || ''}`}
             >
               {formatStatusLabel(
                 option.value,
