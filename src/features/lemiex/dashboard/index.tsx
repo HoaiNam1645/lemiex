@@ -4,9 +4,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import {
   Activity,
-  ArrowDownRight,
-  ArrowRight,
-  ArrowUpRight,
   CreditCard,
   DollarSign,
   Package,
@@ -169,12 +166,6 @@ function formatDateTime(value: string | null | undefined) {
   })
 }
 
-function getGrowthColor(growth: number) {
-  if (growth > 0) return 'text-emerald-600'
-  if (growth < 0) return 'text-rose-600'
-  return 'text-muted-foreground'
-}
-
 function StatusList({
   entries,
   colorMap,
@@ -294,18 +285,14 @@ function StatCard({
   title,
   value,
   detail,
-  growth,
   icon,
   iconTone,
-  vsPreviousText,
 }: {
   title: string
   value: string
   detail?: string
-  growth?: number
   icon: React.ComponentType<{ className?: string }>
   iconTone: string
-  vsPreviousText?: string
 }) {
   const Icon = icon
 
@@ -315,21 +302,6 @@ function StatCard({
         <div className='space-y-3'>
           <div className='text-sm text-muted-foreground'>{title}</div>
           <div className='text-3xl font-semibold tracking-tight'>{value}</div>
-          {typeof growth === 'number' ? (
-            <div className={cn('flex items-center gap-1 text-sm', getGrowthColor(growth))}>
-              {growth > 0 ? (
-                <ArrowUpRight className='size-4' />
-              ) : growth < 0 ? (
-                <ArrowDownRight className='size-4' />
-              ) : (
-                <ArrowRight className='size-4' />
-              )}
-              <span>{Math.abs(growth).toFixed(1)}%</span>
-              <span className='text-muted-foreground'>
-                {vsPreviousText || fallbackMessages.vsPrevious}
-              </span>
-            </div>
-          ) : null}
           {detail ? <div className='text-sm text-muted-foreground'>{detail}</div> : null}
         </div>
 
@@ -503,10 +475,8 @@ export function LemiexDashboard() {
                   '{count}',
                   formatNumber(overview.orders_this_period)
                 )}
-                growth={overview.orders_growth}
                 icon={ShoppingCart}
                 iconTone='bg-sky-50 text-sky-700'
-                vsPreviousText={m.vsPrevious}
               />
 
               {!isStaff ? (
@@ -517,10 +487,8 @@ export function LemiexDashboard() {
                     '{amount}',
                     formatCurrency(overview.revenue_this_period)
                   )}
-                  growth={overview.revenue_growth}
                   icon={DollarSign}
                   iconTone='bg-emerald-50 text-emerald-700'
-                  vsPreviousText={m.vsPrevious}
                 />
               ) : null}
 
