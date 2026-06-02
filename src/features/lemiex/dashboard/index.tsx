@@ -1,7 +1,16 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { ArrowDownRight, ArrowUpDown, ArrowUpRight, Package, Trophy } from 'lucide-react'
+import { format } from 'date-fns'
+import { type DateRange } from 'react-day-picker'
+import {
+  ArrowDownRight,
+  ArrowUpDown,
+  ArrowUpRight,
+  CalendarIcon,
+  Package,
+  Trophy,
+} from 'lucide-react'
 import {
   Bar,
   BarChart,
@@ -27,6 +36,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useI18n } from '@/context/i18n-provider'
@@ -47,6 +63,8 @@ const fallbackMessages = {
   last30Days: '30D',
   last90Days: '90D',
   lastYear: '1Y',
+  customRangeLabel: 'Custom range',
+  clearRange: 'Clear',
   sellerScope: 'Seller view',
   sellerScopeDescription: 'Statistics are scoped to your own store activity.',
   totalOrders: 'Orders',
@@ -611,20 +629,44 @@ export function LemiexDashboard() {
   const m = messages.dashboardPage ?? fallbackMessages
 
   const [timeRange, setTimeRange] = useState('30')
+  const [customRange, setCustomRange] = useState<DateRange | undefined>()
+  const [rangeOpen, setRangeOpen] = useState(false)
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState<DashboardData | null>(null)
+
+  const isCustomRange = Boolean(customRange?.from && customRange?.to)
+  const customStart = customRange?.from ? format(customRange.from, 'yyyy-MM-dd') : ''
+  const customEnd = customRange?.to ? format(customRange.to, 'yyyy-MM-dd') : ''
 
   const loadDashboard = useCallback(async () => {
     try {
       setLoading(true)
-      const data = await fetchDashboardStatistics(timeRange)
+      const data =
+        customStart && customEnd
+          ? await fetchDashboardStatistics(timeRange, {
+              startDate: customStart,
+              endDate: customEnd,
+            })
+          : await fetchDashboardStatistics(timeRange)
       setStats(data)
     } catch (error) {
       toast.error(error instanceof Error ? error.message : m.failedLoad)
     } finally {
       setLoading(false)
     }
-  }, [m.failedLoad, timeRange])
+  }, [m.failedLoad, timeRange, customStart, customEnd])
+
+  const handlePresetChange = useCallback((value: string) => {
+    setCustomRange(undefined)
+    setTimeRange(value)
+  }, [])
+
+  const handleRangeSelect = useCallback((range: DateRange | undefined) => {
+    setCustomRange(range)
+    if (range?.from && range?.to) {
+      setRangeOpen(false)
+    }
+  }, [])
 
   useEffect(() => {
     void loadDashboard()
@@ -722,16 +764,67 @@ export function LemiexDashboard() {
                   <div className='text-xs font-medium uppercase tracking-wide text-muted-foreground'>
                     {m.timeRangeLabel}
                   </div>
-                  <Tabs value={timeRange} onValueChange={setTimeRange}>
-                    <TabsList>
-                      <TabsTrigger value='1'>{m.today}</TabsTrigger>
-                      <TabsTrigger value='2'>{m.yesterday}</TabsTrigger>
-                      <TabsTrigger value='7'>{m.last7Days}</TabsTrigger>
-                      <TabsTrigger value='30'>{m.last30Days}</TabsTrigger>
-                      <TabsTrigger value='90'>{m.last90Days}</TabsTrigger>
-                      <TabsTrigger value='365'>{m.lastYear}</TabsTrigger>
-                    </TabsList>
-                  </Tabs>
+                  <div className='flex flex-wrap items-center gap-2 lg:justify-end'>
+                    <Tabs
+                      value={isCustomRange ? '' : timeRange}
+                      onValueChange={handlePresetChange}
+                    >
+                      <TabsList>
+                        <TabsTrigger value='1'>{m.today}</TabsTrigger>
+                        <TabsTrigger value='2'>{m.yesterday}</TabsTrigger>
+                        <TabsTrigger value='7'>{m.last7Days}</TabsTrigger>
+                        <TabsTrigger value='30'>{m.last30Days}</TabsTrigger>
+                        <TabsTrigger value='90'>{m.last90Days}</TabsTrigger>
+                        <TabsTrigger value='365'>{m.lastYear}</TabsTrigger>
+                      </TabsList>
+                    </Tabs>
+                    <Popover open={rangeOpen} onOpenChange={setRangeOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant={isCustomRange ? 'default' : 'outline'}
+                          size='sm'
+                          className='h-9 justify-start gap-2 rounded-[8px] font-normal'
+                        >
+                          <CalendarIcon className='size-4' />
+                          {isCustomRange && customRange?.from && customRange?.to ? (
+                            <span className='tabular-nums'>
+                              {format(customRange.from, 'dd/MM/yyyy')} –{' '}
+                              {format(customRange.to, 'dd/MM/yyyy')}
+                            </span>
+                          ) : (
+                            <span className='text-muted-foreground'>
+                              {m.customRangeLabel}
+                            </span>
+                          )}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className='w-auto p-0' align='end'>
+                        <Calendar
+                          mode='range'
+                          numberOfMonths={2}
+                          defaultMonth={customRange?.from}
+                          selected={customRange}
+                          onSelect={handleRangeSelect}
+                          autoFocus
+                        />
+                        {isCustomRange ? (
+                          <div className='flex justify-end border-t p-2'>
+                            <Button
+                              variant='ghost'
+                              size='sm'
+                              className='h-8 rounded-[6px]'
+                              onClick={() => {
+                                setCustomRange(undefined)
+                                setRangeOpen(false)
+                              }}
+                            >
+                              {m.clearRange}
+                            </Button>
+                          </div>
+                        ) : null}
+                      </PopoverContent>
+                    </Popover>
+                  </div>
                 </div>
                 {isSeller ? (
                   <p className='max-w-[280px] text-right text-xs text-muted-foreground'>
@@ -910,6 +1003,121 @@ export function LemiexDashboard() {
                 />
               ) : null}
             </div>
+
+            <Card className='gap-0 rounded-[10px]'>
+              <CardContent className='space-y-3 px-5 py-4'>
+                <p className='text-[13px] font-semibold text-foreground'>
+                  {m.shopStatsTitle}
+                </p>
+                {shopStats.length > 0 ? (
+                  <div className='overflow-x-auto'>
+                    <table className='w-full text-[13px]'>
+                      <thead>
+                        <tr className='border-b border-border/60 text-[12px] font-medium text-muted-foreground'>
+                          <th className='py-3 pr-3 text-left font-medium'>{m.shopColIndex}</th>
+                          <th className='py-3 pr-3 text-left font-medium'>{m.shopColName}</th>
+                          <th className='py-3 pr-3 text-left font-medium'>
+                            <span className='inline-flex items-center gap-1'>
+                              {m.shopColTotal}
+                              <ArrowUpDown className='size-3 opacity-60' />
+                            </span>
+                          </th>
+                          <th className='py-3 pr-3 text-left font-medium'>
+                            <span className='inline-flex items-center gap-1'>
+                              {m.shopColRefund}
+                              <ArrowUpDown className='size-3 opacity-60' />
+                            </span>
+                          </th>
+                          <th className='py-3 pr-3 text-left font-medium'>
+                            <span className='inline-flex items-center gap-1'>
+                              {m.shopColPaid}
+                              <ArrowUpDown className='size-3 opacity-60' />
+                            </span>
+                          </th>
+                          <th className='py-3 pr-3 text-left font-medium'>
+                            <span className='inline-flex items-center gap-1'>
+                              {m.shopColProcessing}
+                              <ArrowUpDown className='size-3 opacity-60' />
+                            </span>
+                          </th>
+                          <th className='py-3 pr-3 text-left font-medium'>
+                            <span className='inline-flex items-center gap-1'>
+                              {m.shopColOnHold}
+                              <ArrowUpDown className='size-3 opacity-60' />
+                            </span>
+                          </th>
+                          <th className='py-3 text-left font-medium'>{m.shopColSellers}</th>
+                        </tr>
+                      </thead>
+                      <tbody className='divide-y divide-border/40'>
+                        {shopStats.map((shop, index) => (
+                          <tr key={shop.shop_id ?? shop.shop_name ?? index}>
+                            <td className='py-3 pr-3 text-muted-foreground'>
+                              {index + 1}
+                            </td>
+                            <td className='py-3 pr-3 font-medium text-foreground'>
+                              {shop.shop_name || '—'}
+                            </td>
+                            <td className='py-3 pr-3 tabular-nums text-foreground'>
+                              {formatNumber(shop.total)}
+                            </td>
+                            <td className='py-3 pr-3 tabular-nums'>
+                              {(shop.refund || 0) > 0 ? (
+                                <span>
+                                  {formatNumber(shop.refund)}{' '}
+                                  <span className='text-muted-foreground'>
+                                    ({(shop.refund_pct || 0).toFixed(1)}%)
+                                  </span>
+                                </span>
+                              ) : (
+                                <span className='text-muted-foreground/50'>—</span>
+                              )}
+                            </td>
+                            <td className='py-3 pr-3 tabular-nums'>
+                              <span className='text-emerald-600 dark:text-emerald-400'>
+                                {formatCurrency(shop.paid_amount)}
+                              </span>
+                              <span className='ml-1 text-muted-foreground'>
+                                ({formatNumber(shop.paid)})
+                              </span>
+                            </td>
+                            <td className='py-3 pr-3 tabular-nums'>
+                              <span className='text-sky-600 dark:text-sky-400'>
+                                {formatCurrency(shop.processing_amount)}
+                              </span>
+                              <span className='ml-1 text-muted-foreground'>
+                                ({formatNumber(shop.processing)})
+                              </span>
+                            </td>
+                            <td className='py-3 pr-3 tabular-nums'>
+                              {(shop.on_hold || 0) > 0 ? (
+                                <>
+                                  <span className='text-amber-600 dark:text-amber-400'>
+                                    {formatCurrency(shop.on_hold_amount)}
+                                  </span>
+                                  <span className='ml-1 text-muted-foreground'>
+                                    ({formatNumber(shop.on_hold)})
+                                  </span>
+                                </>
+                              ) : (
+                                <span className='text-muted-foreground/50'>—</span>
+                              )}
+                            </td>
+                            <td className='py-3 tabular-nums text-foreground'>
+                              {formatNumber(shop.seller_count)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <div className='py-8 text-center text-sm text-muted-foreground'>
+                    {m.noShopData}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
 
             <div className={cn('grid gap-4', isStaff ? 'xl:grid-cols-1' : 'xl:grid-cols-2')}>
               <Card className='gap-0 rounded-[10px]'>
@@ -1106,121 +1314,6 @@ export function LemiexDashboard() {
                     shipped: m.flowShipped,
                   }}
                 />
-              </CardContent>
-            </Card>
-
-            <Card className='gap-0 rounded-[10px]'>
-              <CardContent className='space-y-3 px-5 py-4'>
-                <p className='text-[13px] font-semibold text-foreground'>
-                  {m.shopStatsTitle}
-                </p>
-                {shopStats.length > 0 ? (
-                  <div className='overflow-x-auto'>
-                    <table className='w-full text-[13px]'>
-                      <thead>
-                        <tr className='border-b border-border/60 text-[12px] font-medium text-muted-foreground'>
-                          <th className='py-3 pr-3 text-left font-medium'>{m.shopColIndex}</th>
-                          <th className='py-3 pr-3 text-left font-medium'>{m.shopColName}</th>
-                          <th className='py-3 pr-3 text-left font-medium'>
-                            <span className='inline-flex items-center gap-1'>
-                              {m.shopColTotal}
-                              <ArrowUpDown className='size-3 opacity-60' />
-                            </span>
-                          </th>
-                          <th className='py-3 pr-3 text-left font-medium'>
-                            <span className='inline-flex items-center gap-1'>
-                              {m.shopColRefund}
-                              <ArrowUpDown className='size-3 opacity-60' />
-                            </span>
-                          </th>
-                          <th className='py-3 pr-3 text-left font-medium'>
-                            <span className='inline-flex items-center gap-1'>
-                              {m.shopColPaid}
-                              <ArrowUpDown className='size-3 opacity-60' />
-                            </span>
-                          </th>
-                          <th className='py-3 pr-3 text-left font-medium'>
-                            <span className='inline-flex items-center gap-1'>
-                              {m.shopColProcessing}
-                              <ArrowUpDown className='size-3 opacity-60' />
-                            </span>
-                          </th>
-                          <th className='py-3 pr-3 text-left font-medium'>
-                            <span className='inline-flex items-center gap-1'>
-                              {m.shopColOnHold}
-                              <ArrowUpDown className='size-3 opacity-60' />
-                            </span>
-                          </th>
-                          <th className='py-3 text-left font-medium'>{m.shopColSellers}</th>
-                        </tr>
-                      </thead>
-                      <tbody className='divide-y divide-border/40'>
-                        {shopStats.map((shop, index) => (
-                          <tr key={shop.shop_id ?? shop.shop_name ?? index}>
-                            <td className='py-3 pr-3 text-muted-foreground'>
-                              {index + 1}
-                            </td>
-                            <td className='py-3 pr-3 font-medium text-foreground'>
-                              {shop.shop_name || '—'}
-                            </td>
-                            <td className='py-3 pr-3 tabular-nums text-foreground'>
-                              {formatNumber(shop.total)}
-                            </td>
-                            <td className='py-3 pr-3 tabular-nums'>
-                              {(shop.refund || 0) > 0 ? (
-                                <span>
-                                  {formatNumber(shop.refund)}{' '}
-                                  <span className='text-muted-foreground'>
-                                    ({(shop.refund_pct || 0).toFixed(1)}%)
-                                  </span>
-                                </span>
-                              ) : (
-                                <span className='text-muted-foreground/50'>—</span>
-                              )}
-                            </td>
-                            <td className='py-3 pr-3 tabular-nums'>
-                              <span className='text-emerald-600 dark:text-emerald-400'>
-                                {formatCurrency(shop.paid_amount)}
-                              </span>
-                              <span className='ml-1 text-muted-foreground'>
-                                ({formatNumber(shop.paid)})
-                              </span>
-                            </td>
-                            <td className='py-3 pr-3 tabular-nums'>
-                              <span className='text-sky-600 dark:text-sky-400'>
-                                {formatCurrency(shop.processing_amount)}
-                              </span>
-                              <span className='ml-1 text-muted-foreground'>
-                                ({formatNumber(shop.processing)})
-                              </span>
-                            </td>
-                            <td className='py-3 pr-3 tabular-nums'>
-                              {(shop.on_hold || 0) > 0 ? (
-                                <>
-                                  <span className='text-amber-600 dark:text-amber-400'>
-                                    {formatCurrency(shop.on_hold_amount)}
-                                  </span>
-                                  <span className='ml-1 text-muted-foreground'>
-                                    ({formatNumber(shop.on_hold)})
-                                  </span>
-                                </>
-                              ) : (
-                                <span className='text-muted-foreground/50'>—</span>
-                              )}
-                            </td>
-                            <td className='py-3 tabular-nums text-foreground'>
-                              {formatNumber(shop.seller_count)}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ) : (
-                  <div className='py-8 text-center text-sm text-muted-foreground'>
-                    {m.noShopData}
-                  </div>
-                )}
               </CardContent>
             </Card>
           </>

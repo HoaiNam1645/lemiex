@@ -90,8 +90,15 @@ function isSuccess(response: DashboardResponse) {
   return Boolean(response.status || response.success || response.code === 200)
 }
 
-export async function fetchDashboardStatistics(timeRange: string) {
+export async function fetchDashboardStatistics(
+  timeRange: string,
+  range?: { startDate: string; endDate: string }
+) {
   const params = new URLSearchParams({ time_range: timeRange })
+  if (range?.startDate && range?.endDate) {
+    params.set('start_date', range.startDate)
+    params.set('end_date', range.endDate)
+  }
   const response = await apiRequest<DashboardResponse>(
     `${API_BASE_URL}${API_ENDPOINTS.DASHBOARD_STATISTICS}?${params.toString()}`,
     {

@@ -1097,6 +1097,8 @@ const uiMessages = {
       last30Days: '30N',
       last90Days: '90N',
       lastYear: '1Y',
+      customRangeLabel: 'Khoảng ngày',
+      clearRange: 'Xóa lọc',
       sellerScope: 'Chế độ seller',
       sellerScopeDescription: 'Thống kê đang được giới hạn theo dữ liệu của riêng cửa hàng bạn.',
       totalOrders: 'Đơn hàng',
@@ -3189,6 +3191,8 @@ const uiMessages = {
       last30Days: '30D',
       last90Days: '90D',
       lastYear: '1Y',
+      customRangeLabel: 'Custom range',
+      clearRange: 'Clear',
       sellerScope: 'Seller view',
       sellerScopeDescription: 'Statistics are scoped to your own store activity.',
       totalOrders: 'Orders',
@@ -5261,6 +5265,8 @@ const uiMessages = {
     last30Days: string
     last90Days: string
     lastYear: string
+    customRangeLabel: string
+    clearRange: string
     sellerScope: string
     sellerScopeDescription: string
     totalOrders: string
