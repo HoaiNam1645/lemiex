@@ -46,6 +46,21 @@ type DashboardChartPoint = {
   [key: string]: string | number
 }
 
+type DashboardShopStat = {
+  shop_id?: number | null
+  shop_name?: string | null
+  total?: number
+  refund?: number
+  refund_pct?: number
+  paid?: number
+  processing?: number
+  on_hold?: number
+  seller_count?: number
+  paid_amount?: number
+  processing_amount?: number
+  on_hold_amount?: number
+}
+
 type DashboardTransactionSummary = {
   total_deposits?: number
   total_withdrawals?: number
@@ -66,6 +81,7 @@ export type DashboardData = {
   transaction_chart?: DashboardChartPoint[]
   transaction_summary?: DashboardTransactionSummary
   top_product_names?: string[]
+  shop_stats?: DashboardShopStat[]
   time_range?: number
   is_seller?: boolean
 }

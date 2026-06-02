@@ -1,15 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import {
-  Activity,
-  CreditCard,
-  DollarSign,
-  Package,
-  ShoppingCart,
-  Wallet,
-} from 'lucide-react'
+import { ArrowDownRight, ArrowUpDown, ArrowUpRight, Package, Trophy } from 'lucide-react'
 import {
   Bar,
   BarChart,
@@ -27,10 +19,7 @@ import { Main } from '@/components/layout/main'
 import { Search } from '@/components/search'
 import { LanguageSwitch } from '@/components/language-switch'
 import { ThemeSwitch } from '@/components/theme-switch'
-import { ConfigDrawer } from '@/components/config-drawer'
 import { ProfileDropdown } from '@/components/profile-dropdown'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -39,14 +28,6 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useI18n } from '@/context/i18n-provider'
 import { getLemiexRole } from '@/features/lemiex/layout/sidebar-data'
@@ -109,6 +90,50 @@ const fallbackMessages = {
   vsPrevious: 'vs previous period',
   empty: 'No data available',
   units: 'units',
+  ordersTotalRow: 'Total',
+  ordersShippingRow: 'Shipping',
+  ordersDeliveredRow: 'Delivered',
+  ordersOnHoldRow: 'On Hold',
+  revenueTotalRow: 'Total Revenue',
+  revenuePeriodRow: 'This Period',
+  revenuePaidRow: 'Paid',
+  revenuePendingRow: 'Pending Approval',
+  productsStockTitle: 'Products & Stock',
+  productsRow: 'Products',
+  variantsRow: 'Variants',
+  stockRow: 'Stock',
+  lowStockRow: 'Low Stock',
+  financialsTitle: 'Financials',
+  depositsRow: 'Deposits',
+  withdrawalsRow: 'Withdrawals',
+  paymentsRow: 'Payments',
+  txPeriodRow: 'Transactions This Period',
+  paymentBreakdownTitle: 'Orders by Payment',
+  ordersUnit: 'orders',
+  rankingProductsTitle: 'Product Ranking',
+  rankingSellersTitle: 'Seller Ranking',
+  rankingUpdated: 'Updated:',
+  rankCol: 'Rank',
+  productNameCol: 'Product Name',
+  soldQtyCol: 'Units Sold',
+  sellerNameCol: 'Seller',
+  totalItemsCol: 'Total Items',
+  noSellerData: 'No seller data',
+  funnelCellSize: '1 cell = {size} orders',
+  flowNewOrder: 'New Order',
+  flowConfirmed: 'Confirmed',
+  flowProducing: 'Producing',
+  flowShipped: 'Shipped',
+  shopStatsTitle: 'Order Stats by Shop',
+  shopColIndex: '#',
+  shopColName: 'Shop',
+  shopColTotal: 'Total Orders',
+  shopColRefund: 'Refunded',
+  shopColPaid: 'Paid',
+  shopColProcessing: 'Processing',
+  shopColOnHold: 'On Hold',
+  shopColSellers: 'Sellers',
+  noShopData: 'No data',
 }
 
 const PRODUCT_COLORS = ['#0f766e', '#2563eb', '#f97316', '#e11d48', '#7c3aed']
@@ -128,13 +153,13 @@ const PAYMENT_STATUS_COLORS: Record<string, string> = {
   refunded: '#8b5cf6',
   unpaid: '#dc2626',
 }
-const FULFILL_STATUS_COLORS: Record<string, string> = {
-  pending: '#f59e0b',
-  in_producn: '#2563eb',
-  ready_to_ship: '#7c3aed',
-  shipped: '#10b981',
-  delivered: '#059669',
-}
+const PRODUCTION_FLOW = [
+  { key: 'new_order', color: '#6366f1' },
+  { key: 'confirm', color: '#2563eb' },
+  { key: 'producing', color: '#0891b2' },
+  { key: 'shipped', color: '#059669' },
+]
+
 
 function formatCurrency(amount: number | null | undefined) {
   return new Intl.NumberFormat('en-US', {
@@ -154,43 +179,10 @@ function formatShortDate(value: string) {
   return `${date.getDate()}/${date.getMonth() + 1}`
 }
 
-function formatDateTime(value: string | null | undefined) {
-  if (!value) return 'N/A'
-  const date = new Date(value)
-  if (Number.isNaN(date.getTime())) return 'N/A'
-  return date.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  })
-}
-
-function StatusList({
-  entries,
-  colorMap,
-}: {
-  entries: Array<[string, number]>
-  colorMap: Record<string, string>
-}) {
-  return (
-    <div className='space-y-3'>
-      {entries.map(([key, count]) => (
-        <div key={key} className='flex items-center justify-between gap-4'>
-          <div className='flex min-w-0 items-center gap-3'>
-            <span
-              className='size-2.5 rounded-full'
-              style={{ backgroundColor: colorMap[key] || '#64748b' }}
-            />
-            <span className='truncate text-sm capitalize'>
-              {key.replaceAll('_', ' ')}
-            </span>
-          </div>
-          <span className='text-sm font-semibold'>{formatNumber(count)}</span>
-        </div>
-      ))}
-    </div>
-  )
+function getGrowthColor(growth: number) {
+  if (growth > 0) return 'text-emerald-600'
+  if (growth < 0) return 'text-rose-600'
+  return 'text-muted-foreground'
 }
 
 type ProductSalesTooltipEntry = {
@@ -281,33 +273,305 @@ function rankProductSeries(
     .map((item) => item.key)
 }
 
-function StatCard({
-  title,
-  value,
-  detail,
-  icon,
-  iconTone,
+const FUNNEL_CELL_SIZE = 50
+
+function FulfillFunnel({
+  entries,
+  emptyText,
+  flowLabels,
 }: {
-  title: string
-  value: string
-  detail?: string
-  icon: React.ComponentType<{ className?: string }>
-  iconTone: string
+  entries: Array<[string, number]>
+  emptyText: string
+  flowLabels: Record<string, string>
 }) {
-  const Icon = icon
+  const countMap = Object.fromEntries(entries)
+  const flowCounts = PRODUCTION_FLOW.map((s) => countMap[s.key] || 0)
+  const max = Math.max(...flowCounts, 1)
+  const totalCells = Math.ceil(max / FUNNEL_CELL_SIZE) || 1
+  const total = entries.reduce((sum, [, v]) => sum + v, 0)
+
+  if (total === 0) {
+    return (
+      <div className='py-6 text-center text-sm text-muted-foreground'>
+        {emptyText}
+      </div>
+    )
+  }
 
   return (
-    <Card className='gap-4 rounded-[10px] py-5'>
-      <CardContent className='flex items-start justify-between px-5'>
-        <div className='space-y-3'>
-          <div className='text-sm text-muted-foreground'>{title}</div>
-          <div className='text-3xl font-semibold tracking-tight'>{value}</div>
-          {detail ? <div className='text-sm text-muted-foreground'>{detail}</div> : null}
+    <div className='space-y-4'>
+      <div className='space-y-1'>
+        {PRODUCTION_FLOW.map((stage, index) => {
+          const count = countMap[stage.key] || 0
+          const fullCells = Math.floor(count / FUNNEL_CELL_SIZE)
+          const remainder = (count % FUNNEL_CELL_SIZE) / FUNNEL_CELL_SIZE
+
+          return (
+            <div key={stage.key}>
+              <div className='flex items-center gap-3'>
+                <div className='w-[88px] shrink-0 text-right text-[11px] font-medium text-muted-foreground'>
+                  {flowLabels[stage.key] || stage.key}
+                </div>
+                <div className='flex flex-1 gap-0.5'>
+                  {Array.from({ length: totalCells }).map((_, i) => {
+                    const isFull = i < fullCells
+                    const isPartial = i === fullCells && remainder > 0
+                    return (
+                      <div
+                        key={i}
+                        className='relative h-8 flex-1 overflow-hidden rounded-[3px] bg-muted/50'
+                      >
+                        {isFull ? (
+                          <div
+                            className='absolute inset-0'
+                            style={{ backgroundColor: stage.color }}
+                          />
+                        ) : isPartial ? (
+                          <div
+                            className='absolute inset-y-0 left-0'
+                            style={{
+                              width: `${remainder * 100}%`,
+                              backgroundColor: stage.color,
+                            }}
+                          />
+                        ) : null}
+                      </div>
+                    )
+                  })}
+                </div>
+                <div className='w-10 shrink-0 text-right text-[12px] font-semibold tabular-nums'>
+                  {formatNumber(count)}
+                </div>
+              </div>
+              {index < PRODUCTION_FLOW.length - 1 ? (
+                <div className='ml-[100px] h-2.5 w-px bg-border/50' />
+              ) : null}
+            </div>
+          )
+        })}
+      </div>
+
+    </div>
+  )
+}
+
+function RankingTable({
+  title,
+  subtitle,
+  icon: Icon,
+  iconBgClass,
+  iconColorClass,
+  rankLabel,
+  nameLabel,
+  metricLabel,
+  rows,
+  emptyText,
+}: {
+  title: string
+  subtitle?: string
+  icon: React.ComponentType<{ className?: string }>
+  iconBgClass: string
+  iconColorClass: string
+  rankLabel: string
+  nameLabel: string
+  metricLabel: string
+  rows: Array<{ name: string; value: string }>
+  emptyText: string
+}) {
+  return (
+    <Card className='rounded-[10px] gap-0 py-4'>
+      <CardContent className='space-y-4 px-5'>
+        <div className='flex items-start gap-3'>
+          <div
+            className={cn(
+              'flex size-9 shrink-0 items-center justify-center rounded-[8px]',
+              iconBgClass
+            )}
+          >
+            <Icon className={cn('size-4', iconColorClass)} />
+          </div>
+          <div className='min-w-0 space-y-0.5'>
+            <div className='truncate text-[14px] font-semibold text-foreground'>
+              {title}
+            </div>
+            {subtitle ? (
+              <div className='truncate text-[11px] text-muted-foreground'>
+                {subtitle}
+              </div>
+            ) : null}
+          </div>
         </div>
 
-        <div className={cn('rounded-[10px] p-3', iconTone)}>
-          <Icon className='size-5' />
+        {rows.length > 0 ? (
+          <div>
+            <div className='grid grid-cols-[60px_1fr_120px] items-center gap-3 border-b border-border/60 pb-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground'>
+              <span>{rankLabel}</span>
+              <span>{nameLabel}</span>
+              <span className='text-right'>{metricLabel}</span>
+            </div>
+            <div className='divide-y divide-border/40'>
+              {rows.map((row, index) => (
+                <div
+                  key={`${row.name}-${index}`}
+                  className='grid grid-cols-[60px_1fr_120px] items-center gap-3 py-2.5'
+                >
+                  <span
+                    className={cn(
+                      'text-[13px] font-semibold',
+                      index === 0
+                        ? 'text-amber-600 dark:text-amber-400'
+                        : index === 1
+                          ? 'text-slate-500 dark:text-slate-300'
+                          : index === 2
+                            ? 'text-orange-600 dark:text-orange-400'
+                            : 'text-muted-foreground'
+                    )}
+                  >
+                    #{index + 1}
+                  </span>
+                  <span className='truncate text-[13px] font-medium text-foreground'>
+                    {row.name}
+                  </span>
+                  <span className='text-right text-[13px] font-semibold tabular-nums text-foreground'>
+                    {row.value}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className='py-8 text-center text-sm text-muted-foreground'>
+            {emptyText}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  )
+}
+
+type StatRow = {
+  label: string
+  value: string
+  tone?: 'default' | 'positive' | 'negative' | 'muted'
+  growth?: number
+}
+
+function CompactStatsCard({
+  title,
+  rows,
+}: {
+  title: string
+  rows: StatRow[]
+}) {
+  return (
+    <Card className='rounded-[10px] gap-0 py-4'>
+      <CardContent className='space-y-3 px-5'>
+        <div className='text-[11px] font-semibold uppercase tracking-wider text-muted-foreground'>
+          {title}
         </div>
+        <div className='space-y-2'>
+          {rows.map((row) => (
+            <div
+              key={row.label}
+              className='flex items-center justify-between text-[13px]'
+            >
+              <span className='text-muted-foreground'>{row.label}</span>
+              <div className='flex items-center gap-2'>
+                <span
+                  className={cn(
+                    'font-semibold tabular-nums',
+                    row.tone === 'positive' && 'text-emerald-600 dark:text-emerald-400',
+                    row.tone === 'negative' && 'text-rose-600 dark:text-rose-400',
+                    row.tone === 'muted' && 'text-muted-foreground'
+                  )}
+                >
+                  {row.value}
+                </span>
+                {typeof row.growth === 'number' ? (
+                  <span
+                    className={cn(
+                      'inline-flex items-center text-[10px] font-medium',
+                      getGrowthColor(row.growth)
+                    )}
+                  >
+                    {row.growth > 0 ? (
+                      <ArrowUpRight className='size-3' />
+                    ) : row.growth < 0 ? (
+                      <ArrowDownRight className='size-3' />
+                    ) : null}
+                    {Math.abs(row.growth).toFixed(1)}%
+                  </span>
+                ) : null}
+              </div>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+function StatusBreakdownCard({
+  title,
+  totalLabel,
+  total,
+  entries,
+  colorMap,
+  emptyText,
+}: {
+  title: string
+  totalLabel: string
+  total: number
+  entries: Array<[string, number]>
+  colorMap: Record<string, string>
+  emptyText: string
+}) {
+  return (
+    <Card className='rounded-[10px] gap-0 py-4'>
+      <CardContent className='space-y-3 px-5'>
+        <div className='flex items-center justify-between'>
+          <span className='text-[11px] font-semibold uppercase tracking-wider text-muted-foreground'>
+            {title}
+          </span>
+          <span className='text-[11px] text-muted-foreground'>{totalLabel}</span>
+        </div>
+        <div className='text-2xl font-semibold tabular-nums'>
+          {formatNumber(total)}
+        </div>
+        {entries.length > 0 ? (
+          <div className='space-y-2 pt-1'>
+            {entries.slice(0, 6).map(([key, count]) => {
+              const pct = total > 0 ? (count / total) * 100 : 0
+              const color = colorMap[key] || '#94a3b8'
+              return (
+                <div key={key} className='space-y-1'>
+                  <div className='flex items-center justify-between text-[12px]'>
+                    <span className='flex items-center gap-2 capitalize text-muted-foreground'>
+                      <span
+                        className='size-1.5 rounded-full'
+                        style={{ backgroundColor: color }}
+                      />
+                      {key.replaceAll('_', ' ')}
+                    </span>
+                    <span className='font-semibold tabular-nums'>
+                      {formatNumber(count)}
+                    </span>
+                  </div>
+                  <div className='h-1 overflow-hidden rounded-full bg-muted/60'>
+                    <div
+                      className='h-full rounded-full transition-[width]'
+                      style={{ width: `${pct}%`, backgroundColor: color }}
+                    />
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        ) : (
+          <div className='py-4 text-center text-sm text-muted-foreground'>
+            {emptyText}
+          </div>
+        )}
       </CardContent>
     </Card>
   )
@@ -339,7 +603,6 @@ function DashboardSkeleton() {
 }
 
 export function LemiexDashboard() {
-  const router = useRouter()
   const { messages } = useI18n()
   const user = useAuthStore((state) => state.auth.user)
   const role = getLemiexRole(user?.role ?? user?.role_name)
@@ -372,6 +635,18 @@ export function LemiexDashboard() {
   const fulfillStatusEntries = Object.entries(stats?.orders_by_fulfill_status || {})
   const recentOrders = stats?.recent_orders || []
   const topProducts = stats?.top_products || []
+  const topSellers = useMemo(() => {
+    const sellerMap = new Map<string, number>()
+    recentOrders.forEach((order) => {
+      const name = order.store_name || 'Unknown'
+      sellerMap.set(name, (sellerMap.get(name) || 0) + (order.total_items || 1))
+    })
+    return Array.from(sellerMap.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 10)
+      .map(([name, count]) => ({ name, count }))
+  }, [recentOrders])
+  const shopStats = stats?.shop_stats || []
   const productSalesChart = useMemo(
     () => stats?.product_sales_chart || [],
     [stats?.product_sales_chart]
@@ -420,10 +695,9 @@ export function LemiexDashboard() {
     <>
       <Header fixed>
         <Search />
-        <div className='ml-auto flex items-center gap-4'>
+        <div className='ml-auto flex items-center space-x-4'>
           <LanguageSwitch />
           <ThemeSwitch />
-          <ConfigDrawer />
           <ProfileDropdown />
         </div>
       </Header>
@@ -467,89 +741,175 @@ export function LemiexDashboard() {
               </div>
             </div>
 
-            <div className={cn('grid gap-4', isStaff ? 'xl:grid-cols-3' : 'xl:grid-cols-4')}>
-              <StatCard
+            <div className={cn('grid gap-4', isStaff ? 'lg:grid-cols-2' : 'lg:grid-cols-3')}>
+              <CompactStatsCard
                 title={m.totalOrders}
-                value={formatNumber(overview.total_orders)}
-                detail={m.ordersThisPeriod.replace(
-                  '{count}',
-                  formatNumber(overview.orders_this_period)
-                )}
-                icon={ShoppingCart}
-                iconTone='bg-sky-50 text-sky-700'
+                rows={[
+                  {
+                    label: m.ordersTotalRow,
+                    value: formatNumber(overview.total_orders),
+                  },
+                  {
+                    label: m.ordersShippingRow,
+                    value: formatNumber(
+                      stats?.orders_by_fulfill_status?.shipped || 0
+                    ),
+                  },
+                  {
+                    label: m.ordersDeliveredRow,
+                    value: formatNumber(
+                      stats?.orders_by_fulfill_status?.delivered || 0
+                    ),
+                    tone: 'positive',
+                  },
+                  {
+                    label: m.ordersOnHoldRow,
+                    value: formatNumber(
+                      stats?.orders_by_fulfill_status?.on_hold || 0
+                    ),
+                    tone: 'negative',
+                  },
+                ]}
               />
 
               {!isStaff ? (
-                <StatCard
+                <CompactStatsCard
                   title={m.totalRevenue}
-                  value={formatCurrency(overview.total_revenue)}
-                  detail={m.revenueThisPeriod.replace(
-                    '{amount}',
-                    formatCurrency(overview.revenue_this_period)
-                  )}
-                  icon={DollarSign}
-                  iconTone='bg-emerald-50 text-emerald-700'
+                  rows={[
+                    {
+                      label: m.revenueTotalRow,
+                      value: formatCurrency(overview.total_revenue),
+                      tone: 'positive',
+                    },
+                    {
+                      label: m.revenuePeriodRow,
+                      value: formatCurrency(overview.revenue_this_period),
+                      tone: 'positive',
+                      growth: overview.revenue_growth,
+                    },
+                    ...(transactionSummary
+                      ? [
+                          {
+                            label: m.revenuePaidRow,
+                            value: formatCurrency(transactionSummary.total_payments),
+                          } as StatRow,
+                          {
+                            label: m.revenuePendingRow,
+                            value: formatNumber(
+                              transactionSummary.pending_transactions
+                            ),
+                            tone: 'muted',
+                          } as StatRow,
+                        ]
+                      : []),
+                  ]}
                 />
               ) : null}
 
-              <StatCard
-                title={m.productsVariants}
-                value={formatNumber(overview.total_products)}
-                detail={m.variants
-                  .replace('{count}', formatNumber(overview.total_variants))
-                  .replace('{active}', formatNumber(overview.active_variants))}
-                icon={Package}
-                iconTone='bg-violet-50 text-violet-700'
-              />
-
-              <StatCard
-                title={m.totalStock}
-                value={formatNumber(overview.total_stock)}
-                detail={
-                  overview.low_stock_variants
-                    ? m.lowStockWarning.replace(
-                        '{count}',
-                        formatNumber(overview.low_stock_variants)
-                      )
-                    : undefined
-                }
-                icon={Activity}
-                iconTone='bg-amber-50 text-amber-700'
+              <CompactStatsCard
+                title={m.productsStockTitle}
+                rows={[
+                  {
+                    label: m.productsRow,
+                    value: formatNumber(overview.total_products),
+                  },
+                  {
+                    label: m.variantsRow,
+                    value: `${formatNumber(overview.total_variants)} · ${formatNumber(overview.active_variants)} active`,
+                  },
+                  {
+                    label: m.stockRow,
+                    value: formatNumber(overview.total_stock),
+                  },
+                  {
+                    label: m.lowStockRow,
+                    value: formatNumber(overview.low_stock_variants),
+                    tone:
+                      (overview.low_stock_variants || 0) > 0
+                        ? 'negative'
+                        : 'muted',
+                  },
+                ]}
               />
             </div>
 
-            {!isStaff && transactionSummary ? (
-              <div className='grid gap-4 md:grid-cols-2 xl:grid-cols-4'>
-                <StatCard
-                  title={m.totalDeposits}
-                  value={formatCurrency(transactionSummary.total_deposits)}
-                  detail={m.transactionsThisPeriod.replace(
-                    '{count}',
-                    formatNumber(transactionSummary.transactions_this_period)
-                  )}
-                  icon={Wallet}
-                  iconTone='bg-emerald-50 text-emerald-700'
+            {!isStaff ? (
+              <div className='grid gap-4 lg:grid-cols-2'>
+                <StatusBreakdownCard
+                  title={m.paymentBreakdownTitle}
+                  totalLabel={`${formatNumber(overview.total_orders)} ${m.ordersUnit}`}
+                  total={overview.total_orders || 0}
+                  entries={paymentStatusEntries}
+                  colorMap={PAYMENT_STATUS_COLORS}
+                  emptyText={m.empty}
                 />
-                <StatCard
-                  title={m.totalWithdrawals}
-                  value={formatCurrency(transactionSummary.total_withdrawals)}
-                  icon={CreditCard}
-                  iconTone='bg-rose-50 text-rose-700'
-                />
-                <StatCard
-                  title={m.totalPayments}
-                  value={formatCurrency(transactionSummary.total_payments)}
-                  icon={DollarSign}
-                  iconTone='bg-sky-50 text-sky-700'
-                />
-                <StatCard
-                  title={m.pendingTransactions}
-                  value={formatNumber(transactionSummary.pending_transactions)}
-                  icon={Activity}
-                  iconTone='bg-amber-50 text-amber-700'
-                />
+                {transactionSummary ? (
+                  <CompactStatsCard
+                    title={m.financialsTitle}
+                    rows={[
+                      {
+                        label: m.depositsRow,
+                        value: formatCurrency(transactionSummary.total_deposits),
+                        tone: 'positive',
+                      },
+                      {
+                        label: m.withdrawalsRow,
+                        value: formatCurrency(transactionSummary.total_withdrawals),
+                        tone: 'negative',
+                      },
+                      {
+                        label: m.paymentsRow,
+                        value: formatCurrency(transactionSummary.total_payments),
+                      },
+                      {
+                        label: m.txPeriodRow,
+                        value: formatNumber(
+                          transactionSummary.transactions_this_period
+                        ),
+                        tone: 'muted',
+                      },
+                    ]}
+                  />
+                ) : null}
               </div>
             ) : null}
+
+            {/* Section 3: Ranking tables */}
+            <div className='grid gap-4 lg:grid-cols-2'>
+              <RankingTable
+                title={m.rankingProductsTitle}
+                subtitle={`${m.rankingUpdated} ${new Date().toLocaleDateString('vi-VN')}`}
+                icon={Package}
+                iconBgClass='bg-violet-100 dark:bg-violet-950/40'
+                iconColorClass='text-violet-700 dark:text-violet-300'
+                rankLabel={m.rankCol}
+                nameLabel={m.productNameCol}
+                metricLabel={m.soldQtyCol}
+                rows={topProducts.slice(0, 10).map((product) => ({
+                  name: product.product_name || m.empty,
+                  value: `${formatNumber(product.total_quantity)} ${m.units}`,
+                }))}
+                emptyText={m.noTopProducts}
+              />
+
+              {!isSeller ? (
+                <RankingTable
+                  title={m.rankingSellersTitle}
+                  subtitle={`${m.rankingUpdated} ${new Date().toLocaleDateString('vi-VN')}`}
+                  icon={Trophy}
+                  iconBgClass='bg-amber-100 dark:bg-amber-950/40'
+                  iconColorClass='text-amber-700 dark:text-amber-300'
+                  rankLabel={m.rankCol}
+                  nameLabel={m.sellerNameCol}
+                  metricLabel={m.totalItemsCol}
+                  rows={topSellers.map((seller) => ({
+                    name: seller.name,
+                    value: formatNumber(seller.count),
+                  }))}
+                  emptyText={m.noSellerData}
+                />
+              ) : null}
+            </div>
 
             <div className={cn('grid gap-4', isStaff ? 'xl:grid-cols-1' : 'xl:grid-cols-2')}>
               <Card className='gap-0 rounded-[10px]'>
@@ -730,137 +1090,135 @@ export function LemiexDashboard() {
               ) : null}
             </div>
 
-            <div
-              className={cn(
-                'grid gap-4',
-                isStaff ? 'xl:grid-cols-12' : 'xl:grid-cols-12'
-              )}
-            >
-              {!isStaff ? (
-                <Card className='gap-0 rounded-[10px] xl:col-span-4'>
-                  <CardHeader>
-                    <CardTitle>{m.ordersByPaymentStatus}</CardTitle>
-                  </CardHeader>
-                  <CardContent className='px-5 pb-5'>
-                    {paymentStatusEntries.length > 0 ? (
-                      <StatusList
-                        entries={paymentStatusEntries}
-                        colorMap={PAYMENT_STATUS_COLORS}
-                      />
-                    ) : (
-                      <div className='text-sm text-muted-foreground'>{m.empty}</div>
-                    )}
-                  </CardContent>
-                </Card>
-              ) : null}
-
-              <Card className={cn('gap-0 rounded-[10px]', isStaff ? 'xl:col-span-6' : 'xl:col-span-4')}>
-                <CardHeader>
-                  <CardTitle>{m.ordersByFulfillStatus}</CardTitle>
-                </CardHeader>
-                <CardContent className='px-5 pb-5'>
-                  {fulfillStatusEntries.length > 0 ? (
-                    <StatusList
-                      entries={fulfillStatusEntries}
-                      colorMap={FULFILL_STATUS_COLORS}
-                    />
-                  ) : (
-                    <div className='text-sm text-muted-foreground'>{m.empty}</div>
-                  )}
-                </CardContent>
-              </Card>
-
-              <Card className={cn('gap-0 rounded-[10px]', isStaff ? 'xl:col-span-6' : 'xl:col-span-4')}>
-                <CardHeader>
-                  <CardTitle>{m.topProducts}</CardTitle>
-                </CardHeader>
-                <CardContent className='space-y-3 px-5 pb-5'>
-                  {topProducts.length > 0 ? (
-                    topProducts.map((product, index) => (
-                      <div
-                        key={`${product.product_name || 'product'}-${index}`}
-                        className='flex items-start gap-3 rounded-[8px] border px-3 py-3'
-                      >
-                        <div className='flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary'>
-                          {index + 1}
-                        </div>
-                        <div className='min-w-0'>
-                          <div className='truncate font-medium'>
-                            {product.product_name || m.empty}
-                          </div>
-                          <div className='text-sm text-muted-foreground'>
-                            {formatNumber(product.total_quantity)} {m.units}
-                          </div>
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <div className='text-sm text-muted-foreground'>
-                      {m.noTopProducts}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </div>
+            {/* Production pipeline funnel — full width */}
+            <Card className='gap-0 rounded-[10px]'>
+              <CardHeader>
+                <CardTitle>{m.ordersByFulfillStatus}</CardTitle>
+              </CardHeader>
+              <CardContent className='px-5 pb-5'>
+                <FulfillFunnel
+                  entries={fulfillStatusEntries}
+                  emptyText={m.empty}
+                  flowLabels={{
+                    new_order: m.flowNewOrder,
+                    confirm: m.flowConfirmed,
+                    producing: m.flowProducing,
+                    shipped: m.flowShipped,
+                  }}
+                />
+              </CardContent>
+            </Card>
 
             <Card className='gap-0 rounded-[10px]'>
-              <CardHeader className='flex flex-row items-center justify-between gap-4'>
-                <div>
-                  <CardTitle>{m.recentOrders}</CardTitle>
-                </div>
-                <Button
-                  variant='ghost'
-                  className='h-8 rounded-[6px] px-2'
-                  onClick={() => router.push('/lemiex/orders')}
-                >
-                  {m.viewAll}
-                </Button>
-              </CardHeader>
-              <CardContent className='px-0 pb-2'>
-                {recentOrders.length > 0 ? (
+              <CardContent className='space-y-3 px-5 py-4'>
+                <p className='text-[13px] font-semibold text-foreground'>
+                  {m.shopStatsTitle}
+                </p>
+                {shopStats.length > 0 ? (
                   <div className='overflow-x-auto'>
-                    <Table className='min-w-[720px]'>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead>{m.orderId}</TableHead>
-                          <TableHead>{m.store}</TableHead>
-                          <TableHead>{m.items}</TableHead>
-                          <TableHead>{m.paymentStatus}</TableHead>
-                          <TableHead>{m.fulfillStatus}</TableHead>
-                          <TableHead>{m.created}</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {recentOrders.map((order) => (
-                          <TableRow
-                            key={order.id}
-                            className='cursor-pointer'
-                            onClick={() => router.push(`/lemiex/orders/${order.id}`)}
-                          >
-                            <TableCell className='font-medium'>
-                              {order.ref_id || `#${order.id}`}
-                            </TableCell>
-                            <TableCell>{order.store_name || m.empty}</TableCell>
-                            <TableCell>{formatNumber(order.total_items)}</TableCell>
-                            <TableCell>
-                              <Badge variant='secondary' className='rounded-[6px] capitalize'>
-                                {(order.payment_status || 'n/a').replaceAll('_', ' ')}
-                              </Badge>
-                            </TableCell>
-                            <TableCell>
-                              <Badge variant='outline' className='rounded-[6px] capitalize'>
-                                {(order.fulfill_status || 'n/a').replaceAll('_', ' ')}
-                              </Badge>
-                            </TableCell>
-                            <TableCell>{formatDateTime(order.created_at)}</TableCell>
-                          </TableRow>
+                    <table className='w-full text-[13px]'>
+                      <thead>
+                        <tr className='border-b border-border/60 text-[12px] font-medium text-muted-foreground'>
+                          <th className='py-3 pr-3 text-left font-medium'>{m.shopColIndex}</th>
+                          <th className='py-3 pr-3 text-left font-medium'>{m.shopColName}</th>
+                          <th className='py-3 pr-3 text-left font-medium'>
+                            <span className='inline-flex items-center gap-1'>
+                              {m.shopColTotal}
+                              <ArrowUpDown className='size-3 opacity-60' />
+                            </span>
+                          </th>
+                          <th className='py-3 pr-3 text-left font-medium'>
+                            <span className='inline-flex items-center gap-1'>
+                              {m.shopColRefund}
+                              <ArrowUpDown className='size-3 opacity-60' />
+                            </span>
+                          </th>
+                          <th className='py-3 pr-3 text-left font-medium'>
+                            <span className='inline-flex items-center gap-1'>
+                              {m.shopColPaid}
+                              <ArrowUpDown className='size-3 opacity-60' />
+                            </span>
+                          </th>
+                          <th className='py-3 pr-3 text-left font-medium'>
+                            <span className='inline-flex items-center gap-1'>
+                              {m.shopColProcessing}
+                              <ArrowUpDown className='size-3 opacity-60' />
+                            </span>
+                          </th>
+                          <th className='py-3 pr-3 text-left font-medium'>
+                            <span className='inline-flex items-center gap-1'>
+                              {m.shopColOnHold}
+                              <ArrowUpDown className='size-3 opacity-60' />
+                            </span>
+                          </th>
+                          <th className='py-3 text-left font-medium'>{m.shopColSellers}</th>
+                        </tr>
+                      </thead>
+                      <tbody className='divide-y divide-border/40'>
+                        {shopStats.map((shop, index) => (
+                          <tr key={shop.shop_id ?? shop.shop_name ?? index}>
+                            <td className='py-3 pr-3 text-muted-foreground'>
+                              {index + 1}
+                            </td>
+                            <td className='py-3 pr-3 font-medium text-foreground'>
+                              {shop.shop_name || '—'}
+                            </td>
+                            <td className='py-3 pr-3 tabular-nums text-foreground'>
+                              {formatNumber(shop.total)}
+                            </td>
+                            <td className='py-3 pr-3 tabular-nums'>
+                              {(shop.refund || 0) > 0 ? (
+                                <span>
+                                  {formatNumber(shop.refund)}{' '}
+                                  <span className='text-muted-foreground'>
+                                    ({(shop.refund_pct || 0).toFixed(1)}%)
+                                  </span>
+                                </span>
+                              ) : (
+                                <span className='text-muted-foreground/50'>—</span>
+                              )}
+                            </td>
+                            <td className='py-3 pr-3 tabular-nums'>
+                              <span className='text-emerald-600 dark:text-emerald-400'>
+                                {formatCurrency(shop.paid_amount)}
+                              </span>
+                              <span className='ml-1 text-muted-foreground'>
+                                ({formatNumber(shop.paid)})
+                              </span>
+                            </td>
+                            <td className='py-3 pr-3 tabular-nums'>
+                              <span className='text-sky-600 dark:text-sky-400'>
+                                {formatCurrency(shop.processing_amount)}
+                              </span>
+                              <span className='ml-1 text-muted-foreground'>
+                                ({formatNumber(shop.processing)})
+                              </span>
+                            </td>
+                            <td className='py-3 pr-3 tabular-nums'>
+                              {(shop.on_hold || 0) > 0 ? (
+                                <>
+                                  <span className='text-amber-600 dark:text-amber-400'>
+                                    {formatCurrency(shop.on_hold_amount)}
+                                  </span>
+                                  <span className='ml-1 text-muted-foreground'>
+                                    ({formatNumber(shop.on_hold)})
+                                  </span>
+                                </>
+                              ) : (
+                                <span className='text-muted-foreground/50'>—</span>
+                              )}
+                            </td>
+                            <td className='py-3 tabular-nums text-foreground'>
+                              {formatNumber(shop.seller_count)}
+                            </td>
+                          </tr>
                         ))}
-                      </TableBody>
-                    </Table>
+                      </tbody>
+                    </table>
                   </div>
                 ) : (
-                  <div className='px-6 py-8 text-sm text-muted-foreground'>
-                    {m.noRecentOrders}
+                  <div className='py-8 text-center text-sm text-muted-foreground'>
+                    {m.noShopData}
                   </div>
                 )}
               </CardContent>

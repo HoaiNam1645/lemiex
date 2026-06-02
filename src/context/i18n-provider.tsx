@@ -1096,7 +1096,7 @@ const uiMessages = {
       last7Days: '7N',
       last30Days: '30N',
       last90Days: '90N',
-      lastYear: '1N',
+      lastYear: '1Y',
       sellerScope: 'Chế độ seller',
       sellerScopeDescription: 'Thống kê đang được giới hạn theo dữ liệu của riêng cửa hàng bạn.',
       totalOrders: 'Đơn hàng',
@@ -1140,6 +1140,59 @@ const uiMessages = {
       vsPrevious: 'so với kỳ trước',
       empty: 'Không có dữ liệu',
       units: 'sản phẩm',
+      // Orders compact card rows
+      ordersTotalRow: 'Tổng đơn',
+      ordersShippingRow: 'Đang giao',
+      ordersDeliveredRow: 'Hoàn thành',
+      ordersOnHoldRow: 'Tạm hoãn',
+      // Revenue card rows
+      revenueTotalRow: 'Tổng doanh thu',
+      revenuePeriodRow: 'Trong kỳ',
+      revenuePaidRow: 'Đã thanh toán',
+      revenuePendingRow: 'Chờ duyệt',
+      // Products & stock card
+      productsStockTitle: 'Sản phẩm & Kho',
+      productsRow: 'Sản phẩm',
+      variantsRow: 'Biến thể',
+      stockRow: 'Tồn kho',
+      lowStockRow: 'Sắp hết hàng',
+      // Financials card
+      financialsTitle: 'Tài chính',
+      depositsRow: 'Nạp tiền',
+      withdrawalsRow: 'Rút tiền',
+      paymentsRow: 'Thanh toán',
+      txPeriodRow: 'Giao dịch trong kỳ',
+      // Status breakdown
+      paymentBreakdownTitle: 'Đơn theo thanh toán',
+      ordersUnit: 'đơn',
+      // Ranking tables
+      rankingProductsTitle: 'Xếp hạng sản phẩm',
+      rankingSellersTitle: 'Xếp hạng Seller',
+      rankingUpdated: 'Cập nhật:',
+      rankCol: 'Xếp hạng',
+      productNameCol: 'Tên sản phẩm',
+      soldQtyCol: 'Số lượng bán',
+      sellerNameCol: 'Tên seller',
+      totalItemsCol: 'Tổng items',
+      noSellerData: 'Chưa có dữ liệu seller',
+      // Funnel
+      funnelCellSize: '1 ô = {size} đơn',
+      // Production flow labels
+      flowNewOrder: 'New Order',
+      flowConfirmed: 'Confirmed',
+      flowProducing: 'Producing',
+      flowShipped: 'Shipped',
+      // Shop stats table
+      shopStatsTitle: 'Thống kê đơn hàng theo shop',
+      shopColIndex: '#',
+      shopColName: 'Tên shop',
+      shopColTotal: 'Tổng đơn hàng',
+      shopColRefund: 'Đơn hoàn',
+      shopColPaid: 'Đã thanh toán',
+      shopColProcessing: 'Đang xử lý',
+      shopColOnHold: 'On hold',
+      shopColSellers: 'Số seller',
+      noShopData: 'Chưa có dữ liệu',
     },
     staffReportPage: {
       title: 'Báo cáo hiệu suất nhân sự',
@@ -3179,6 +3232,59 @@ const uiMessages = {
       vsPrevious: 'vs previous period',
       empty: 'No data available',
       units: 'units',
+      // Orders compact card rows
+      ordersTotalRow: 'Total',
+      ordersShippingRow: 'Shipping',
+      ordersDeliveredRow: 'Delivered',
+      ordersOnHoldRow: 'On Hold',
+      // Revenue card rows
+      revenueTotalRow: 'Total Revenue',
+      revenuePeriodRow: 'This Period',
+      revenuePaidRow: 'Paid',
+      revenuePendingRow: 'Pending Approval',
+      // Products & stock card
+      productsStockTitle: 'Products & Stock',
+      productsRow: 'Products',
+      variantsRow: 'Variants',
+      stockRow: 'Stock',
+      lowStockRow: 'Low Stock',
+      // Financials card
+      financialsTitle: 'Financials',
+      depositsRow: 'Deposits',
+      withdrawalsRow: 'Withdrawals',
+      paymentsRow: 'Payments',
+      txPeriodRow: 'Transactions This Period',
+      // Status breakdown
+      paymentBreakdownTitle: 'Orders by Payment',
+      ordersUnit: 'orders',
+      // Ranking tables
+      rankingProductsTitle: 'Product Ranking',
+      rankingSellersTitle: 'Seller Ranking',
+      rankingUpdated: 'Updated:',
+      rankCol: 'Rank',
+      productNameCol: 'Product Name',
+      soldQtyCol: 'Units Sold',
+      sellerNameCol: 'Seller',
+      totalItemsCol: 'Total Items',
+      noSellerData: 'No seller data',
+      // Funnel
+      funnelCellSize: '1 cell = {size} orders',
+      // Production flow labels
+      flowNewOrder: 'New Order',
+      flowConfirmed: 'Confirmed',
+      flowProducing: 'Producing',
+      flowShipped: 'Shipped',
+      // Shop stats table
+      shopStatsTitle: 'Order Stats by Shop',
+      shopColIndex: '#',
+      shopColName: 'Shop',
+      shopColTotal: 'Total Orders',
+      shopColRefund: 'Refunded',
+      shopColPaid: 'Paid',
+      shopColProcessing: 'Processing',
+      shopColOnHold: 'On Hold',
+      shopColSellers: 'Sellers',
+      noShopData: 'No data',
     },
     staffReportPage: {
       title: 'Staff Performance Report',
@@ -5198,6 +5304,50 @@ const uiMessages = {
     vsPrevious: string
     empty: string
     units: string
+    ordersTotalRow: string
+    ordersShippingRow: string
+    ordersDeliveredRow: string
+    ordersOnHoldRow: string
+    revenueTotalRow: string
+    revenuePeriodRow: string
+    revenuePaidRow: string
+    revenuePendingRow: string
+    productsStockTitle: string
+    productsRow: string
+    variantsRow: string
+    stockRow: string
+    lowStockRow: string
+    financialsTitle: string
+    depositsRow: string
+    withdrawalsRow: string
+    paymentsRow: string
+    txPeriodRow: string
+    paymentBreakdownTitle: string
+    ordersUnit: string
+    rankingProductsTitle: string
+    rankingSellersTitle: string
+    rankingUpdated: string
+    rankCol: string
+    productNameCol: string
+    soldQtyCol: string
+    sellerNameCol: string
+    totalItemsCol: string
+    noSellerData: string
+    funnelCellSize: string
+    flowNewOrder: string
+    flowConfirmed: string
+    flowProducing: string
+    flowShipped: string
+    shopStatsTitle: string
+    shopColIndex: string
+    shopColName: string
+    shopColTotal: string
+    shopColRefund: string
+    shopColPaid: string
+    shopColProcessing: string
+    shopColOnHold: string
+    shopColSellers: string
+    noShopData: string
   }
   staffReportPage: {
     title: string
