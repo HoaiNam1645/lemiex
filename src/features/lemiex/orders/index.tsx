@@ -546,11 +546,11 @@ export function LemiexOrders() {
         </div>
       </Header>
 
-      <Main fluid className='flex flex-1 flex-col gap-4 px-4 sm:px-5 lg:px-6 xl:px-7'>
-        <div className='flex flex-wrap items-end justify-between gap-3'>
+      <Main fluid className='flex flex-1 flex-col gap-3 px-4 sm:px-5 lg:px-6 xl:px-7'>
+        <div className='flex flex-wrap items-center justify-between gap-3'>
           <div>
-            <h2 className='text-3xl font-bold tracking-tight'>{ordersMessages.title}</h2>
-            <p className='mt-1 text-lg text-muted-foreground'>
+            <h2 className='text-2xl font-bold tracking-tight'>{ordersMessages.title}</h2>
+            <p className='text-sm text-muted-foreground'>
               {result.pagination.total.toLocaleString('en-US')} {ordersMessages.count}
             </p>
           </div>

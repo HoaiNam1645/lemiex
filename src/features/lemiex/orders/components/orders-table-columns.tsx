@@ -88,63 +88,60 @@ export function getOrdersTableColumns(
 
   const columns: ColumnDef<LemiexOrderRow>[] = [
     {
-      id: 'select',      
+      id: 'select',
       header: () => <SelectAllOrdersCheckbox />,
-      meta: { thClassName: 'min-w-[44px]', tdClassName: 'w-[44px]' },
+      meta: { thClassName: 'w-[44px]', tdClassName: 'w-[44px]' },
       cell: ({ row }) => <SelectOrderCheckbox orderId={row.original.id} />,
     },
     {
       accessorKey: 'id',
       header: messages.headers.order,
-      meta: { thClassName: 'min-w-[240px]' },
+      meta: { thClassName: 'min-w-[220px]' },
       cell: ({ row }) => {
         const order = row.original
 
         return (
-          <div className='space-y-2 rounded-[8px] border border-border/70 bg-background p-3'>
-            <div className='font-semibold'>#{order.id}</div>
-            <div className='text-sm text-muted-foreground break-words'>
+          <div className='space-y-2'>
+            <div className='flex flex-wrap items-center gap-2'>
+              <span className='text-[13px] font-semibold'>#{order.id}</span>
+              <Badge
+                className='rounded-[4px] text-[10px]'
+                variant={order.fulfillment_priority === 'priority' ? 'destructive' : 'secondary'}
+              >
+                {order.fulfillment_priority === 'priority'
+                  ? messages.status.priority
+                  : messages.status.normal}
+              </Badge>
+              <Badge variant='outline' className='rounded-[4px] text-[10px] capitalize'>
+                {getEmbroideryType(order)}
+              </Badge>
+            </div>
+            <div className='text-[12px] text-muted-foreground break-all leading-relaxed'>
               {order.ref_id || messages.status.noRefId}
             </div>
-            <div className='line-clamp-1 text-xs text-muted-foreground'>
+            <div className='line-clamp-1 text-[11px] text-muted-foreground/70'>
               {getVariantSummary(order, messages)}
             </div>
-            <div className='space-y-1.5 rounded-[8px] border border-border/60 bg-muted/20 p-2'>
-              <div className='flex flex-wrap items-center gap-1.5'>
+            {showSellerColumn || showTicketColumn ? (
+              <div className='flex flex-wrap items-center gap-1'>
                 {showSellerColumn ? (
-                  <Badge variant='outline' className='rounded-[6px] text-[11px]'>
-                    {(order.seller?.username || order.seller?.name || messages.status.na)}
+                  <Badge variant='outline' className='rounded-[4px] text-[10px]'>
+                    {order.seller?.username || order.seller?.name || messages.status.na}
                   </Badge>
                 ) : null}
-
                 {showTicketColumn ? (
                   order.support_ticket?.id ? (
-                    <Badge variant='outline' className='rounded-[6px] text-[11px]'>
+                    <Badge variant='outline' className='rounded-[4px] text-[10px]'>
                       #{order.support_ticket.id}
                     </Badge>
                   ) : order.has_ticket ? (
-                    <Badge className='rounded-[6px] text-[11px]' variant='destructive'>
+                    <Badge className='rounded-[4px] text-[10px]' variant='destructive'>
                       {messages.status.hasTicket}
                     </Badge>
                   ) : null
                 ) : null}
               </div>
-
-              <div className='flex flex-wrap items-center gap-1.5'>
-                <Badge
-                  className='rounded-[6px] text-[11px]'
-                  variant={order.fulfillment_priority === 'priority' ? 'destructive' : 'secondary'}
-                >
-                  {order.fulfillment_priority === 'priority'
-                    ? messages.status.priority
-                    : messages.status.normal}
-                </Badge>
-
-                <Badge variant='outline' className='rounded-[6px] text-[11px] capitalize'>
-                  {getEmbroideryType(order)}
-                </Badge>
-              </div>
-            </div>
+            ) : null}
           </div>
         )
       },
@@ -155,56 +152,52 @@ export function getOrdersTableColumns(
     {
       id: 'status',
       header: messages.headers.fulfillStatus,
-      meta: { thClassName: 'min-w-[220px]' },
-      cell: ({ row }) => {
-        return (
-          <div>
-            <OrderFulfillStatusCell
-              order={row.original}
-              user={user}
-              options={effectiveFulfillStatusOptions}
-              onUpdated={onOrderUpdated}
-            />
-          </div>
-        )
-      },
+      meta: { thClassName: 'min-w-[200px]' },
+      cell: ({ row }) => (
+        <OrderFulfillStatusCell
+          order={row.original}
+          user={user}
+          options={effectiveFulfillStatusOptions}
+          onUpdated={onOrderUpdated}
+        />
+      ),
     },
     {
       id: 'items',
       header: messages.headers.items,
-      meta: { thClassName: role === 'Seller' ? 'min-w-[100px]' : 'min-w-[360px]' },
+      meta: { thClassName: role === 'Seller' ? 'min-w-[100px]' : 'min-w-[320px]' },
       cell: ({ row }) => <OrderItemsCell order={row.original} user={user} />,
     },
     {
       id: 'logistics',
       header: messages.headers.tracking,
-      meta: { thClassName: 'min-w-[200px]' },
+      meta: { thClassName: 'min-w-[160px]' },
       cell: ({ row }) => {
         const trackingId = row.original.shipping?.tracking_id
 
         return (
-          <div className='space-y-2 rounded-[8px] border border-border/70 bg-background p-3'>
+          <div className='space-y-2'>
             {trackingId ? (
               <a
                 href={`https://t.17track.net/en#nums=${trackingId}`}
                 target='_blank'
                 rel='noreferrer'
-                className='inline-flex rounded-[6px] bg-muted px-2 py-1 text-[13px] font-medium leading-none text-foreground hover:underline'
+                className='inline-flex rounded-[4px] bg-muted px-2 py-1 text-[12px] font-medium text-foreground hover:underline'
               >
                 {trackingId}
               </a>
             ) : (
-              <div className='text-sm text-muted-foreground'>{messages.status.noTracking}</div>
+              <span className='text-[12px] text-muted-foreground'>{messages.status.noTracking}</span>
             )}
 
             {row.original.shipping?.label_url || row.original.convert_label ? (
-              <div className='flex flex-wrap gap-2'>
+              <div className='flex flex-wrap gap-1.5'>
                 {row.original.shipping?.label_url ? (
                   <a
                     href={row.original.shipping.label_url}
                     target='_blank'
                     rel='noreferrer'
-                    className='inline-flex rounded-[6px] bg-violet-50 px-2 py-1 text-[11px] font-semibold text-violet-700'
+                    className='inline-flex rounded-[4px] bg-violet-50 px-2 py-1 text-[10px] font-semibold text-violet-700 dark:bg-violet-950/40 dark:text-violet-300'
                   >
                     {messages.status.label}
                   </a>
@@ -215,7 +208,7 @@ export function getOrdersTableColumns(
                     href={row.original.convert_label}
                     target='_blank'
                     rel='noreferrer'
-                    className='inline-flex rounded-[6px] bg-fuchsia-50 px-2 py-1 text-[11px] font-semibold text-fuchsia-700'
+                    className='inline-flex rounded-[4px] bg-fuchsia-50 px-2 py-1 text-[10px] font-semibold text-fuchsia-700 dark:bg-fuchsia-950/40 dark:text-fuchsia-300'
                   >
                     {messages.status.convert}
                   </a>
@@ -223,7 +216,7 @@ export function getOrdersTableColumns(
               </div>
             ) : null}
 
-            <div className='text-xs text-muted-foreground'>
+            <div className='text-[11px] text-muted-foreground'>
               {formatDateTime(
                 row.original.timestamps?.created_at || row.original.created_at,
                 messages
@@ -236,22 +229,20 @@ export function getOrdersTableColumns(
     {
       id: 'cost',
       header: messages.headers.totalCost,
-      meta: { thClassName: 'min-w-[180px]' },
+      meta: { thClassName: 'min-w-[150px]' },
       cell: ({ row }) => (
-        <div className='space-y-1.5 rounded-[8px] border border-border/70 bg-background p-3 text-sm'>
-          <Badge variant='outline' className='w-fit rounded-[6px] capitalize'>
+        <div className='space-y-1.5 text-[12px]'>
+          <Badge variant='outline' className='rounded-[4px] text-[10px] capitalize'>
             {formatStatusLabel(row.original.payment_status, messages)}
           </Badge>
-          <div className='text-xs text-emerald-700'>
+          <div className='text-emerald-700 dark:text-emerald-400'>
             {messages.headers.printCost}: {formatCurrency(row.original.pricing?.print_cost)}
           </div>
-          <div className='text-xs text-emerald-700'>
+          <div className='text-emerald-700 dark:text-emerald-400'>
             {messages.headers.shipping}: {formatCurrency(row.original.pricing?.shipping_cost)}
           </div>
-          <div className='border-t border-border/60 pt-1 font-semibold text-rose-600'>
-            {formatCurrency(
-              row.original.pricing?.total_cost ?? row.original.total_cost
-            )}
+          <div className='border-t border-border/60 pt-1 text-[13px] font-semibold text-rose-600 dark:text-rose-400'>
+            {formatCurrency(row.original.pricing?.total_cost ?? row.original.total_cost)}
           </div>
         </div>
       ),
@@ -259,7 +250,7 @@ export function getOrdersTableColumns(
     {
       id: 'actions',
       header: messages.headers.actions,
-      meta: { thClassName: 'min-w-[120px]' },
+      meta: { thClassName: 'min-w-[110px]' },
       cell: ({ row }) => (
         <OrderActionsCell
           order={row.original}
