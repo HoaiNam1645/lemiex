@@ -86,6 +86,7 @@ export type OrderListItem = {
     quantity?: number | null
     mockup?: string | null
     mockup_back?: string | null
+    note?: string | null
     qr_codes?: string[] | null
     merge_images?: string[] | null
     variant?: {
@@ -98,6 +99,7 @@ export type OrderListItem = {
       meta_id?: number | string | null
       embroidery_type?: string | null
       position?: string | null
+      print_size?: string | null
       stitch_count?: number | null
       dst_url?: string | null
       emb_url?: string | null

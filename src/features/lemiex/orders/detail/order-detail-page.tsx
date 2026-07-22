@@ -653,6 +653,31 @@ export function OrderDetailPage({ orderId }: OrderDetailPageProps) {
                       </div>
                     ) : null}
 
+                    {(item.designs || []).some((d) => d.print_size) ? (
+                      <div className='mt-3 flex flex-wrap items-center gap-2'>
+                        <span className='text-[12px] font-medium text-muted-foreground'>
+                          Print Size:
+                        </span>
+                        {(item.designs || [])
+                          .filter((d) => d.print_size)
+                          .map((d, i) => (
+                            <Badge
+                              key={`${String(item.id || index)}-ps-${i}`}
+                              variant='outline'
+                              className='rounded-[6px]'
+                            >
+                              {d.position}: {d.print_size}
+                            </Badge>
+                          ))}
+                      </div>
+                    ) : null}
+
+                    {item.note ? (
+                      <div className='mt-3 rounded-[6px] border border-amber-200 bg-amber-50 px-3 py-2 text-[13px] text-amber-900 dark:border-amber-900/40 dark:bg-amber-950/30 dark:text-amber-200'>
+                        <span className='font-semibold'>Note:</span> {item.note}
+                      </div>
+                    ) : null}
+
                     <div className='mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3'>
                       {item.mockup ? (
                         <a
