@@ -283,6 +283,7 @@ export type UpdateOrderPayload = {
     quantity: number
     mockup: string | null
     mockup_back: string | null
+    note: string | null
     print_files: UpdateOrderPrintFilePayload[]
   }>
 }

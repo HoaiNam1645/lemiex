@@ -72,6 +72,7 @@ type EditItemState = {
   size: string
   mockup: string
   mockup_back: string
+  note: string
   designs: EditDesignState[]
 }
 
@@ -129,6 +130,7 @@ function initItems(order: OrderDetail): EditItemState[] {
     size: item.size || item.variant?.size || '',
     mockup: item.mockup || '',
     mockup_back: item.mockup_back || '',
+    note: item.note || '',
     designs: (item.designs || []).map((design) => ({
       position: design.position || '',
       pdf_url: design.pdf_url || '',
@@ -321,6 +323,7 @@ export function OrderEditDialog({
         quantity: Number(item.quantity) || 0,
         mockup: cleanValue(item.mockup),
         mockup_back: cleanValue(item.mockup_back),
+        note: cleanValue(item.note),
         print_files: item.designs
           .filter(
             (design) =>
@@ -526,6 +529,22 @@ export function OrderEditDialog({
                               <span>Qty: {item.quantity}</span>
                             </div>
                           </div>
+                        </div>
+
+                        {/* Per-item note (editable; saved with Save Changes) */}
+                        <div className='border-b border-border/60 px-4 py-3'>
+                          <label className='mb-1.5 block text-[12px] font-medium uppercase tracking-wide text-muted-foreground'>
+                            Item Note
+                          </label>
+                          <Textarea
+                            value={item.note}
+                            onChange={(event) =>
+                              updateItem(itemIndex, 'note', event.target.value)
+                            }
+                            placeholder='Note for this item...'
+                            rows={2}
+                            className='min-h-[56px] rounded-[6px] text-[13px]'
+                          />
                         </div>
 
                         <div className='px-4 py-4 lg:px-5'>
